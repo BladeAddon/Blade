@@ -6,16 +6,17 @@
   <Script file="Libs\LibRangeCheck-2.0\LibRangeCheck-2.0.lua"/>
   <Script file="Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua"/>
 
-  <Script file="Init.lua"/>
+  <Script file="base/Init.lua"/>
 
-  <Script file="TableHelpers.lua"/>
-  <Script file="OutputHelpers.lua"/>
+  <Script file="helpers/TableHelpers.lua"/>
+  <Script file="helpers/OutputHelpers.lua"/>
 
-  <Script file="Blade.lua"/>
-  <Script file="ChatCommands.lua"/>
-  <Script file="EventHandlers.lua"/>
+  <Script file="base/Blade.lua"/>
 
-  <Script file="Startup.lua"/>
+  <Script file="commands/ChatCommands.lua"/>
+  <Script file="events/EventHandlers.lua"/>
+
+  <Script file="base/Startup.lua"/>
 
   <Script file="modules/auralogger.lua"/>
 </Ui>
