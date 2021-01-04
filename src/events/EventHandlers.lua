@@ -4,10 +4,18 @@ BLADE.events = {}
 BLADE.removeEvents = {}
 BLADE.combatlogevents = {}
 BLADE.combatlogaffixes = {}
+BLADE.EVENT_PREFIX = "BLADE_"
 
 function BLADE:RegisterEvent(event, handler)
     if not self.events[event] then
-        self.frame:RegisterEvent(event)
+        local retOK, ret1 = pcall(self.frame.RegisterEvent, self.frame, event)
+        if not retOK then
+            if strfind(ret1, "unknown event") and strmatch(event, BLADE.EVENT_PREFIX .. ".*") then
+                -- internal event, not a real error
+            else
+                error(ret1)
+            end
+        end
         self.events[event] = {}
     end
 
@@ -60,3 +68,38 @@ function BLADE:RegisterCombatLogAffix(affix, handler)
 
     table.insert(self.combatlogaffixes[affix], handler)
 end
+
+local function OnEvent(frame, event, ...)
+    for k, v in pairs(BLADE.events) do
+        if event == k then
+            for i = 1, #v do
+                v[i](...)
+            end
+        end
+    end
+
+    for k, v in pairs(BLADE.removeEvents) do
+        if event == k then
+            for i = 1, #v do
+                for j = 1, #BLADE.events[event] do
+                    if v[i] == BLADE.events[event][j] then
+                        table.remove(BLADE.events[event], j)
+                        table.remove(BLADE.removeEvents[event], i)
+                        break
+                    end
+                end
+            end
+        end
+    end
+end
+
+function BLADE:PublishInternalEvent(event, ...)
+    OnEvent(self, event, ...)
+end
+
+BLADE.frame:SetScript(
+    "OnEvent",
+    function(frame, event, ...)
+        OnEvent(frame, event, ...)
+    end
+)

@@ -137,33 +137,6 @@ BLADE.frame:SetScript(
     end
 )
 
-BLADE.frame:SetScript(
-    "OnEvent",
-    function(frame, event, ...)
-        for k, v in pairs(BLADE.events) do
-            if event == k then
-                for i = 1, #v do
-                    v[i](...)
-                end
-            end
-        end
-
-        for k, v in pairs(BLADE.removeEvents) do
-            if event == k then
-                for i = 1, #v do
-                    for j = 1, #BLADE.events[event] do
-                        if v[i] == BLADE.events[event][j] then
-                            table.remove(BLADE.events[event], j)
-                            table.remove(BLADE.removeEvents[event], i)
-                            break
-                        end
-                    end
-                end
-            end
-        end
-    end
-)
-
 BLADE:Init(
     function()
         for moduleName, moduleBootstrap in pairs(BLADE.modules) do
