@@ -11,6 +11,8 @@
   <Script file="helpers/TableHelpers.lua"/>
   <Script file="helpers/OutputHelpers.lua"/>
 
+  <Script file="modules/units/UnitInfos.lua"/>
+
   <Script file="base/Blade.lua"/>
 
   <Script file="commands/ChatCommands.lua"/>
