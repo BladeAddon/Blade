@@ -11,12 +11,19 @@ SlashCmdList["BLADE"] = function(msg)
     param = param or ""
     param2 = param2 or ""
 
+    local matchingCommand = false
+
     for k, v in pairs(BLADE.commands) do
         if cmd == k then
+            matchingCommand = true
             for i = 1, #v do
                 v[i](param, param2)
             end
         end
+    end
+
+    if not matchingCommand then
+        BLADE:Print("No matching command found for: '" .. cmd .. "'")
     end
 end
 
