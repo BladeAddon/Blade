@@ -18,5 +18,5 @@
 
   <Script file="base/Startup.lua"/>
 
-  <Script file="modules/auralogger.lua"/>
+  <Script file="modules/extra/auralogger.lua"/>
 </Ui>
