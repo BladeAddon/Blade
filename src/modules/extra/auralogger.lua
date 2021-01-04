@@ -59,7 +59,6 @@ BLADE:RegisterCommand(
     "aura",
     function(name)
         BLADE:InfoMsg("Searching for aura " .. name)
-        local f = false
         local allAuras = {}
         for k, v in pairs(buffs) do
             allAuras[k] = v
