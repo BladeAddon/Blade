@@ -1,17 +1,22 @@
 local ns, BLADE = ...
 
-if not BLADEDATA.AURALOG then
-    BLADEDATA.AURALOG = {}
-end
-if not BLADEDATA.AURALOG.DEBUFFS then
-    BLADEDATA.AURALOG.DEBUFFS = {}
-end
-if not BLADEDATA.AURALOG.BUFFS then
-    BLADEDATA.AURALOG.BUFFS = {}
-end
-if not BLADEDATA.AURALOG.OTHER then
-    BLADEDATA.AURALOG.OTHER = {}
-end
+BLADE:RegisterModule(
+    "MODULES.EXTRA.AURALOGGER",
+    function(...)
+        if not BLADEDATA.AURALOG then
+            BLADEDATA.AURALOG = {}
+        end
+        if not BLADEDATA.AURALOG.DEBUFFS then
+            BLADEDATA.AURALOG.DEBUFFS = {}
+        end
+        if not BLADEDATA.AURALOG.BUFFS then
+            BLADEDATA.AURALOG.BUFFS = {}
+        end
+        if not BLADEDATA.AURALOG.OTHER then
+            BLADEDATA.AURALOG.OTHER = {}
+        end
+    end
+)
 
 local YELLOW = "|cffffd000"
 
@@ -101,11 +106,5 @@ BLADE:RegisterCombatLogAffix(
         else
             BLADEDATA.AURALOG.OTHER[spellID] = spellObj
         end
-    end
-)
-
-BLADE:RegisterModule(
-    "MODULES.EXTRA.AURALOGGER",
-    function(...)
     end
 )
