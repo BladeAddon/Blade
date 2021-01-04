@@ -23,39 +23,51 @@ local function onDragStop(frame)
     end
 end
 
-SL.RegisterAPI(
-    function(self)
-        if not BLADE.DATA["frames"] then
-            BLADE.DATA["frames"] = {}
-        end
+local function addOnUpdate(frame, handler)
+    table.insert(frame.onupdatehandlers, handler)
+end
+local function addOnClick(frame, handler)
+    table.insert(frame.onclickhandlers, handler)
+end
 
-        local addOnUpdate = function(frame, handler)
-            table.insert(frame.onupdatehandlers, handler)
-        end
-        local addOnClick = function(frame, handler)
-            table.insert(frame.onclickhandlers, handler)
-        end
-        local addText = function(frame, text, size, autosize, flags)
-            local textType = type(text)
-            size = size or 14
+local function addText(frame, text, size, autosize, flags)
+    local textType = type(text)
+    size = size or 14
 
-            local fstr
-            if frame.cd ~= nil then
-                fstr = frame.cd:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-            else
-                fstr = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    local fstr
+    if frame.cd ~= nil then
+        fstr = frame.cd:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    else
+        fstr = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    end
+
+    -- fstr:SetFont(myriad, size, flags)
+    fstr:SetTextColor(1.0, 1.0, 1.0)
+    -- fstr:SetDrawLayer("OVERLAY", 1337)
+
+    frame.fontString = fstr
+    frame.text = fstr
+    frame.Text = fstr
+
+    if textType == "string" then
+        fstr:SetText(text)
+        if autosize then
+            local textw, texth = fstr:GetStringWidth(), fstr:GetStringHeight()
+            if frame:GetWidth() < textw then
+                frame:SetWidth(textw)
             end
+            if frame:GetHeight() < texth then
+                frame:SetHeight(texth)
+            end
+        end
+    end
 
-            -- fstr:SetFont(myriad, size, flags)
-            fstr:SetTextColor(1.0, 1.0, 1.0)
-            -- fstr:SetDrawLayer("OVERLAY", 1337)
+    fstr:SetAllPoints()
 
-            frame.fontString = fstr
-            frame.text = fstr
-            frame.Text = fstr
-
-            if textType == "string" then
-                fstr:SetText(text)
+    frame:AddOnUpdate(
+        function(f, sinceLastUpdate)
+            if textType == "function" then
+                f.text:SetText(text(f))
                 if autosize then
                     local textw, texth = fstr:GetStringWidth(), fstr:GetStringHeight()
                     if frame:GetWidth() < textw then
@@ -66,25 +78,14 @@ SL.RegisterAPI(
                     end
                 end
             end
+        end
+    )
+end
 
-            fstr:SetAllPoints()
-
-            frame:AddOnUpdate(
-                function(f, sinceLastUpdate)
-                    if textType == "function" then
-                        f.text:SetText(text(f))
-                        if autosize then
-                            local textw, texth = fstr:GetStringWidth(), fstr:GetStringHeight()
-                            if frame:GetWidth() < textw then
-                                frame:SetWidth(textw)
-                            end
-                            if frame:GetHeight() < texth then
-                                frame:SetHeight(texth)
-                            end
-                        end
-                    end
-                end
-            )
+SL.RegisterAPI(
+    function(self)
+        if not BLADE.DATA["frames"] then
+            BLADE.DATA["frames"] = {}
         end
 
         self.LoadFramePos = function(frame, posTable)
