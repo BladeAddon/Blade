@@ -5,7 +5,7 @@ local DEEP_PINK = "|cFFff1493"
 local WHITE = "|cFFFFFFFF"
 local RETURN_COLOR = "|r"
 
-local ADDON_COLOR = DEEP_PINK
+BLADE.ADDON_COLOR = DEEP_PINK
 
 local print = print
 
@@ -22,7 +22,7 @@ end
 
 local function GetPrintPrefix()
     return BLADE:EncodeInColor("[", WHITE) ..
-        BLADE:EncodeInColor(BLADE.AddonName, ADDON_COLOR) .. BLADE:EncodeInColor("]", WHITE)
+        BLADE:EncodeInColor(BLADE.AddonName, BLADE.ADDON_COLOR) .. BLADE:EncodeInColor("]", WHITE)
 end
 
 function BLADE:Print(...)
