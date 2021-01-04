@@ -9,6 +9,7 @@
   <Script file="Init.lua"/>
 
   <Script file="TableHelpers.lua"/>
+  <Script file="OutputHelpers.lua"/>
 
   <Script file="Blade.lua"/>
   <Script file="ChatCommands.lua"/>
@@ -16,4 +17,5 @@
 
   <Script file="Startup.lua"/>
 
+  <Script file="modules/auralogger.lua"/>
 </Ui>
