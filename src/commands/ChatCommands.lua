@@ -1,8 +1,9 @@
 local ns, BLADE = ...
 BLADE.commands = {}
 
-SLASH_NOADDON1 = "/blade"
-SLASH_NOADDON2 = "/bla"
+SLASH_BLADE1 = "/blade"
+SLASH_BLADE2 = "/bla"
+SLASH_BLADE3 = "/bl"
 SlashCmdList["BLADE"] = function(msg)
     local cmd, param, param2 = msg:match("^([%w%-]+)%s*([^%s]*)%s*(.*)$")
 
