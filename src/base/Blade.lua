@@ -1,6 +1,6 @@
 local ns, BLADE = ...
 
-BLADE.AddonName = "BLADE"
+BLADE.AddonName = "Blade"
 BLADE.frame = CreateFrame("FRAME")
 BLADE.modules = {}
 BLADE.Player = {
