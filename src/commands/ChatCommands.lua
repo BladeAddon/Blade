@@ -19,7 +19,7 @@ SLASH_Blade3 = "/bl"
 SlashCmdList["Blade"] = function(msg)
     local cmd, params = msg:match("^(%S*)%s*(.-)$")
 
-    if not cmd then
+    if not cmd or cmd == "" then
         DisplayHelp()
         return
     end
