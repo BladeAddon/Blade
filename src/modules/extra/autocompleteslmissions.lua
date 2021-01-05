@@ -1,5 +1,12 @@
 local ns, Blade = ...
 
+local moduleName = "MODULES.EXTRA.AUTOCOMPLETESLMISSIONS"
+
+local options = Blade:CreateSubOptions("Auto Complete Mission Table")
+local enableButton = options:AddCheckButton("ENABLED", "Enabled", "Automatically completes missions from mission table")
+enableButton:SetPoint("TOPLEFT", 10, -10)
+enableButton:BindToSetting(moduleName, "ENABLED")
+
 -- CovenantMissionFrame.MissionComplete.CompleteFrame.ContinueButton
 -- CovenantMissionFrame.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton
 
@@ -17,6 +24,10 @@ Blade:RegisterEvent(
         covenantMissionFrame:HookScript(
             "OnUpdate",
             function(self, sinceLastUpdate)
+                if not Blade:GetSetting(moduleName, "ENABLED") then
+                    return
+                end
+
                 if not self or not self.MissionComplete then
                     return
                 end
@@ -43,7 +54,9 @@ Blade:RegisterEvent(
 )
 
 Blade:RegisterModule(
-    "MODULES.EXTRA.AUTOCOMPLETESLMISSIONS",
+    moduleName,
     function(...)
+        -- set default values
+        Blade:GetSetting(moduleName, "ENABLED", true)
     end
 )
