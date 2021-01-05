@@ -56,10 +56,10 @@ function Blade:AddAutoSell(item)
     end
     if BLADEDATA.AUTOSELL[itemID] == nil then
         BLADEDATA.AUTOSELL[itemID] = true
-        print("Added " .. link .. " to auto sell list.")
+        Blade:Print("Added " .. link .. " to auto sell list.")
     else
         BLADEDATA.AUTOSELL[itemID] = nil
-        print("Removed " .. link .. " from auto sell list.")
+        Blade:Print("Removed " .. link .. " from auto sell list.")
     end
 end
 
@@ -142,7 +142,7 @@ Blade:RegisterEvent(
             sellAmount = sellAmount + v.SellPrice
         end
         if sellAmount > 0 then
-            print("Selling trash items for: " .. GetMoneyString(sellAmount))
+            Blade:Print("Selling trash items for: " .. GetMoneyString(sellAmount))
         end
 
         if #itemsToSell > fastSellCap then

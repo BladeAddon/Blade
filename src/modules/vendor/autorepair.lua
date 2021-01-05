@@ -19,7 +19,7 @@ Blade:RegisterEvent(
                 Blade:GetSetting(moduleName, "GUILD_REPAIR") and CanGuildBankRepair() and
                     GetGuildBankWithdrawMoney() >= repairCost
             )
-            print("Repairing has cost: " .. GetMoneyString(repairCost))
+            Blade:Print("Repairing has cost: " .. GetMoneyString(repairCost))
         end
     end
 )
