@@ -41,12 +41,14 @@ $baseIncludes = @(
     "base/Blade.lua",
     "commands/ChatCommands.lua",
     "events/EventHandlers.lua",
+    "modules/InventoryInfo.lua",
     "base/Startup.lua"
 )
 
 $moduleIncludes = @{
     auralogger  = @("modules/extra/auralogger.lua")
     spelllogger = @("modules/extra/spelllogger.lua")
+    autokeyinserter = @("modules/extra/autokeyinserter.lua")
 }
 
 function AddFile([string]$file) {
