@@ -23,7 +23,8 @@ Blade:RegisterCommand(
         if not f then
             Blade:InfoMsg("Nothing found for spell " .. name)
         end
-    end
+    end,
+    "Search all logged spells for a given name"
 )
 
 Blade:RegisterEvent(

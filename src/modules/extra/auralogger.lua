@@ -43,7 +43,8 @@ Blade:RegisterCommand(
         if not PrintSearchInSpellObjects(BLADEDATA.AURALOG.DEBUFFS, name) then
             Blade:InfoMsg("Nothing found for debuff " .. name)
         end
-    end
+    end,
+    "Search all logged debuffs for a given name"
 )
 
 Blade:RegisterCommand(
@@ -53,7 +54,8 @@ Blade:RegisterCommand(
         if not PrintSearchInSpellObjects(BLADEDATA.AURALOG.BUFFS, name) then
             Blade:InfoMsg("Nothing found for buff " .. name)
         end
-    end
+    end,
+    "Search all logged buffs for a given name"
 )
 
 Blade:RegisterCommand(
@@ -73,7 +75,8 @@ Blade:RegisterCommand(
         if not PrintSearchInSpellObjects(allAuras, name) then
             Blade:InfoMsg("Nothing found for aura " .. name)
         end
-    end
+    end,
+    "Search all logged auras(buffs+debuffs+other) for a given name"
 )
 
 Blade:RegisterCombatLogAffix(
