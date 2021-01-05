@@ -132,7 +132,7 @@ Blade:Init(
 
         InterfaceOptions_AddCategory(optionsPanel)
 
-        for _, v in ipairs(optionsChildren) do
+        for _, v in pairs(optionsChildren) do
             InterfaceOptions_AddCategory(v)
         end
     end
