@@ -56,6 +56,7 @@ $moduleIncludes = @{
     spelllogger            = @("modules/extra/spelllogger.lua")
     autokeyinserter        = @("modules/extra/autokeyinserter.lua")
     autocompleteslmissions = @("modules/extra/autocompleteslmissions.lua")
+    pullbuttons            = @("modules/extra/pullbuttons.lua")
     autovendor             = @("modules/vendor/autovendor.lua")
     autorepair             = @("modules/vendor/autorepair.lua")
 }

@@ -28,3 +28,8 @@ end
 function Blade:Print(...)
     print(GetPrintPrefix(), ...)
 end
+
+function Blade:SendChat(msg)
+    DEFAULT_CHAT_FRAME.editBox:SetText(msg)
+    ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+end

@@ -6,7 +6,7 @@ local myriad = "Interface\\AddOns\\Shadowlegend\\media\\fonts\\Myriad Condensed 
 local darkGrey = 0.11764705882
 local r, g, b = darkGrey, darkGrey, darkGrey
 
-Blade.moving = false
+Blade.MOVING = false
 
 local function onDragStart(frame)
     if Blade.MOVING then
@@ -142,7 +142,7 @@ local function SaveFramePos(frame, name)
         "OnDragStop",
         function()
             local from, _, to, x, y = frame:GetPoint()
-            BLADEDATA["frames"][name] = {
+            BLADEDATA.FRAMES[name] = {
                 ["from"] = from,
                 ["to"] = to,
                 ["x"] = x,
@@ -156,11 +156,11 @@ local function HandleFramePos(frame, name, defaultPos)
     if frame and frame.createdparent then
         frame = frame.createdparent
     end
-    if not frame:LoadFrame(frame, name) then
+    if not frame:LoadFrame(name) then
         frame:SetPoint(defaultPos and defaultPos or "CENTER")
     end
 
-    frame:SaveFramePos(frame, name)
+    frame:SaveFramePos(name)
 end
 
 Blade.HandleFramePos = HandleFramePos
@@ -189,6 +189,7 @@ function Blade:CreateFrame(background, parent, name)
     f.LoadFramePos = LoadFramePos
     f.LoadFrame = LoadFrame
     f.SaveFramePos = SaveFramePos
+    f.HandleFramePos = HandleFramePos
 
     -- fix this so it doesnt get called on every onupdate, only when it has to be, maybe on child size changed?
     f:SetScript(
@@ -316,6 +317,14 @@ function Blade:CreateIcon(iconID, size, x, y, parent)
     f:Show()
     return f
 end
+
+Blade:RegisterCommand(
+    "togglemove",
+    function()
+        Blade.MOVING = not Blade.MOVING
+    end,
+    "Toggle moving of all Blade Frame elements"
+)
 
 Blade:Init(
     function(...)
