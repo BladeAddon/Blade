@@ -55,7 +55,11 @@ function Blade:GetSettings(name)
     return BLADEDATA.SETTINGS[name]
 end
 
-function Blade:GetSetting(name, key)
+function Blade:GetSetting(name, key, defaultValue)
+    if self:GetSettings(name)[key] == nil then
+        self:SetSetting(name, key, defaultValue)
+    end
+
     return self:GetSettings(name)[key]
 end
 

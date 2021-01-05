@@ -15,7 +15,10 @@ Blade:RegisterEvent(
 
         local repairCost, canRepair = GetRepairAllCost()
         if canRepair then
-            RepairAllItems(CanGuildBankRepair() and GetGuildBankWithdrawMoney() >= repairCost)
+            RepairAllItems(
+                Blade:GetSetting(moduleName, "GUILD_REPAIR") and CanGuildBankRepair() and
+                    GetGuildBankWithdrawMoney() >= repairCost
+            )
             print("Repairing has cost: " .. GetMoneyString(repairCost))
         end
     end
@@ -35,5 +38,8 @@ Blade:AddOptionsPanel(options)
 Blade:RegisterModule(
     moduleName,
     function(...)
+        -- set default values
+        Blade:GetSetting(moduleName, "ENABLED", true)
+        Blade:GetSetting(moduleName, "GUILD_REPAIR", true)
     end
 )
