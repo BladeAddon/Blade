@@ -66,11 +66,9 @@ end
 local function GetTrashItem()
     for bag = 0, NUM_BAG_SLOTS do
         for slot = 1, GetContainerNumSlots(bag) do
-            local texture, count, locked, quality, readable, lootable, link, isFiltered, hasNoValue, itemID =
-                GetContainerItemInfo(bag, slot)
+            local _, count, _, quality, _, _, link, _, _, itemID = GetContainerItemInfo(bag, slot)
             if itemID then
-                local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture, vendorPrice =
-                    GetItemInfo(itemID)
+                local name, _, _, _, _, _, _, _, _, _, vendorPrice = GetItemInfo(itemID)
 
                 local shouldSell =
                     (quality == 0 or BLADEDATA.AUTOSELL[itemID]) and not blackList[bag .. slot] and vendorPrice and
@@ -90,11 +88,9 @@ local function GetTrashItems()
     local totalVendor = 0
     for bag = 0, NUM_BAG_SLOTS do
         for slot = 1, GetContainerNumSlots(bag) do
-            local texture, count, locked, quality, readable, lootable, link, isFiltered, hasNoValue, itemID =
-                GetContainerItemInfo(bag, slot)
+            local _, count, _, quality, _, _, link, _, _, itemID = GetContainerItemInfo(bag, slot)
             if itemID then
-                local name, _, _, iLevel, reqLevel, class, subclass, maxStack, equipSlot, _, vendorPrice =
-                    GetItemInfo(itemID)
+                local name, _, _, _, _, _, _, _, _, _, vendorPrice = GetItemInfo(itemID)
 
                 local shouldSell =
                     (quality == 0 or BLADEDATA.AUTOSELL[itemID]) and not blackList[bag .. slot] and vendorPrice and
@@ -133,7 +129,7 @@ Blade:RegisterEvent(
         local sellAmount = 0
 
         for i, v in ipairs(itemsToSell) do
-            sellAmount = sellAmount + v[3]
+            sellAmount = sellAmount + v.SellPrice
         end
         if sellAmount > 0 then
             print("Selling trash items for: " .. GetMoneyString(sellAmount))
