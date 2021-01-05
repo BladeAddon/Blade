@@ -30,7 +30,7 @@ function Blade:AddOptionsPanel(panel)
     end
 end
 
-local function AddCheckButton(panel, name, text)
+local function AddCheckButton(panel, name, text, tooltipText)
     local function BindToSetting(frame, setting, key)
         panel:OnOkay(
             function(self)
@@ -44,9 +44,11 @@ local function AddCheckButton(panel, name, text)
         )
     end
 
-    local button = CreateFrame("CheckButton", panel.name .. name, panel, "ChatConfigCheckButtonTemplate")
+    local button = CreateFrame("CheckButton", panel.name .. name, panel, "InterfaceOptionsCheckButtonTemplate")
     button.BindToSetting = BindToSetting
     button.Text:SetText(text)
+    button.tooltipText = text
+    button.tooltipRequirement = tooltipText
 
     return button
 end

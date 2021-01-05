@@ -172,7 +172,7 @@ Blade:RegisterCommand(
 )
 
 local options = Blade:CreateSubOptions("Auto Vendor")
-local enableButton = options:AddCheckButton("ENABLED", "Enabled")
+local enableButton = options:AddCheckButton("ENABLED", "Enabled", "Automatically sell grey and manually added items when a vendor is opened")
 enableButton:SetPoint("TOPLEFT", 10, -10)
 enableButton:BindToSetting(moduleName, "ENABLED")
 Blade:AddOptionsPanel(options)
