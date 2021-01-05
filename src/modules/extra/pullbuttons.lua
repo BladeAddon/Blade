@@ -1,8 +1,28 @@
 local ns, Blade = ...
 
+local moduleName = "MODULES.EXTRA.PULLBUTTONS"
+
+local options = Blade:CreateSubOptions("Pull Buttons")
+local enableButton =
+    options:AddCheckButton(
+    "ENABLED",
+    "Enabled",
+    "Show Pull and Readycheck buttons. Changing this needs a reload to remove or show frames"
+)
+enableButton:SetPoint("TOPLEFT", 10, -10)
+enableButton:BindToSetting(moduleName, "ENABLED")
+Blade:AddOptionsPanel(options)
+
 Blade:RegisterModule(
-    "MODULES.EXTRA.PULLBUTTOS",
+    moduleName,
     function(...)
+        -- set default values
+        Blade:GetSetting(moduleName, "ENABLED", true)
+
+        if not Blade:GetSetting(moduleName, "ENABLED") then
+            return
+        end
+
         local buttonSizeW = 48
         local buttonSizeH = 32
 
