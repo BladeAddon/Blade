@@ -45,6 +45,10 @@ local function AddCheckButton(panel, name, text, tooltipText)
     end
 
     local button = CreateFrame("CheckButton", panel.name .. name, panel, "InterfaceOptionsCheckButtonTemplate")
+    -- apparently InterfaceOptionsCheckButtonTemplate needs an onclick handler
+    button:SetScript("OnClick", function(self)
+        local tick = self:GetChecked()
+    end)
     button.BindToSetting = BindToSetting
     button.Text:SetText(text)
     button.tooltipText = text
@@ -94,6 +98,10 @@ function Blade:CreateSubOptions(name)
 end
 
 function Blade:GetSettings(name)
+    if not BLADEDATA.SETTINGS then
+        BLADEDATA.SETTINGS = {}
+    end
+
     if not BLADEDATA.SETTINGS[name] then
         BLADEDATA.SETTINGS[name] = {}
     end
@@ -112,9 +120,6 @@ end
 function Blade:SetSetting(name, key, value)
     self:GetSettings(name)[key] = value
 end
-
--- local generalOptions = Blade:CreateSubOptions("General")
--- Blade:AddOptionsPanel(generalOptions)
 
 Blade:Init(
     function()
