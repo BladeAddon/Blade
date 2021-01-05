@@ -18,19 +18,24 @@ $fileAttrib = "file"
 
 $embeds = New-Object System.XML.XMLDocument
 # $embeds.Load("$($output)/embeds.xml")
-# <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+# <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/../FrameXML/UI.xsd">
 
 $ui = $embeds.CreateElement("Ui")
 
 [void]$ui.SetAttribute("xmlns", "http://www.blizzard.com/wow/ui/")
 [void]$ui.SetAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-[void]$ui.SetAttribute("xsi:schemaLocation", "http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd")
+[void]$ui.SetAttribute("xsi:schemaLocation", "http://www.blizzard.com/wow/ui/../FrameXML/UI.xsd")
 [void]$embeds.AppendChild($ui)
 
 $libIncludes = @(
     "Libs/LibStub/LibStub.lua",
     "Libs/LibRangeCheck-2.0/LibRangeCheck-2.0.lua",
     "Libs/LibSharedMedia-3.0/LibSharedMedia-3.0.lua"
+)
+
+$mediaIncludes = @(
+    "media/fonts/Myriad Condensed Web.ttf",
+    "media/textures/Minimalist.tga"
 )
 
 $baseIncludes = @(
@@ -42,7 +47,8 @@ $baseIncludes = @(
     "commands/ChatCommands.lua",
     "events/EventHandlers.lua",
     "modules/InventoryInfo.lua",
-    "base/Startup.lua"
+    "base/Startup.lua",
+    "GUI/guiconstructors.lua"
 )
 
 $moduleIncludes = @{
@@ -74,6 +80,10 @@ New-Item -ItemType Directory -Force -Path $output
 
 foreach ($item in $libIncludes) {
     AddFile $item
+    CreateOutputFile $item
+}
+
+foreach ($item in $mediaIncludes) {
     CreateOutputFile $item
 }
 
