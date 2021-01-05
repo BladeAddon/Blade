@@ -19,17 +19,6 @@ optionsPanel.okay = OnOkay
 optionsPanel.cancel = OnCancel
 optionsPanel.default = OnDefault
 
-function Blade:AddOptionsPanel(panel)
-    if not panel.parent then
-        panel.parent = optionsPanel.name
-    end
-
-    table.insert(optionsChildren, panel)
-    if Blade.Loaded then
-        InterfaceOptions_AddCategory(panel)
-    end
-end
-
 local function AddCheckButton(panel, name, text, tooltipText)
     local function BindToSetting(frame, setting, key)
         panel:OnOkay(
@@ -92,6 +81,11 @@ function Blade:CreateSubOptions(name)
         for _, v in ipairs(f.onRefreshHandlers) do
             v(f)
         end
+    end
+
+    table.insert(optionsChildren, frame)
+    if Blade.Loaded then
+        InterfaceOptions_AddCategory(frame)
     end
 
     return frame

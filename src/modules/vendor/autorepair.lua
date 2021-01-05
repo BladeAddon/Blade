@@ -33,8 +33,6 @@ local guildRepairButton = options:AddCheckButton("GUILD_REPAIR", "Guild repair",
 guildRepairButton:SetPoint("TOPLEFT", 10, -40)
 guildRepairButton:BindToSetting(moduleName, "GUILD_REPAIR")
 
-Blade:AddOptionsPanel(options)
-
 Blade:RegisterModule(
     moduleName,
     function(...)

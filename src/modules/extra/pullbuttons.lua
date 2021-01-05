@@ -11,7 +11,6 @@ local enableButton =
 )
 enableButton:SetPoint("TOPLEFT", 10, -10)
 enableButton:BindToSetting(moduleName, "ENABLED")
-Blade:AddOptionsPanel(options)
 
 Blade:RegisterModule(
     moduleName,
