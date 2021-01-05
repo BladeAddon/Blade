@@ -1,5 +1,7 @@
 local ns, Blade = ...
 
+local moduleName = "MODULES.VENDOR.AUTOVENDOR"
+
 local GameTooltip = GameTooltip
 
 local toolTipHooks = {
@@ -128,6 +130,10 @@ end
 Blade:RegisterEvent(
     "MERCHANT_SHOW",
     function()
+        if not Blade:GetSetting(moduleName, "ENABLED") then
+            return
+        end
+
         local itemsToSell = GetTrashItems()
 
         local sellAmount = 0
@@ -165,12 +171,26 @@ Blade:RegisterCommand(
     end
 )
 
+local options = Blade:CreateSubOptions("Auto Vendor")
+local enableButton = options:AddCheckButton("ENABLED", "Enabled")
+enableButton:SetPoint("TOPLEFT", 10, -10)
+options.okay = function(self)
+    Blade:SetSetting(moduleName, "ENABLED", enableButton:GetChecked())
+end
+options.refresh = function(self)
+    enableButton:SetChecked(Blade:GetSetting(moduleName, "ENABLED"))
+end
+Blade:AddOptionsPanel(options)
+
 Blade:RegisterModule(
-    "MODULES.VENDOR.AUTOVENDOR",
+    moduleName,
     function(...)
         if not BLADEDATA.AUTOSELL then
             BLADEDATA.AUTOSELL = {}
         end
+
+        -- set default values
+        Blade:GetSetting(moduleName, "ENABLED", true)
 
         HookToolTip()
 
@@ -179,6 +199,10 @@ Blade:RegisterModule(
             "OnUpdate",
             function(frame, sinceLastUpdate)
                 frame.sinceLastUpdate = (frame.sinceLastUpdate or 0) + sinceLastUpdate
+
+                if not Blade:GetSetting(moduleName, "ENABLED") then
+                    return
+                end
 
                 for item, time in pairs(blackList) do
                     if GetTime() - time > 0.3 then
