@@ -46,11 +46,12 @@ $baseIncludes = @(
 )
 
 $moduleIncludes = @{
-    auralogger  = @("modules/extra/auralogger.lua")
-    spelllogger = @("modules/extra/spelllogger.lua")
-    autokeyinserter = @("modules/extra/autokeyinserter.lua")
+    auralogger             = @("modules/extra/auralogger.lua")
+    spelllogger            = @("modules/extra/spelllogger.lua")
+    autokeyinserter        = @("modules/extra/autokeyinserter.lua")
     autocompleteslmissions = @("modules/extra/autocompleteslmissions.lua")
-    autovendor = @("modules/extra/autovendor.lua")
+    autovendor             = @("modules/extra/autovendor.lua")
+    autorepair             = @("modules/extra/autorepair.lua")
 }
 
 function AddFile([string]$file) {
