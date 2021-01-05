@@ -189,7 +189,7 @@ local fastSellCapSlider =
     "Fast Sell Cap",
     "Amount of items to sell at once when opening window, lower this amount if items dont get sold or there are any errors"
 )
-fastSellCapSlider:SetPoint("TOPLEFT", 10, -50)
+fastSellCapSlider:SetPoint("TOPLEFT", 10, -60)
 fastSellCapSlider:BindToSetting(moduleName, "FAST_SELL_CAP")
 
 Blade:RegisterModule(
