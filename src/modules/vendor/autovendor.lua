@@ -159,7 +159,7 @@ Blade:RegisterCommand(
     function(item)
         Blade:AddAutoSell(tostring(item))
     end,
-    "Add item to autosell list by linking it to this command with shift+click"
+    "Add or remove item to/from autosell list by linking it to this command with shift+click"
 )
 
 Blade:RegisterCommand(
