@@ -20,6 +20,8 @@ Blade:RegisterEvent(
             for k, v in pairs(Blade.inits) do
                 v()
             end
+
+            Blade.Loaded = true
         end
     end
 )

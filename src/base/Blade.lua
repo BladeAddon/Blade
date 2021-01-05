@@ -1,6 +1,7 @@
 local ns, Blade = ...
 
 Blade.AddonName = "Blade"
+Blade.Loaded = false
 Blade.frame = CreateFrame("FRAME")
 Blade.modules = {}
 Blade.Player = {

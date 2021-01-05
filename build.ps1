@@ -49,6 +49,7 @@ $baseIncludes = @(
     "modules/InventoryInfo.lua",
     "base/Startup.lua",
     "GUI/guiconstructors.lua"
+    "options/OptionsPanel.lua"
 )
 
 $moduleIncludes = @{
