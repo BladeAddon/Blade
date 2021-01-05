@@ -17,7 +17,6 @@ Blade:RegisterEvent(
 
 local options = Blade:CreateSubOptions("Auto Key inserter")
 local enableButton = options:AddCheckButton("ENABLED", "Enabled", "Automatically insert Mythic Keystone into the Font")
-enableButton:SetPoint("TOPLEFT", 10, -10)
 enableButton:BindToSetting(moduleName, "ENABLED")
 
 Blade:RegisterModule(

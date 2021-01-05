@@ -20,6 +20,58 @@ Blade.Options.Panel = optionsPanel
 local optionsChildren = {}
 Blade.Options.Children = optionsChildren
 
+local function VerticalLayout(panel)
+    local kids = {panel:GetChildren()}
+
+    if #kids > 0 then
+        local totalHeight = panel.padding or 0
+        local visibleHeight = panel.padding or 0
+        local maxWidth = 0
+        for i, child in ipairs(kids) do
+            local height = child:GetHeight()
+            local width = child:GetWidth()
+            if child:IsShown() then
+                child:ClearAllPoints()
+                child:SetPoint("TOPLEFT", panel.padding or 0, -visibleHeight)
+                visibleHeight = visibleHeight + height
+            end
+            totalHeight = totalHeight + height
+            if width > maxWidth then
+                maxWidth = width
+            end
+        end
+
+        panel:SetWidth(maxWidth)
+        panel:SetHeight(totalHeight)
+    end
+end
+
+local function HorizontalLayout(panel)
+    local kids = {panel:GetChildren()}
+
+    if #kids > 0 then
+        local totalWidth = panel.padding or 0
+        local visibleWidth = panel.padding or 0
+        local maxHeight = 0
+        for i, child in ipairs(kids) do
+            local height = child:GetHeight()
+            local width = child:GetWidth()
+            if child:IsShown() then
+                child:ClearAllPoints()
+                child:SetPoint("TOPLEFT", visibleWidth, panel.padding or 0)
+                visibleWidth = visibleWidth + width
+            end
+            totalWidth = totalWidth + width
+            if height > maxHeight then
+                maxHeight = height
+            end
+        end
+
+        panel:SetWidth(totalWidth)
+        panel:SetHeight(maxHeight)
+    end
+end
+
 local function AddCheckButton(panel, name, text, tooltipText)
     local function BindToSetting(frame, setting, key)
         panel:OnOkay(
@@ -47,6 +99,8 @@ local function AddCheckButton(panel, name, text, tooltipText)
     button.tooltipText = text
     button.tooltipRequirement = tooltipText
 
+    panel:VerticalLayout()
+
     return button
 end
 
@@ -66,6 +120,12 @@ local function AddSlider(panel, name, minValue, maxValue, stepValue, text, toolt
 
     local slider = CreateFrame("Slider", panel.name .. name, panel, "OptionsSliderTemplate")
 
+    -- hacky, TODO
+    local realSetPoint = slider.SetPoint
+    slider.SetPoint = function(self, point, ofsx, ofsy, ...)
+        realSetPoint(self, point, ofsx, ofsy - self.Text:GetHeight())
+    end
+
     slider.BindToSetting = BindToSetting
     slider.header = text
     slider.Text:SetText(slider.header)
@@ -78,8 +138,11 @@ local function AddSlider(panel, name, minValue, maxValue, stepValue, text, toolt
         "OnValueChanged",
         function(self, value)
             self.Text:SetText(self.header .. "(" .. value .. ")")
+            panel:VerticalLayout()
         end
     )
+
+    panel:VerticalLayout()
 
     return slider
 end
@@ -93,12 +156,16 @@ function Blade:CreateSubOptions(name)
     frame.name = name
     frame.parent = optionsPanel.name
 
+    frame.padding = 10
+
     frame.onOkayHandlers = {}
     frame.onCancelHandlers = {}
     frame.onRefreshHandlers = {}
 
     frame.AddCheckButton = AddCheckButton
     frame.AddSlider = AddSlider
+    frame.HorizontalLayout = HorizontalLayout
+    frame.VerticalLayout = VerticalLayout
 
     frame.OnOkay = function(f, handler)
         table.insert(f.onOkayHandlers, handler)

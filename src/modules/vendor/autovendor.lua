@@ -177,8 +177,8 @@ local enableButton =
     "Enabled",
     "Automatically sell grey and manually added items when a vendor is opened"
 )
-enableButton:SetPoint("TOPLEFT", 10, -10)
 enableButton:BindToSetting(moduleName, "ENABLED")
+
 -- panel, name, minValue, maxValue, stepValue, text, tooltipText
 local fastSellCapSlider =
     options:AddSlider(
@@ -189,7 +189,6 @@ local fastSellCapSlider =
     "Fast Sell Cap",
     "Amount of items to sell at once when opening window, lower this amount if items dont get sold or there are any errors"
 )
-fastSellCapSlider:SetPoint("TOPLEFT", 10, -60)
 fastSellCapSlider:BindToSetting(moduleName, "FAST_SELL_CAP")
 
 Blade:RegisterModule(

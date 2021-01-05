@@ -4,7 +4,6 @@ local moduleName = "MODULES.EXTRA.AUTOCOMPLETESLMISSIONS"
 
 local options = Blade:CreateSubOptions("Auto Complete Mission Table")
 local enableButton = options:AddCheckButton("ENABLED", "Enabled", "Automatically completes missions from mission table")
-enableButton:SetPoint("TOPLEFT", 10, -10)
 enableButton:BindToSetting(moduleName, "ENABLED")
 
 -- CovenantMissionFrame.MissionComplete.CompleteFrame.ContinueButton

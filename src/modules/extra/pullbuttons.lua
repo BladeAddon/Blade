@@ -9,7 +9,6 @@ local enableButton =
     "Enabled",
     "Show Pull and Readycheck buttons. Changing this needs a reload to remove or show frames"
 )
-enableButton:SetPoint("TOPLEFT", 10, -10)
 enableButton:BindToSetting(moduleName, "ENABLED")
 
 Blade:RegisterModule(
