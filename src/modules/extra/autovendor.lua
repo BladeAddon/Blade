@@ -24,6 +24,10 @@ local toolTipHooks = {
 local function tooltipHook(toolTip)
     local name, link = toolTip:GetItem()
 
+    if not link then
+        return
+    end
+
     local itemID = Blade:LinkToItemID(link)
     if not itemID or itemID == nil then
         return
