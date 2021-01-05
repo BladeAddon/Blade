@@ -1,5 +1,15 @@
 local ns, Blade = ...
 
+function Blade:LinkToItemID(itemLink)
+    local name, link, _ = GetItemInfo(itemLink)
+    if not name or name == nil then
+        return
+    end
+    local itemString = string.match(link, "item[%-?%d:]+")
+    local itemId = string.match(itemString, "%d+")
+    return tonumber(itemId)
+end
+
 function Blade:FindBagItemByID(itemIdToSearch)
     for bag = 0, NUM_BAG_SLOTS do
         for slot = 1, GetContainerNumSlots(bag) do
