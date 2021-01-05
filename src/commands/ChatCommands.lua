@@ -8,7 +8,7 @@ end
 local function DisplayHelp()
     for commandName, commands in pairs(Blade.commands) do
         for _, command in ipairs(commands) do
-            Blade:Print(commandName, command.Description and command.Description or "")
+            Blade:Print("'" .. commandName .. "':", command.Description and command.Description or "")
         end
     end
 end
