@@ -24,7 +24,6 @@ SlashCmdList["Blade"] = function(msg)
         return
     end
 
-    cmd = cmd or ""
     params = params or ""
 
     if Blade.commands[cmd] then
