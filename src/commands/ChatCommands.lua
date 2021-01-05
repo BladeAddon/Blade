@@ -17,7 +17,7 @@ SLASH_Blade1 = "/blade"
 SLASH_Blade2 = "/bla"
 SLASH_Blade3 = "/bl"
 SlashCmdList["Blade"] = function(msg)
-    local cmd, param, param2 = msg:match("^([%w%-]+)%s*([^%s]*)%s*(.*)$")
+    local cmd, params = msg:match("^(%S*)%s*(.-)$")
 
     if not cmd then
         DisplayHelp()
@@ -25,15 +25,12 @@ SlashCmdList["Blade"] = function(msg)
     end
 
     cmd = cmd or ""
-    param = param or ""
-    param2 = param2 or ""
-
-    local matchingCommand = false
+    params = params or ""
 
     if Blade.commands[cmd] then
         local v = Blade.commands[cmd]
         for i = 1, #v do
-            v[i].Handler(param, param2)
+            v[i].Handler(params)
         end
     else
         Blade:Print("No matching command found for: '" .. cmd .. "'")
