@@ -4,10 +4,6 @@ Blade.Options = {}
 
 local optionsPanel = CreateFrame("FRAME", Blade.AddonName .. "OptionsPanel")
 optionsPanel.name = Blade.AddonName
-Blade.Options.Panel = optionsPanel
-
-local optionsChildren = {}
-Blade.Options.Children = optionsChildren
 
 local function OnOkay(self, ...)
 end
@@ -18,6 +14,11 @@ end
 optionsPanel.okay = OnOkay
 optionsPanel.cancel = OnCancel
 optionsPanel.default = OnDefault
+
+Blade.Options.Panel = optionsPanel
+
+local optionsChildren = {}
+Blade.Options.Children = optionsChildren
 
 local function AddCheckButton(panel, name, text, tooltipText)
     local function BindToSetting(frame, setting, key)
@@ -35,9 +36,12 @@ local function AddCheckButton(panel, name, text, tooltipText)
 
     local button = CreateFrame("CheckButton", panel.name .. name, panel, "InterfaceOptionsCheckButtonTemplate")
     -- apparently InterfaceOptionsCheckButtonTemplate needs an onclick handler
-    button:SetScript("OnClick", function(self)
-        local tick = self:GetChecked()
-    end)
+    button:SetScript(
+        "OnClick",
+        function(self)
+            local tick = self:GetChecked()
+        end
+    )
     button.BindToSetting = BindToSetting
     button.Text:SetText(text)
     button.tooltipText = text
@@ -47,6 +51,10 @@ local function AddCheckButton(panel, name, text, tooltipText)
 end
 
 function Blade:CreateSubOptions(name)
+    if optionsChildren[name] then
+        return optionsChildren[name]
+    end
+
     local frame = CreateFrame("FRAME", "BLADE_" .. name .. "OptionsPanel")
     frame.name = name
     frame.parent = optionsPanel.name
@@ -83,7 +91,8 @@ function Blade:CreateSubOptions(name)
         end
     end
 
-    table.insert(optionsChildren, frame)
+    -- table.insert(optionsChildren, frame)
+    optionsChildren[name] = frame
     if Blade.Loaded then
         InterfaceOptions_AddCategory(frame)
     end
