@@ -50,6 +50,40 @@ local function AddCheckButton(panel, name, text, tooltipText)
     return button
 end
 
+local function AddSlider(panel, name, minValue, maxValue, stepValue, text, tooltipText)
+    local function BindToSetting(frame, setting, key)
+        panel:OnOkay(
+            function(self)
+                Blade:SetSetting(setting, key, frame:GetValue())
+            end
+        )
+        panel:OnRefresh(
+            function(self)
+                frame:SetValue(Blade:GetSetting(setting, key))
+            end
+        )
+    end
+
+    local slider = CreateFrame("Slider", panel.name .. name, panel, "OptionsSliderTemplate")
+
+    slider.BindToSetting = BindToSetting
+    slider.header = text
+    slider.Text:SetText(slider.header)
+    slider.tooltipText = text
+    slider.tooltipRequirement = tooltipText
+    slider:SetMinMaxValues(minValue, maxValue)
+    slider:SetValueStep(stepValue)
+    slider:SetObeyStepOnDrag(true)
+    slider:SetScript(
+        "OnValueChanged",
+        function(self, value)
+            self.Text:SetText(self.header .. "(" .. value .. ")")
+        end
+    )
+
+    return slider
+end
+
 function Blade:CreateSubOptions(name)
     if optionsChildren[name] then
         return optionsChildren[name]
@@ -64,6 +98,7 @@ function Blade:CreateSubOptions(name)
     frame.onRefreshHandlers = {}
 
     frame.AddCheckButton = AddCheckButton
+    frame.AddSlider = AddSlider
 
     frame.OnOkay = function(f, handler)
         table.insert(f.onOkayHandlers, handler)

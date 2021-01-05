@@ -115,7 +115,6 @@ local function GetTrashItems()
 end
 
 local fastSell = false
-local fastSellCap = 12
 
 local function SellItem(itemToSell)
     UseContainerItem(itemToSell.Bag, itemToSell.Slot)
@@ -145,7 +144,7 @@ Blade:RegisterEvent(
             Blade:Print("Selling trash items for: " .. GetMoneyString(sellAmount))
         end
 
-        if #itemsToSell > fastSellCap then
+        if #itemsToSell > Blade:GetSetting(moduleName, "FAST_SELL_CAP") then
             fastSell = false
         else
             fastSell = true
@@ -172,9 +171,26 @@ Blade:RegisterCommand(
 )
 
 local options = Blade:CreateSubOptions("Auto Vendor")
-local enableButton = options:AddCheckButton("ENABLED", "Enabled", "Automatically sell grey and manually added items when a vendor is opened")
+local enableButton =
+    options:AddCheckButton(
+    "ENABLED",
+    "Enabled",
+    "Automatically sell grey and manually added items when a vendor is opened"
+)
 enableButton:SetPoint("TOPLEFT", 10, -10)
 enableButton:BindToSetting(moduleName, "ENABLED")
+-- panel, name, minValue, maxValue, stepValue, text, tooltipText
+local fastSellCapSlider =
+    options:AddSlider(
+    "FAST_SELL_CAP",
+    0,
+    20,
+    1,
+    "Fast Sell Cap",
+    "Amount of items to sell at once when opening window, lower this amount if items dont get sold or there are any errors"
+)
+fastSellCapSlider:SetPoint("TOPLEFT", 10, -50)
+fastSellCapSlider:BindToSetting(moduleName, "FAST_SELL_CAP")
 
 Blade:RegisterModule(
     moduleName,
@@ -185,6 +201,7 @@ Blade:RegisterModule(
 
         -- set default values
         Blade:GetSetting(moduleName, "ENABLED", true)
+        Blade:GetSetting(moduleName, "FAST_SELL_CAP", 12)
 
         HookToolTip()
 
