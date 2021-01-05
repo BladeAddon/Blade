@@ -18,12 +18,7 @@ Blade:RegisterEvent(
 local options = Blade:CreateSubOptions("Auto Key inserter")
 local enableButton = options:AddCheckButton("ENABLED", "Enabled")
 enableButton:SetPoint("TOPLEFT", 10, -10)
-options.okay = function(self)
-    Blade:SetSetting(moduleName, "ENABLED", enableButton:GetChecked())
-end
-options.refresh = function(self)
-    enableButton:SetChecked(Blade:GetSetting(moduleName, "ENABLED"))
-end
+enableButton:BindToSetting(moduleName, "ENABLED")
 Blade:AddOptionsPanel(options)
 
 Blade:RegisterModule(

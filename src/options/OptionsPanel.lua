@@ -31,7 +31,21 @@ function Blade:AddOptionsPanel(panel)
 end
 
 local function AddCheckButton(panel, name, text)
+    local function BindToSetting(frame, setting, key)
+        panel:OnOkay(
+            function(self)
+                Blade:SetSetting(setting, key, frame:GetChecked())
+            end
+        )
+        panel:OnRefresh(
+            function(self)
+                frame:SetChecked(Blade:GetSetting(setting, key))
+            end
+        )
+    end
+
     local button = CreateFrame("CheckButton", panel.name .. name, panel, "ChatConfigCheckButtonTemplate")
+    button.BindToSetting = BindToSetting
     button.Text:SetText(text)
 
     return button
@@ -42,7 +56,37 @@ function Blade:CreateSubOptions(name)
     frame.name = name
     frame.parent = optionsPanel.name
 
+    frame.onOkayHandlers = {}
+    frame.onCancelHandlers = {}
+    frame.onRefreshHandlers = {}
+
     frame.AddCheckButton = AddCheckButton
+
+    frame.OnOkay = function(f, handler)
+        table.insert(f.onOkayHandlers, handler)
+    end
+    frame.OnCancel = function(f, handler)
+        table.insert(f.onCancelHandlers, handler)
+    end
+    frame.OnRefresh = function(f, handler)
+        table.insert(f.onRefreshHandlers, handler)
+    end
+
+    frame.okay = function(f, ...)
+        for _, v in ipairs(f.onOkayHandlers) do
+            v(f)
+        end
+    end
+    frame.cancel = function(f, ...)
+        for _, v in ipairs(f.onCancelHandlers) do
+            v(f)
+        end
+    end
+    frame.refresh = function(f, ...)
+        for _, v in ipairs(f.onRefreshHandlers) do
+            v(f)
+        end
+    end
 
     return frame
 end
