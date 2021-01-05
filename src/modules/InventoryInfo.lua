@@ -1,6 +1,6 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
-function BLADE:FindBagItemByID(itemIdToSearch)
+function Blade:FindBagItemByID(itemIdToSearch)
     for bag = 0, NUM_BAG_SLOTS do
         for slot = 1, GetContainerNumSlots(bag) do
             local texture, count, locked, quality, readable, lootable, link, isFiltered, hasNoValue, itemID =
@@ -17,7 +17,7 @@ function BLADE:FindBagItemByID(itemIdToSearch)
     end
 end
 
-BLADE:RegisterModule(
+Blade:RegisterModule(
     "InventoryInfo",
     function(...)
     end

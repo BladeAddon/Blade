@@ -1,11 +1,11 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
 local keystone_item_id = 180653
 
-BLADE:RegisterEvent(
+Blade:RegisterEvent(
     "CHALLENGE_MODE_KEYSTONE_RECEPTABLE_OPEN",
     function(...)
-        local bag, slot = BLADE:FindBagItemByID(keystone_item_id)
+        local bag, slot = Blade:FindBagItemByID(keystone_item_id)
         if bag and slot then
             UseContainerItem(bag, slot)
             return
@@ -13,7 +13,7 @@ BLADE:RegisterEvent(
     end
 )
 
-BLADE:RegisterModule(
+Blade:RegisterModule(
     "MODULES.EXTRA.AUTOKEYINSERTER",
     function(...)
     end

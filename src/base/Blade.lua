@@ -1,9 +1,9 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
-BLADE.AddonName = "Blade"
-BLADE.frame = CreateFrame("FRAME")
-BLADE.modules = {}
-BLADE.Player = {
+Blade.AddonName = "Blade"
+Blade.frame = CreateFrame("FRAME")
+Blade.modules = {}
+Blade.Player = {
     _guid = function()
         return UnitGUID("player")
     end,
@@ -12,11 +12,11 @@ BLADE.Player = {
     end
 }
 
-function BLADE:RegisterAPI(handler)
+function Blade:RegisterAPI(handler)
     handler(self)
 end
 
-function BLADE:RegisterModule(name, bootstrap)
+function Blade:RegisterModule(name, bootstrap)
     if self.modules[name] then
         return
     end

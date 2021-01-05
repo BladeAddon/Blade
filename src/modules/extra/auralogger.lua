@@ -1,6 +1,6 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
-BLADE:RegisterModule(
+Blade:RegisterModule(
     "MODULES.EXTRA.AURALOGGER",
     function(...)
         if not BLADEDATA.AURALOG then
@@ -21,7 +21,7 @@ BLADE:RegisterModule(
 local YELLOW = "|cffffd000"
 
 local function GetSpellTooltipForNameAndID(id, name)
-    return BLADE:EncodeInColor("|Hspell:" .. id .. "|h[" .. name .. "]|h", YELLOW)
+    return Blade:EncodeInColor("|Hspell:" .. id .. "|h[" .. name .. "]|h", YELLOW)
 end
 
 local function PrintSearchInSpellObjects(spellObjs, needle)
@@ -29,37 +29,37 @@ local function PrintSearchInSpellObjects(spellObjs, needle)
     for k, v in pairs(spellObjs) do
         if strfind(strupper(tostring(v.ID)), strupper(needle)) or strfind(strupper(tostring(v.Name)), strupper(needle)) then
             foundSomething = true
-            BLADE:Print(v.ID, GetSpellTooltipForNameAndID(v.ID, v.Name))
+            Blade:Print(v.ID, GetSpellTooltipForNameAndID(v.ID, v.Name))
         end
     end
 
     return foundSomething
 end
 
-BLADE:RegisterCommand(
+Blade:RegisterCommand(
     "debuff",
     function(name)
-        BLADE:InfoMsg("Searching for debuff " .. name)
+        Blade:InfoMsg("Searching for debuff " .. name)
         if not PrintSearchInSpellObjects(BLADEDATA.AURALOG.DEBUFFS, name) then
-            BLADE:InfoMsg("Nothing found for debuff " .. name)
+            Blade:InfoMsg("Nothing found for debuff " .. name)
         end
     end
 )
 
-BLADE:RegisterCommand(
+Blade:RegisterCommand(
     "buff",
     function(name)
-        BLADE:InfoMsg("Searching for buff " .. name)
+        Blade:InfoMsg("Searching for buff " .. name)
         if not PrintSearchInSpellObjects(BLADEDATA.AURALOG.BUFFS, name) then
-            BLADE:InfoMsg("Nothing found for buff " .. name)
+            Blade:InfoMsg("Nothing found for buff " .. name)
         end
     end
 )
 
-BLADE:RegisterCommand(
+Blade:RegisterCommand(
     "aura",
     function(name)
-        BLADE:InfoMsg("Searching for aura " .. name)
+        Blade:InfoMsg("Searching for aura " .. name)
         local allAuras = {}
         for k, v in pairs(BLADEDATA.AURALOG.BUFFS) do
             allAuras[k] = v
@@ -71,12 +71,12 @@ BLADE:RegisterCommand(
             allAuras[k] = v
         end
         if not PrintSearchInSpellObjects(allAuras, name) then
-            BLADE:InfoMsg("Nothing found for aura " .. name)
+            Blade:InfoMsg("Nothing found for aura " .. name)
         end
     end
 )
 
-BLADE:RegisterCombatLogAffix(
+Blade:RegisterCombatLogAffix(
     "_AURA_APPLIED",
     function(...)
         local t = {...}

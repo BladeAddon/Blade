@@ -1,34 +1,34 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
-BLADE.onFrameHandlers = {}
-BLADE.inits = {}
+Blade.onFrameHandlers = {}
+Blade.inits = {}
 
-function BLADE:OnFrame(func)
+function Blade:OnFrame(func)
     table.insert(self.onFrameHandlers, func)
 end
 
-function BLADE:Init(handler)
+function Blade:Init(handler)
     table.insert(self.inits, handler)
 end
 
 local loadedaddons = {}
-BLADE:RegisterEvent(
+Blade:RegisterEvent(
     "ADDON_LOADED",
     function(addon)
         loadedaddons[addon] = true
-        if addon == BLADE.AddonName then
-            for k, v in pairs(BLADE.inits) do
+        if addon == Blade.AddonName then
+            for k, v in pairs(Blade.inits) do
                 v()
             end
         end
     end
 )
 
-function BLADE:IsAddonLoaded(addon)
+function Blade:IsAddonLoaded(addon)
     return loadedaddons[addon] == true
 end
 
-BLADE:RegisterEvent(
+Blade:RegisterEvent(
     "COMBAT_LOG_EVENT_UNFILTERED",
     function()
         local timestamp,
@@ -64,7 +64,7 @@ BLADE:RegisterEvent(
             arg20 = CombatLogGetCurrentEventInfo()
 
         local handlers = {}
-        for k, v in pairs(BLADE.combatlogevents) do
+        for k, v in pairs(Blade.combatlogevents) do
             if k == event then
                 for i = 1, #v do
                     table.insert(handlers, v[i])
@@ -72,7 +72,7 @@ BLADE:RegisterEvent(
             end
         end
 
-        for k, v in pairs(BLADE.combatlogaffixes) do
+        for k, v in pairs(Blade.combatlogaffixes) do
             if string.find(event, k) then
                 for i = 1, #v do
                     table.insert(handlers, v[i])
@@ -118,29 +118,29 @@ BLADE:RegisterEvent(
     end
 )
 
-BLADE:RegisterEvent(
+Blade:RegisterEvent(
     "PLAYER_ENTERING_WORLD",
     function()
-        BLADE.Player.guid = BLADE.Player._guid()
+        Blade.Player.guid = Blade.Player._guid()
     end
 )
 
-BLADE.frame:SetScript(
+Blade.frame:SetScript(
     "OnUpdate",
     function(f, sinceLastUpdate)
-        for i = 1, #BLADE.onFrameHandlers do
-            local func = BLADE.onFrameHandlers[i]
+        for i = 1, #Blade.onFrameHandlers do
+            local func = Blade.onFrameHandlers[i]
             if func ~= nil then
-                func(BLADE, sinceLastUpdate)
+                func(Blade, sinceLastUpdate)
             end
         end
     end
 )
 
-BLADE:Init(
+Blade:Init(
     function()
-        for moduleName, moduleBootstrap in pairs(BLADE.modules) do
-            moduleBootstrap(BLADE)
+        for moduleName, moduleBootstrap in pairs(Blade.modules) do
+            moduleBootstrap(Blade)
         end
     end
 )

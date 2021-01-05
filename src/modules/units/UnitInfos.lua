@@ -1,6 +1,6 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
-BLADE.RaceID = {
+Blade.RaceID = {
     Human = 1,
     Orc = 2,
     Dwarf = 3,
@@ -31,7 +31,7 @@ BLADE.RaceID = {
     Mechagnome = 37
 }
 
-BLADE.ClassID = {
+Blade.ClassID = {
     NONE = 0,
     WARRIOR = 1,
     PALADIN = 2,
@@ -47,7 +47,7 @@ BLADE.ClassID = {
     DEMONHUNTER = 12
 }
 
-BLADE.SpecID = {
+Blade.SpecID = {
     DeathKnight = {
         Blood = 250,
         Frost = 251,

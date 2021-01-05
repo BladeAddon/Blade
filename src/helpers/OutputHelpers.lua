@@ -1,30 +1,30 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
 local COBALT_BLUE = "|cFF0047AB"
 local DEEP_PINK = "|cFFff1493"
 local WHITE = "|cFFFFFFFF"
 local RETURN_COLOR = "|r"
 
-BLADE.ADDON_COLOR = DEEP_PINK
+Blade.ADDON_COLOR = DEEP_PINK
 
 local print = print
 
-function BLADE:InfoMsg(msg, duration)
+function Blade:InfoMsg(msg, duration)
     if not duration then
         duration = 10
     end
     RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo.SYSTEM, duration)
 end
 
-function BLADE:EncodeInColor(str, color)
+function Blade:EncodeInColor(str, color)
     return color .. str .. RETURN_COLOR
 end
 
 local function GetPrintPrefix()
-    return BLADE:EncodeInColor("[", WHITE) ..
-        BLADE:EncodeInColor(BLADE.AddonName, BLADE.ADDON_COLOR) .. BLADE:EncodeInColor("]", WHITE)
+    return Blade:EncodeInColor("[", WHITE) ..
+        Blade:EncodeInColor(Blade.AddonName, Blade.ADDON_COLOR) .. Blade:EncodeInColor("]", WHITE)
 end
 
-function BLADE:Print(...)
+function Blade:Print(...)
     print(GetPrintPrefix(), ...)
 end

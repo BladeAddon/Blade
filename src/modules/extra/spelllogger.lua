@@ -1,6 +1,6 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
-BLADE:RegisterModule(
+Blade:RegisterModule(
     "MODULES.EXTRA.SPELLLOGGER",
     function(...)
         if not BLADEDATA.SPELLLOG then
@@ -9,24 +9,24 @@ BLADE:RegisterModule(
     end
 )
 
-BLADE:RegisterCommand(
+Blade:RegisterCommand(
     "spell",
     function(name)
-        BLADE:InfoMsg("Searching for spell " .. name)
+        Blade:InfoMsg("Searching for spell " .. name)
         local f = false
         for k, v in pairs(BLADEDATA.SPELLLOG) do
             if strfind(strupper(tostring(v.ID)), strupper(name)) or strfind(strupper(tostring(v.Name)), strupper(name)) then
                 f = true
-                BLADE:Print(v.ID, "\124cffffd000\124Hspell:" .. v.ID .. "\124h[" .. v.Name .. "]\124h\124r")
+                Blade:Print(v.ID, "\124cffffd000\124Hspell:" .. v.ID .. "\124h[" .. v.Name .. "]\124h\124r")
             end
         end
         if not f then
-            BLADE:InfoMsg("Nothing found for spell " .. name)
+            Blade:InfoMsg("Nothing found for spell " .. name)
         end
     end
 )
 
-BLADE:RegisterEvent(
+Blade:RegisterEvent(
     "UNIT_SPELLCAST_SENT",
     function(unit, target, castGUID, spellID)
         local name, rank, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellID)
@@ -66,5 +66,5 @@ local function AddFromCombatLog(...)
     BLADEDATA.SPELLLOG[spellID] = spellObj
 end
 
-BLADE:RegisterCombatLogAffix("_CAST_START", AddFromCombatLog)
-BLADE:RegisterCombatLogAffix("_CAST_SUCCESS", AddFromCombatLog)
+Blade:RegisterCombatLogAffix("_CAST_START", AddFromCombatLog)
+Blade:RegisterCombatLogAffix("_CAST_SUCCESS", AddFromCombatLog)

@@ -1,11 +1,11 @@
-local ns, BLADE = ...
+local ns, Blade = ...
 
 -- CovenantMissionFrame.MissionComplete.CompleteFrame.ContinueButton
 -- CovenantMissionFrame.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton
 
 local hooked = false
 
-BLADE:RegisterEvent(
+Blade:RegisterEvent(
     "GARRISON_MISSION_NPC_OPENED",
     function(followerTypeID)
         -- make sure to apply hook only once
@@ -42,7 +42,7 @@ BLADE:RegisterEvent(
     end
 )
 
-BLADE:RegisterModule(
+Blade:RegisterModule(
     "MODULES.EXTRA.AUTOCOMPLETESLMISSIONS",
     function(...)
     end
