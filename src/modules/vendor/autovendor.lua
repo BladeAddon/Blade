@@ -166,7 +166,7 @@ Blade:RegisterCommand(
 )
 
 Blade:RegisterModule(
-    "MODULES.EXTRA.AUTOVENDOR",
+    "MODULES.VENDOR.AUTOVENDOR",
     function(...)
         if not BLADEDATA.AUTOSELL then
             BLADEDATA.AUTOSELL = {}

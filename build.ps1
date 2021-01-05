@@ -50,8 +50,8 @@ $moduleIncludes = @{
     spelllogger            = @("modules/extra/spelllogger.lua")
     autokeyinserter        = @("modules/extra/autokeyinserter.lua")
     autocompleteslmissions = @("modules/extra/autocompleteslmissions.lua")
-    autovendor             = @("modules/extra/autovendor.lua")
-    autorepair             = @("modules/extra/autorepair.lua")
+    autovendor             = @("modules/vendor/autovendor.lua")
+    autorepair             = @("modules/vendor/autorepair.lua")
 }
 
 function AddFile([string]$file) {

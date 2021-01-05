@@ -16,7 +16,7 @@ Blade:RegisterEvent(
 )
 
 Blade:RegisterModule(
-    "MODULES.EXTRA.AUTOREPAIR",
+    "MODULES.VENDOR.AUTOREPAIR",
     function(...)
     end
 )
