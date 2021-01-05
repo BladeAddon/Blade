@@ -49,6 +49,7 @@ $moduleIncludes = @{
     auralogger  = @("modules/extra/auralogger.lua")
     spelllogger = @("modules/extra/spelllogger.lua")
     autokeyinserter = @("modules/extra/autokeyinserter.lua")
+    autocompleteslmissions = @("modules/extra/autocompleteslmissions.lua")
 }
 
 function AddFile([string]$file) {
