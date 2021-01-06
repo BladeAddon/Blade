@@ -1,5 +1,7 @@
 local ns, Blade = ...
 
+local extraSize = 5
+
 Blade.Options = {}
 
 local optionsPanel = CreateFrame("FRAME", Blade.AddonName .. "OptionsPanel")
@@ -23,22 +25,36 @@ Blade.Options.Children = optionsChildren
 local function VerticalLayout(panel)
     local kids = {panel:GetChildren()}
 
+    local lastChild = nil
     if #kids > 0 then
-        local totalHeight = panel.padding or 0
-        local visibleHeight = panel.padding or 0
+        local padding = panel.padding or 0
+        local totalHeight = padding
+        local visibleHeight = padding
         local maxWidth = 0
         for i, child in ipairs(kids) do
             local height = child:GetHeight()
             local width = child:GetWidth()
             if child:IsShown() then
                 child:ClearAllPoints()
-                child:SetPoint("TOPLEFT", panel.padding or 0, -visibleHeight)
+                if not lastChild then
+                    child:SetPoint("TOPLEFT", panel, "TOPLEFT", padding, -(padding))
+                else
+                    child:SetPoint(
+                        "TOPLEFT",
+                        lastChild,
+                        "BOTTOMLEFT",
+                        0,
+                        child.ExtraHeight and -child:ExtraHeight() or 0
+                    )
+                end
                 visibleHeight = visibleHeight + height
             end
             totalHeight = totalHeight + height
             if width > maxWidth then
                 maxWidth = width
             end
+
+            lastChild = child
         end
 
         panel:SetWidth(maxWidth)
@@ -50,21 +66,36 @@ local function HorizontalLayout(panel)
     local kids = {panel:GetChildren()}
 
     if #kids > 0 then
-        local totalWidth = panel.padding or 0
-        local visibleWidth = panel.padding or 0
+        local lastChild = nil
+        local padding = panel.padding or 0
+        local totalWidth = padding
+        local visibleWidth = padding
         local maxHeight = 0
         for i, child in ipairs(kids) do
             local height = child:GetHeight()
             local width = child:GetWidth()
             if child:IsShown() then
                 child:ClearAllPoints()
-                child:SetPoint("TOPLEFT", visibleWidth, panel.padding or 0)
+                if not lastChild then
+                    child:SetPoint("TOPLEFT", panel, "TOPLEFT", padding, -padding)
+                else
+                    child:SetPoint(
+                        "TOPLEFT",
+                        lastChild,
+                        "TOPRIGHT",
+                        lastChild.ExtraWidth and lastChild:ExtraWidth() or 0,
+                        0
+                    )
+                end
+                -- child:SetPoint("TOPLEFT", visibleWidth, panel.padding or 0)
                 visibleWidth = visibleWidth + width
             end
             totalWidth = totalWidth + width
             if height > maxHeight then
                 maxHeight = height
             end
+
+            lastChild = child
         end
 
         panel:SetWidth(totalWidth)
@@ -94,12 +125,17 @@ local function AddCheckButton(panel, name, text, tooltipText)
             local tick = self:GetChecked()
         end
     )
+
+    button.ExtraWidth = function(self)
+        return self.Text and (self.Text:GetWidth() + extraSize) or 0
+    end
+
     button.BindToSetting = BindToSetting
     button.Text:SetText(text)
     button.tooltipText = text
     button.tooltipRequirement = tooltipText
 
-    panel:VerticalLayout()
+    panel:Layout()
 
     return button
 end
@@ -120,10 +156,8 @@ local function AddSlider(panel, name, minValue, maxValue, stepValue, text, toolt
 
     local slider = CreateFrame("Slider", panel.name .. name, panel, "OptionsSliderTemplate")
 
-    -- hacky, TODO
-    local realSetPoint = slider.SetPoint
-    slider.SetPoint = function(self, point, ofsx, ofsy, ...)
-        realSetPoint(self, point, ofsx, ofsy - self.Text:GetHeight())
+    slider.ExtraHeight = function(self)
+        return self.Text and (self.Text:GetHeight() + extraSize) or 0
     end
 
     slider.BindToSetting = BindToSetting
@@ -138,11 +172,11 @@ local function AddSlider(panel, name, minValue, maxValue, stepValue, text, toolt
         "OnValueChanged",
         function(self, value)
             self.Text:SetText(self.header .. "(" .. value .. ")")
-            panel:VerticalLayout()
+            panel:Layout()
         end
     )
 
-    panel:VerticalLayout()
+    panel:Layout()
 
     return slider
 end
@@ -166,6 +200,14 @@ function Blade:CreateSubOptions(name)
     frame.AddSlider = AddSlider
     frame.HorizontalLayout = HorizontalLayout
     frame.VerticalLayout = VerticalLayout
+
+    frame.UseAutoLayout = true
+    frame.AutoLayout = frame.VerticalLayout
+    frame.Layout = function(self, ...)
+        if self.UseAutoLayout then
+            self:AutoLayout()
+        end
+    end
 
     frame.OnOkay = function(f, handler)
         table.insert(f.onOkayHandlers, handler)
@@ -191,6 +233,8 @@ function Blade:CreateSubOptions(name)
         for _, v in ipairs(f.onRefreshHandlers) do
             v(f)
         end
+
+        f:Layout()
     end
 
     -- table.insert(optionsChildren, frame)
