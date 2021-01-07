@@ -11,6 +11,9 @@ enableButton:BindToSetting(moduleName, "ENABLED")
 
 local hooked = false
 
+local blackList = {}
+local retryTime = 30
+
 Blade:RegisterEvent(
     "GARRISON_MISSION_NPC_OPENED",
     function(followerTypeID)
@@ -27,20 +30,23 @@ Blade:RegisterEvent(
                     return
                 end
 
-                if not self or not self.MissionComplete or not self.MissionComplete:IsVisible() then
-                    local cm = C_Garrison.GetCompleteMissions(followerTypeID)
-                    for i = 1, #cm do
-                        cm[i].encounterIconInfo = C_Garrison.GetMissionEncounterIconInfo(cm[i].missionID)
-                        self:InitiateMissionCompletion(cm[i])
-                        return
+                for item, time in pairs(blackList) do
+                    if GetTime() - time > retryTime then
+                        blackList[item] = nil
                     end
                 end
 
-                if
-                    self.MissionComplete.CompleteFrame and self.MissionComplete.CompleteFrame.ContinueButton and
-                        self.MissionComplete.CompleteFrame.ContinueButton:IsVisible()
-                 then
-                    self.MissionComplete.CompleteFrame.ContinueButton:Click()
+                if not self or not self.MissionComplete or not self.MissionComplete:IsVisible() then
+                    local cm = C_Garrison.GetCompleteMissions(followerTypeID)
+                    for i = 1, #cm do
+                        local missionID = cm[i].missionID
+                        if not blackList[missionID] then
+                            cm[i].encounterIconInfo = C_Garrison.GetMissionEncounterIconInfo(missionID)
+                            self:InitiateMissionCompletion(cm[i])
+                            blackList[missionID] = GetTime()
+                            return
+                        end
+                    end
                 end
 
                 if
@@ -49,6 +55,14 @@ Blade:RegisterEvent(
                         self.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton:IsVisible()
                  then
                     self.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton:Click()
+                    return
+                end
+
+                if
+                    self.MissionComplete.CompleteFrame and self.MissionComplete.CompleteFrame.ContinueButton and
+                        self.MissionComplete.CompleteFrame.ContinueButton:IsVisible()
+                 then
+                    self.MissionComplete.CompleteFrame.ContinueButton:Click()
                 end
             end
         )
