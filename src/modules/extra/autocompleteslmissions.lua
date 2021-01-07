@@ -27,8 +27,13 @@ Blade:RegisterEvent(
                     return
                 end
 
-                if not self or not self.MissionComplete then
-                    return
+                if not self or not self.MissionComplete or not self.MissionComplete:IsVisible() then
+                    local cm = C_Garrison.GetCompleteMissions(followerTypeID)
+                    for i = 1, #cm do
+                        cm[i].encounterIconInfo = C_Garrison.GetMissionEncounterIconInfo(cm[i].missionID)
+                        self:InitiateMissionCompletion(cm[i])
+                        return
+                    end
                 end
 
                 if
