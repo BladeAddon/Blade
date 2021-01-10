@@ -2,6 +2,9 @@ local ns, Blade = ...
 
 Blade.onFrameHandlers = {}
 Blade.inits = {}
+Blade.addonHandlers = {}
+
+local addonLoaded = IsAddOnLoaded
 
 function Blade:OnFrame(func)
     table.insert(self.onFrameHandlers, func)
@@ -11,11 +14,29 @@ function Blade:Init(handler)
     table.insert(self.inits, handler)
 end
 
+function Blade:OnAddon(addonName, handler)
+    if addonLoaded(addonName) then
+        handler()
+    else
+        if not self.addonHandlers[addonName] then
+            self.addonHandlers[addonName] = {}
+        end
+
+        table.insert(self.addonHandlers[addonName], handler)
+    end
+end
+
 local loadedaddons = {}
 Blade:RegisterEvent(
     "ADDON_LOADED",
     function(addon)
         loadedaddons[addon] = true
+        if Blade.addonHandlers[addon] then
+            for _, v in ipairs(Blade.addonHandlers[addon]) do
+                v()
+            end
+        end
+
         if addon == Blade.AddonName then
             for k, v in pairs(Blade.inits) do
                 v()
@@ -27,7 +48,7 @@ Blade:RegisterEvent(
 )
 
 function Blade:IsAddonLoaded(addon)
-    return loadedaddons[addon] == true
+    return loadedaddons[addon] == true or addonLoaded(addon)
 end
 
 Blade:RegisterEvent(
