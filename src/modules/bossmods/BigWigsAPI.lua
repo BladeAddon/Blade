@@ -5,6 +5,8 @@ local moduleName = "MODULES.BOSSMODS.BIGWIGSAPI"
 local BigWigsAddon = "BigWigs"
 local BigWigsMod = {}
 
+local timers = {}
+
 --BigWigs
 --BigWigsLoader
 --RegisterMessage
@@ -25,6 +27,12 @@ Blade:OnAddon(
             "BigWigs_StartBar",
             -- key might be spell id
             function(key, msg, length, icon)
+                if not timers[key] then
+                    timers[key] = {}
+                end
+
+                timers[key][msg] = {Key = key, Message = msg, Length = length, Icon = icon, Time = GetTime()}
+
                 print(moduleName, key, msg, length, icon)
             end
         )
