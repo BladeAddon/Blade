@@ -42,7 +42,7 @@ $baseIncludes = @(
     "base/Init.lua",
     "helpers/TableHelpers.lua",
     "helpers/OutputHelpers.lua",
-    "modules/units/UnitInfos.lua",
+    "modules/units/UnitData.lua",
     "base/Blade.lua",
     "commands/ChatCommands.lua",
     "events/EventHandlers.lua",
