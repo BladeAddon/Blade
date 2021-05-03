@@ -1,14 +1,13 @@
 local ns, Blade = ...
 
-local minimalist = "Interface\\AddOns\\Blade\\media\\textures\\Minimalist.tga"
-local myriad = "Interface\\AddOns\\Blade\\media\\fonts\\Myriad Condensed Web.ttf"
+local smed
 
 local function getFont()
-    return myriad
+    return smed:Fetch("font", "Myriad Condensed Web")
 end
 
 local function getTexture()
-    return minimalist
+    return smed:Fetch("statusbar", "Minimalist")
 end
 
 local darkGrey = 0.11764705882
@@ -40,13 +39,14 @@ local function addText(frame, text, size, autosize, flags)
 
     local fstr
     if frame.cd ~= nil then
-        fstr = frame.cd:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        fstr = frame.cd:CreateFontString(nil, "OVERLAY")
     else
-        fstr = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        fstr = frame:CreateFontString(nil, "OVERLAY")
     end
 
-    fstr:SetFont(getFont(), size, flags)
     fstr:SetTextColor(1.0, 1.0, 1.0)
+    fstr:SetFont(getFont(), size, flags)
+    fstr:SetSize(frame:GetWidth(), frame:GetHeight())
 
     frame.fontString = fstr
     frame.text = fstr
@@ -340,5 +340,13 @@ Blade:Init(
         if not BLADEDATA.FRAMES then
             BLADEDATA.FRAMES = {}
         end
+
+        smed = LibStub("LibSharedMedia-3.0")
+        smed:Register(
+            "font",
+            "Myriad Condensed Web",
+            "Interface\\AddOns\\Blade\\media\\fonts\\Myriad Condensed Web.ttf"
+        )
+        smed:Register("statusbar", "Minimalist", "Interface\\AddOns\\Blade\\media\\textures\\Minimalist.tga")
     end
 )
