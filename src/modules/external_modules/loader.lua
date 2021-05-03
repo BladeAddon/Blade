@@ -11,18 +11,25 @@ local function create_settings(module)
 end
 
 local function create_blade_module(module)
+    local module_key = module.key
+
     local external_module = {
         Settings = create_settings(module),
         Name = module.name,
+        Hash = module.hash,
         Key = module.key
     }
 
     function external_module:GetSetting(key, defaultValue)
-        return internal_blade:GetSetting(self.Key, key, defaultValue)
+        return internal_blade:GetSetting(module_key, key, defaultValue)
     end
 
     function external_module:SetSetting(key, value)
-        return internal_blade:SetSetting(self.Key, key, value)
+        return internal_blade:SetSetting(module_key, key, value)
+    end
+
+    function external_module:GetKey()
+        return module_key
     end
 
     return external_module
@@ -36,7 +43,8 @@ function external_blade:RegisterModule(name, bootstrap)
     local module = {}
     module.bootstrap = bootstrap
     module.name = name
-    module.key = internal_blade.sha.sha256(name)
+    module.hash = internal_blade.sha.sha256(name)
+    module.key = "MODULES.EXTERNAL." .. module.hash
     module.blade = create_blade_module(module)
 
     internal_blade.external_modules[name] = module
