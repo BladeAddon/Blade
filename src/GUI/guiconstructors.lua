@@ -1,7 +1,7 @@
 local ns, Blade = ...
 
-local minimalist = "Interface\\AddOns\\Shadowlegend\\media\\textures\\Minimalist.tga"
-local myriad = "Interface\\AddOns\\Shadowlegend\\media\\fonts\\Myriad Condensed Web.ttf"
+local minimalist = "Interface\\AddOns\\Blade\\media\\textures\\Minimalist.tga"
+local myriad = "Interface\\AddOns\\Blade\\media\\fonts\\Myriad Condensed Web.ttf"
 
 local darkGrey = 0.11764705882
 local r, g, b = darkGrey, darkGrey, darkGrey
@@ -37,6 +37,7 @@ local function addText(frame, text, size, autosize, flags)
         fstr = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     end
 
+    fstr:SetFont(myriad, size, flags)
     fstr:SetTextColor(1.0, 1.0, 1.0)
 
     frame.fontString = fstr
