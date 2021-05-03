@@ -14,6 +14,11 @@ enableButton:BindToSetting(moduleName, "ENABLED")
 Blade:RegisterModule(
     moduleName,
     function(...)
+    end
+)
+
+Blade:Init(
+    function(...)
         -- set default values
         Blade:GetSetting(moduleName, "ENABLED", true)
 
@@ -25,7 +30,6 @@ Blade:RegisterModule(
         local buttonSizeH = 32
 
         local buttonFrame = Blade:CreateFrame()
-        buttonFrame:Show()
 
         local pull5 =
             Blade:CreateButton(
@@ -36,7 +40,6 @@ Blade:RegisterModule(
             buttonFrame
         )
         pull5:SetSize(buttonSizeW, buttonSizeH)
-        pull5:Show()
         pull5:AddText("Pull 5")
 
         local pull10 =
@@ -48,7 +51,6 @@ Blade:RegisterModule(
             buttonFrame
         )
         pull10:SetSize(buttonSizeW, buttonSizeH)
-        pull10:Show()
         pull10:AddText("Pull 10")
 
         local rdycheck =
@@ -60,13 +62,8 @@ Blade:RegisterModule(
             buttonFrame
         )
         rdycheck:SetSize(buttonSizeW, buttonSizeH)
-        rdycheck:Show()
         rdycheck:AddText("Ready Check")
 
-        Blade:Init(
-            function(...)
-                buttonFrame:HandleFramePos("PullButtons")
-            end
-        )
+        buttonFrame:HandleFramePos("PullButtons")
     end
 )
