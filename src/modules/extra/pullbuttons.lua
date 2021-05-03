@@ -63,6 +63,10 @@ Blade:RegisterModule(
         rdycheck:Show()
         rdycheck:AddText("Ready Check")
 
-        buttonFrame:HandleFramePos("PullButtons")
+        Blade:Init(
+            function(...)
+                buttonFrame:HandleFramePos("PullButtons")
+            end
+        )
     end
 )
