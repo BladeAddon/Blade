@@ -1,5 +1,5 @@
 # Blade
-Blade is WoW Addon that aims to make the game easier by providing convenience functions, automating certain things, give information and provide an API for other developers.
+Blade is a WoW Addon that aims to make the game easier by providing convenience functions, automating certain things, give information and provide an API for other developers.
 
 ## Features
 - Auto Repair
