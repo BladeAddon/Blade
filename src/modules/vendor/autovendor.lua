@@ -184,8 +184,10 @@ local enableButton =
     "Automatically sell grey and manually added items when a vendor is opened"
 )
 enableButton:BindToSetting(moduleName, "ENABLED")
+
 local sellJunkButton = options:AddCheckButton("SELL_JUNK", "Sell junk items", "Enable auto sell for junk items")
 sellJunkButton:BindToSetting(moduleName, "SELL_JUNK")
+
 local sellWhitelistbutton =
     options:AddCheckButton("SELL_WHITELIST", "Sell whitelisted items", "Enable auto sell for whitelisted items")
 sellWhitelistbutton:BindToSetting(moduleName, "SELL_WHITELIST")
