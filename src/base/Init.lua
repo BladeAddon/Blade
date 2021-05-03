@@ -5,5 +5,5 @@ if not BLADEDATA then
 end
 
 if not BLADEDATA.SETTINGS then
-    BLADEDATA.SETINGS = {}
+    BLADEDATA.SETTINGS = {}
 end
