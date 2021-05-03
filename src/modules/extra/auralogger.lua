@@ -15,6 +15,39 @@ Blade:RegisterModule(
         if not BLADEDATA.AURALOG.OTHER then
             BLADEDATA.AURALOG.OTHER = {}
         end
+
+        Blade:RegisterCombatLogAffix(
+            "_AURA_APPLIED",
+            function(...)
+                local t = {...}
+
+                local sourceGUID = t[4]
+                local destGUID = t[8]
+
+                local spellID = t[12]
+                local name, rank, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellID)
+                local school = t[14]
+                local auraType = t[15]
+                local amount = t[16]
+
+                local spellObj = {
+                    ID = spellID,
+                    Name = name,
+                    Icon = icon,
+                    CastTime = castTime,
+                    MinRange = minRange,
+                    MaxRange = maxRange
+                }
+
+                if auraType == "DEBUFF" then
+                    BLADEDATA.AURALOG.DEBUFFS[spellID] = spellObj
+                elseif auraType == "BUFF" then
+                    BLADEDATA.AURALOG.BUFFS[spellID] = spellObj
+                else
+                    BLADEDATA.AURALOG.OTHER[spellID] = spellObj
+                end
+            end
+        )
     end
 )
 
@@ -77,37 +110,4 @@ Blade:RegisterCommand(
         end
     end,
     "Search all logged auras(buffs+debuffs+other) for a given name"
-)
-
-Blade:RegisterCombatLogAffix(
-    "_AURA_APPLIED",
-    function(...)
-        local t = {...}
-
-        local sourceGUID = t[4]
-        local destGUID = t[8]
-
-        local spellID = t[12]
-        local name, rank, icon, castTime, minRange, maxRange, spellId = GetSpellInfo(spellID)
-        local school = t[14]
-        local auraType = t[15]
-        local amount = t[16]
-
-        local spellObj = {
-            ID = spellID,
-            Name = name,
-            Icon = icon,
-            CastTime = castTime,
-            MinRange = minRange,
-            MaxRange = maxRange
-        }
-
-        if auraType == "DEBUFF" then
-            BLADEDATA.AURALOG.DEBUFFS[spellID] = spellObj
-        elseif auraType == "BUFF" then
-            BLADEDATA.AURALOG.BUFFS[spellID] = spellObj
-        else
-            BLADEDATA.AURALOG.OTHER[spellID] = spellObj
-        end
-    end
 )
