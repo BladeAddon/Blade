@@ -40,6 +40,7 @@ $mediaIncludes = @(
 )
 
 $baseIncludes = @(
+    "base/sha.lua",
     "base/Init.lua",
     "helpers/TableHelpers.lua",
     "helpers/OutputHelpers.lua",
