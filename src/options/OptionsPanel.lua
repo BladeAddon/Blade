@@ -203,20 +203,21 @@ function Blade:CreateSubOptions(name)
 
     frame.UseAutoLayout = true
     frame.AutoLayout = frame.VerticalLayout
-    frame.Layout = function(self, ...)
+
+    function frame:Layout()
         if self.UseAutoLayout then
             self:AutoLayout()
         end
     end
 
-    frame.OnOkay = function(f, handler)
-        table.insert(f.onOkayHandlers, handler)
+    function frame:OnOkay(handler)
+        table.insert(self.onOkayHandlers, handler)
     end
-    frame.OnCancel = function(f, handler)
-        table.insert(f.onCancelHandlers, handler)
+    function frame:OnCancel(handler)
+        table.insert(self.onCancelHandlers, handler)
     end
-    frame.OnRefresh = function(f, handler)
-        table.insert(f.onRefreshHandlers, handler)
+    function frame:OnRefresh(handler)
+        table.insert(self.onRefreshHandlers, handler)
     end
 
     frame.okay = function(f, ...)
