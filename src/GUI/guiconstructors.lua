@@ -3,6 +3,14 @@ local ns, Blade = ...
 local minimalist = "Interface\\AddOns\\Blade\\media\\textures\\Minimalist.tga"
 local myriad = "Interface\\AddOns\\Blade\\media\\fonts\\Myriad Condensed Web.ttf"
 
+local function getFont()
+    return myriad
+end
+
+local function getTexture()
+    return minimalist
+end
+
 local darkGrey = 0.11764705882
 local r, g, b = darkGrey, darkGrey, darkGrey
 
@@ -37,7 +45,7 @@ local function addText(frame, text, size, autosize, flags)
         fstr = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     end
 
-    fstr:SetFont(myriad, size, flags)
+    fstr:SetFont(getFont(), size, flags)
     fstr:SetTextColor(1.0, 1.0, 1.0)
 
     frame.fontString = fstr
@@ -97,13 +105,13 @@ local function SaveFramePos(frame, name)
     if not frame.movingtex and frame.AddOnUpdate then
         local t = frame:CreateTexture()
         frame.movingtex = t
-        t:SetTexture(minimalist)
+        t:SetTexture(getTexture())
         t:SetAllPoints()
         t:SetColorTexture(r, g, b)
         local fstr = frame:CreateFontString()
         t.text = fstr
 
-        fstr:SetFont(myriad, 16)
+        fstr:SetFont(getFont(), 16)
         fstr:SetTextColor(1.0, 1.0, 1.0)
         fstr:SetDrawLayer("OVERLAY", 1337)
         fstr:SetText(name and name or frame.name and frame.name or "Unnamed")
@@ -178,7 +186,7 @@ function Blade:CreateFrame(background, parent, name)
     if background then
         local t = f:CreateTexture()
         f.background = t
-        t:SetTexture(minimalist)
+        t:SetTexture(getTexture())
         t:SetAllPoints()
         t:SetColorTexture(r, g, b)
     end
@@ -253,7 +261,7 @@ function Blade:CreateButton(onclick, name, parent)
 
     local t = f:CreateTexture()
     f.background = t
-    t:SetTexture(minimalist)
+    t:SetTexture(getTexture())
     t:SetAllPoints()
     t:SetColorTexture(r, g, b)
 
