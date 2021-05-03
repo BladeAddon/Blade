@@ -63,6 +63,7 @@ $moduleIncludes = @{
     pullbuttons            = @("modules/extra/pullbuttons.lua")
     autovendor             = @("modules/vendor/autovendor.lua")
     autorepair             = @("modules/vendor/autorepair.lua")
+    hashing                = @("modules/hashing.lua")
 }
 
 function AddFile([string]$file) {
