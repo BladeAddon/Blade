@@ -49,6 +49,7 @@ $baseIncludes = @(
     "events/EventHandlers.lua",
     "modules/InventoryInfo.lua",
     "base/Startup.lua",
+    "options/Settings.lua"
     "GUI/guiconstructors.lua"
     "options/OptionsPanel.lua"
 )
