@@ -77,7 +77,10 @@ local function GetTrashItem()
                 local name, _, _, _, _, _, _, _, _, _, vendorPrice = GetItemInfo(itemID)
 
                 local shouldSell =
-                    (quality == 0 or BLADEDATA.AUTOSELL[itemID]) and not blackList[bag .. slot] and vendorPrice and
+                    ((quality == 0 and Blade:GetSetting(moduleName, "SELL_JUNK")) or
+                    (BLADEDATA.AUTOSELL[itemID] and Blade:GetSetting(moduleName, "SELL_WHITELIST"))) and
+                    not blackList[bag .. slot] and
+                    vendorPrice and
                     vendorPrice > 0
 
                 if shouldSell then
@@ -99,7 +102,10 @@ local function GetTrashItems()
                 local name, _, _, _, _, _, _, _, _, _, vendorPrice = GetItemInfo(itemID)
 
                 local shouldSell =
-                    (quality == 0 or BLADEDATA.AUTOSELL[itemID]) and not blackList[bag .. slot] and vendorPrice and
+                    ((quality == 0 and Blade:GetSetting(moduleName, "SELL_JUNK")) or
+                    (BLADEDATA.AUTOSELL[itemID] and Blade:GetSetting(moduleName, "SELL_WHITELIST"))) and
+                    not blackList[bag .. slot] and
+                    vendorPrice and
                     vendorPrice > 0
 
                 if shouldSell then
@@ -178,6 +184,11 @@ local enableButton =
     "Automatically sell grey and manually added items when a vendor is opened"
 )
 enableButton:BindToSetting(moduleName, "ENABLED")
+local sellJunkButton = options:AddCheckButton("SELL_JUNK", "Sell junk items", "Enable auto sell for junk items")
+sellJunkButton:BindToSetting(moduleName, "SELL_JUNK")
+local sellWhitelistbutton =
+    options:AddCheckButton("SELL_WHITELIST", "Sell whitelisted items", "Enable auto sell for whitelisted items")
+sellWhitelistbutton:BindToSetting(moduleName, "SELL_WHITELIST")
 
 -- panel, name, minValue, maxValue, stepValue, text, tooltipText
 local fastSellCapSlider =
@@ -200,6 +211,8 @@ Blade:RegisterModule(
 
         -- set default values
         Blade:GetSetting(moduleName, "ENABLED", true)
+        Blade:GetSetting(moduleName, "SELL_JUNK", true)
+        Blade:GetSetting(moduleName, "SELL_WHITELIST", true)
         Blade:GetSetting(moduleName, "FAST_SELL_CAP", 12)
 
         HookToolTip()
