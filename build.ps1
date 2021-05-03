@@ -64,6 +64,7 @@ $moduleIncludes = @{
     autovendor             = @("modules/vendor/autovendor.lua")
     autorepair             = @("modules/vendor/autorepair.lua")
     hashing                = @("modules/hashing.lua")
+    external_module_loader = @("modules/external_modules/loader.lua")
 }
 
 function AddFile([string]$file) {
