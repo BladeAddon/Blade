@@ -4,21 +4,6 @@ local extraSize = 5
 
 Blade.Options = {}
 
-local optionsPanel = CreateFrame("FRAME", Blade.AddonName .. "OptionsPanel")
-optionsPanel.name = Blade.AddonName
-
-local function OnOkay(self, ...)
-end
-local function OnCancel(self, ...)
-end
-local function OnDefault(self, ...)
-end
-optionsPanel.okay = OnOkay
-optionsPanel.cancel = OnCancel
-optionsPanel.default = OnDefault
-
-Blade.Options.Panel = optionsPanel
-
 local optionsChildren = {}
 Blade.Options.Children = optionsChildren
 
@@ -181,14 +166,25 @@ local function AddSlider(panel, name, minValue, maxValue, stepValue, text, toolt
     return slider
 end
 
-function Blade:CreateSubOptions(name)
-    if optionsChildren[name] then
-        return optionsChildren[name]
+local function CreateSubOptions(panel, name)
+    local frameName = (panel.fullName or panel.name or "BLADE") .. "_" .. name .. "#OptionsPanel"
+
+    -- if optionsChildren[frameName] then
+    --     return optionsChildren[frameName]
+    -- end
+
+    for _, v in ipairs(optionsChildren) do
+        if v and v.fullName == frameName then
+            return v
+        end
     end
 
-    local frame = CreateFrame("FRAME", "BLADE_" .. name .. "OptionsPanel")
+    local frame = CreateFrame("FRAME", frameName)
+    frame.children = {}
+    frame.CreateSubOptions = CreateSubOptions
     frame.name = name
-    frame.parent = optionsPanel.name
+    frame.fullName = frameName
+    frame.parent = panel.name
 
     frame.padding = 10
 
@@ -239,7 +235,11 @@ function Blade:CreateSubOptions(name)
     end
 
     -- table.insert(optionsChildren, frame)
-    optionsChildren[name] = frame
+    if panel and panel.children then
+        table.insert(panel.children, frame)
+    end
+    -- table.insert(panel.children or optionsChildren, frame)
+    -- optionsChildren[frameName] = frame
     if Blade.Loaded then
         InterfaceOptions_AddCategory(frame)
     end
@@ -247,11 +247,46 @@ function Blade:CreateSubOptions(name)
     return frame
 end
 
+-- local optionsPanel = CreateFrame("FRAME", Blade.AddonName .. "#OptionsPanel")
+local optionsPanel = CreateSubOptions({}, Blade.AddonName)
+optionsPanel.name = Blade.AddonName
+
+local function OnOkay(self, ...)
+end
+local function OnCancel(self, ...)
+end
+local function OnDefault(self, ...)
+end
+optionsPanel.okay = OnOkay
+optionsPanel.cancel = OnCancel
+optionsPanel.default = OnDefault
+
+Blade.Options.Panel = optionsPanel
+
+-- optionsPanel.CreateSubOptions = CreateSubOptions
+
+function Blade:CreateSubOptions(name)
+    return optionsPanel:CreateSubOptions(name)
+end
+
 Blade:Init(
     function()
-        InterfaceOptions_AddCategory(optionsPanel)
+        -- InterfaceOptions_AddCategory(optionsPanel)
 
-        for _, v in pairs(optionsChildren) do
+        -- for _, v in pairs(optionsChildren) do
+        --     InterfaceOptions_AddCategory(v)
+        -- end
+
+        local children = {}
+        local function walkChildren(panel, array)
+            print("panel: " .. panel.name .. "; parent: " .. tostring(panel.parent))
+            table.insert(array, panel)
+            for _, v in ipairs(panel.children) do
+                walkChildren(v, array)
+            end
+        end
+        walkChildren(optionsPanel, children)
+        for _, v in ipairs(children) do
             InterfaceOptions_AddCategory(v)
         end
     end

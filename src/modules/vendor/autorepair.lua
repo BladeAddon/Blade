@@ -25,11 +25,21 @@ Blade:RegisterEvent(
 )
 
 local options = Blade:CreateSubOptions("Auto Repair")
-local enableButton = options:AddCheckButton("ENABLED", "Enabled", "Automatically repair everything when a vendor is opened")
+local enableButton =
+    options:AddCheckButton("ENABLED", "Enabled", "Automatically repair everything when a vendor is opened")
 enableButton:BindToSetting(moduleName, "ENABLED")
 
-local guildRepairButton = options:AddCheckButton("GUILD_REPAIR", "Guild repair", "Try to use guild repair if you are allowed and have sufficient funds available")
+local guildRepairButton =
+    options:AddCheckButton(
+    "GUILD_REPAIR",
+    "Guild repair",
+    "Try to use guild repair if you are allowed and have sufficient funds available"
+)
 guildRepairButton:BindToSetting(moduleName, "GUILD_REPAIR")
+
+local testsub = Blade:CreateSubOptions("testsub")
+local testsubinner = testsub:CreateSubOptions("testsubinner")
+testsubinner:AddCheckButton("TEST", "TEST", "TEST")
 
 Blade:RegisterModule(
     moduleName,
