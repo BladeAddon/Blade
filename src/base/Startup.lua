@@ -12,6 +12,10 @@ end
 
 function Blade:Init(handler)
     table.insert(self.inits, handler)
+
+    if self.Loaded then
+        handler()
+    end
 end
 
 function Blade:OnAddon(addonName, handler)

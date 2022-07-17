@@ -44,11 +44,11 @@ $baseIncludes = @(
     "base/Init.lua",
     "helpers/TableHelpers.lua",
     "helpers/OutputHelpers.lua",
-    "modules/units/UnitData.lua",
+    "api/UnitData.lua",
     "base/Blade.lua",
     "commands/ChatCommands.lua",
     "events/EventHandlers.lua",
-    "modules/InventoryInfo.lua",
+    "api/InventoryInfo.lua",
     "base/Startup.lua",
     "options/Settings.lua"
     "GUI/guiconstructors.lua"

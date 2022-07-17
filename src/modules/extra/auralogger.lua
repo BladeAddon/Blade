@@ -48,66 +48,69 @@ Blade:RegisterModule(
                 end
             end
         )
+
+        local YELLOW = "|cffffd000"
+
+        local function GetSpellTooltipForNameAndID(id, name)
+            return Blade:EncodeInColor("|Hspell:" .. id .. "|h[" .. name .. "]|h", YELLOW)
+        end
+
+        local function PrintSearchInSpellObjects(spellObjs, needle)
+            local foundSomething = false
+            for k, v in pairs(spellObjs) do
+                if
+                    strfind(strupper(tostring(v.ID)), strupper(needle)) or
+                        strfind(strupper(tostring(v.Name)), strupper(needle))
+                 then
+                    foundSomething = true
+                    Blade:Print(v.ID, GetSpellTooltipForNameAndID(v.ID, v.Name))
+                end
+            end
+
+            return foundSomething
+        end
+
+        Blade:RegisterCommand(
+            "debuff",
+            function(name)
+                Blade:InfoMsg("Searching for debuff " .. name)
+                if not PrintSearchInSpellObjects(BLADEDATA.AURALOG.DEBUFFS, name) then
+                    Blade:InfoMsg("Nothing found for debuff " .. name)
+                end
+            end,
+            "Search all logged debuffs for a given name"
+        )
+
+        Blade:RegisterCommand(
+            "buff",
+            function(name)
+                Blade:InfoMsg("Searching for buff " .. name)
+                if not PrintSearchInSpellObjects(BLADEDATA.AURALOG.BUFFS, name) then
+                    Blade:InfoMsg("Nothing found for buff " .. name)
+                end
+            end,
+            "Search all logged buffs for a given name"
+        )
+
+        Blade:RegisterCommand(
+            "aura",
+            function(name)
+                Blade:InfoMsg("Searching for aura " .. name)
+                local allAuras = {}
+                for k, v in pairs(BLADEDATA.AURALOG.BUFFS) do
+                    allAuras[k] = v
+                end
+                for k, v in pairs(BLADEDATA.AURALOG.DEBUFFS) do
+                    allAuras[k] = v
+                end
+                for k, v in pairs(BLADEDATA.AURALOG.OTHER) do
+                    allAuras[k] = v
+                end
+                if not PrintSearchInSpellObjects(allAuras, name) then
+                    Blade:InfoMsg("Nothing found for aura " .. name)
+                end
+            end,
+            "Search all logged auras(buffs+debuffs+other) for a given name"
+        )
     end
-)
-
-local YELLOW = "|cffffd000"
-
-local function GetSpellTooltipForNameAndID(id, name)
-    return Blade:EncodeInColor("|Hspell:" .. id .. "|h[" .. name .. "]|h", YELLOW)
-end
-
-local function PrintSearchInSpellObjects(spellObjs, needle)
-    local foundSomething = false
-    for k, v in pairs(spellObjs) do
-        if strfind(strupper(tostring(v.ID)), strupper(needle)) or strfind(strupper(tostring(v.Name)), strupper(needle)) then
-            foundSomething = true
-            Blade:Print(v.ID, GetSpellTooltipForNameAndID(v.ID, v.Name))
-        end
-    end
-
-    return foundSomething
-end
-
-Blade:RegisterCommand(
-    "debuff",
-    function(name)
-        Blade:InfoMsg("Searching for debuff " .. name)
-        if not PrintSearchInSpellObjects(BLADEDATA.AURALOG.DEBUFFS, name) then
-            Blade:InfoMsg("Nothing found for debuff " .. name)
-        end
-    end,
-    "Search all logged debuffs for a given name"
-)
-
-Blade:RegisterCommand(
-    "buff",
-    function(name)
-        Blade:InfoMsg("Searching for buff " .. name)
-        if not PrintSearchInSpellObjects(BLADEDATA.AURALOG.BUFFS, name) then
-            Blade:InfoMsg("Nothing found for buff " .. name)
-        end
-    end,
-    "Search all logged buffs for a given name"
-)
-
-Blade:RegisterCommand(
-    "aura",
-    function(name)
-        Blade:InfoMsg("Searching for aura " .. name)
-        local allAuras = {}
-        for k, v in pairs(BLADEDATA.AURALOG.BUFFS) do
-            allAuras[k] = v
-        end
-        for k, v in pairs(BLADEDATA.AURALOG.DEBUFFS) do
-            allAuras[k] = v
-        end
-        for k, v in pairs(BLADEDATA.AURALOG.OTHER) do
-            allAuras[k] = v
-        end
-        if not PrintSearchInSpellObjects(allAuras, name) then
-            Blade:InfoMsg("Nothing found for aura " .. name)
-        end
-    end,
-    "Search all logged auras(buffs+debuffs+other) for a given name"
 )

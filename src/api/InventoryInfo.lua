@@ -26,9 +26,3 @@ function Blade:FindBagItemByID(itemIdToSearch)
         end
     end
 end
-
-Blade:RegisterModule(
-    "InventoryInfo",
-    function(...)
-    end
-)
