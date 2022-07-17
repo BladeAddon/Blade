@@ -1,5 +1,5 @@
 function Any(t)
-    for i, v in ipairs(t) do
+    for _, v in ipairs(t) do
         if v then
             return true
         end
