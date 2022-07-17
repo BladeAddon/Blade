@@ -16,13 +16,16 @@ function Blade:InfoMsg(msg, duration)
     RaidNotice_AddMessage(RaidBossEmoteFrame, msg, ChatTypeInfo.SYSTEM, duration)
 end
 
-function Blade:EncodeInColor(str, color)
+local function encodeInColor(str, color)
     return color .. str .. RETURN_COLOR
 end
 
+function Blade:EncodeInColor(str, color)
+    return encodeInColor(str, color)
+end
+
 local function GetPrintPrefix()
-    return Blade:EncodeInColor("[", WHITE) ..
-        Blade:EncodeInColor(Blade.AddonName, Blade.ADDON_COLOR) .. Blade:EncodeInColor("]", WHITE)
+    return encodeInColor("[", WHITE) .. encodeInColor(Blade.AddonName, Blade.ADDON_COLOR) .. encodeInColor("]", WHITE)
 end
 
 function Blade:Print(...)
