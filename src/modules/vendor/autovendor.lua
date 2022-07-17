@@ -3,6 +3,10 @@ local ns, Blade = ...
 local moduleName = "MODULES.VENDOR.AUTOVENDOR"
 
 local GameTooltip = GameTooltip
+local GetContainerNumSlots = GetContainerNumSlots
+local GetContainerItemInfo = GetContainerItemInfo
+local GetItemInfo = GetItemInfo
+local UseContainerItem = UseContainerItem
 
 local toolTipHooks = {
     "SetMerchantItem",
