@@ -1,0 +1,10 @@
+{
+	"Blade Module": {
+		"prefix": [
+			"blademodule"
+		],
+		"body": [
+			"local ns, Blade = ...\n\nlocal moduleName = \"MODULES.VENDOR.${TM_FILENAME_BASE/(.*)/${1:/upcase}/}\"\n\nBlade:RegisterModule(\n\tmoduleName,\n\tfunction(...)\n\t$0\n\tend\n)"
+		]
+	}
+}
