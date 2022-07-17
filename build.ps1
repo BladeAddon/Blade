@@ -52,6 +52,10 @@ $baseIncludes = @(
     "base/Startup.lua",
     "options/Settings.lua"
     "GUI/guiconstructors.lua"
+    "options/Layouting/VerticalLayout.lua"
+    "options/Layouting/HorizontalLayout.lua"
+    "options/Controls/CheckButton.lua"
+    "options/Controls/Slider.lua"
     "options/OptionsPanel.lua"
 )
 
