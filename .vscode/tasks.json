@@ -28,5 +28,18 @@
 				"isDefault": true
 			}
 		},
+		{
+			"label": "copy",
+			"dependsOn": [
+				"publish"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"type": "npm",
+			"script": "copy",
+			"problemMatcher": [],
+		},
 	]
 }

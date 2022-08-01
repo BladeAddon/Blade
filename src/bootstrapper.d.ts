@@ -1,6 +1,6 @@
-interface IBlade {
-    namespace: string
+interface IBootstrapper {
+    Load(): void
 }
 
-declare const Blade: IBlade
-export = Blade
+declare const Bootstrapper: IBootstrapper
+export = Bootstrapper

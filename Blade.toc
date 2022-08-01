@@ -1,6 +1,6 @@
-## Title: Blade
+## Title: TSBlade
 ## Interface: 90002
-## Notes: Blade
+## Notes: TSBlade
 ## Author: mztikk
 ## Version: 1
 

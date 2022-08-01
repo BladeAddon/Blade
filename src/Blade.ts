@@ -1,3 +1,5 @@
-import * as Blade from "./bootstrapper"
+import * as Bootstrapper from "./bootstrapper"
 
-print(Blade.namespace)
+Bootstrapper.Load()
+
+print("Blade.ts loaded")

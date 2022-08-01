@@ -1,13 +1,13 @@
-local ns, Blade = ...
+local Bootstrapper = {}
 
-Blade.namespace = ns
+function Bootstrapper:Load()
+    if not BladeDB then
+        BladeDB = {}
+    end
 
-if not BladeDB then
-    BladeDB = {}
+    if not BladeDB.Settings then
+        BladeDB.Settings = {}
+    end
 end
 
-if not BladeDB.Settings then
-    BladeDB.Settings = {}
-end
-
-return Blade
+return Bootstrapper

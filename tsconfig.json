@@ -7,7 +7,8 @@
         "moduleResolution": "node",
         "types": [
             "lua-types/5.1",
-            "typescript-to-lua/language-extensions"
+            "typescript-to-lua/language-extensions",
+            "./node_modules/@wartoshika/wow-declarations"
         ],
         "strict": true,
         "noImplicitAny": true,
@@ -23,7 +24,7 @@
         "rootDir": "./src",
     },
     "tstl": {
-        "luaBundle": "blade.lua",
+        "luaBundle": "Blade.lua",
         "luaBundleEntry": "src/Blade.ts",
         "noHeader": true,
         "luaPlugins": [],
