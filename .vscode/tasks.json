@@ -1,0 +1,32 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "build",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build",
+			"detail": "tstl",
+		},
+		{
+			"type": "npm",
+			"script": "publish",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: publish"
+		},
+		{
+			"label": "publish",
+			"dependsOn": [
+				"npm: build",
+				"npm: publish"
+			],
+			"dependsOrder": "sequence",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+	]
+}
