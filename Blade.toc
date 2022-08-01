@@ -4,6 +4,6 @@
 ## Author: mztikk
 ## Version: 1
 
-## SavedVariables: BLADEDATA
+## SavedVariables: BladeDB
 
-embeds.xml
+blade.lua

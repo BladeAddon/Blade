@@ -1,0 +1,34 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "lib": [
+            "esnext"
+        ],
+        "moduleResolution": "node",
+        "types": [
+            "lua-types/5.1",
+            "typescript-to-lua/language-extensions"
+        ],
+        "strict": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strictNullChecks": true,
+        "isolatedModules": false,
+        "noImplicitOverride": true,
+        "module": "CommonJS",
+        "outDir": "./dist",
+        "rootDir": "./src",
+    },
+    "tstl": {
+        "luaBundle": "blade.lua",
+        "luaBundleEntry": "src/Blade.ts",
+        "noHeader": true,
+        "luaPlugins": [],
+        "luaTarget": "5.3",
+        // "noImplicitSelf": true,
+        "luaLibImport": "require",
+    }
+}
