@@ -6,4 +6,4 @@
 
 ## SavedVariables: BladeDB
 
-blade.lua
+Blade.lua

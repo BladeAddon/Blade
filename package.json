@@ -9,11 +9,13 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
-    "@wartoshika/wow-declarations": "^9.0.5-release.1",
     "eslint": "^8.18.0",
     "eslint-plugin-sonarjs": "^0.13.0",
     "lua-types": "^2.11.0",
     "typescript": "^4.7.4",
     "typescript-to-lua": "^1.6.1"
+  },
+  "dependencies": {
+    "@wartoshika/wow-declarations": "github:wartoshika/wow-declarations"
   }
 }
