@@ -2,9 +2,7 @@
   "scripts": {
     "lint": "eslint ./src/",
     "lint:fix": "eslint --fix ./src/",
-    "build": "tstl",
-    "publish": "node ./publish.mjs",
-    "copy": "node ./copy.mjs"
+    "build": "tstl"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.30.0",
@@ -13,7 +11,7 @@
     "eslint-plugin-sonarjs": "^0.13.0",
     "lua-types": "^2.11.0",
     "typescript": "^4.7.4",
-    "typescript-to-lua": "^1.6.1"
+    "typescript-to-lua": "^1.7.1"
   },
   "dependencies": {
     "@wartoshika/wow-declarations": "github:wartoshika/wow-declarations"

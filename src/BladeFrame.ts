@@ -3,7 +3,7 @@ import { Frame, TypedEvents } from '@wartoshika/wow-declarations'
 export class BladeFrame {
     private static _instance: BladeFrame | undefined
 
-    static get instance(): BladeFrame {
+    public static get instance(): BladeFrame {
         if (!BladeFrame._instance) {
             BladeFrame._instance = new BladeFrame()
         }
@@ -13,7 +13,7 @@ export class BladeFrame {
 
     private readonly _frame: Frame = CreateFrame('Frame')
     private readonly _onUpdateHandlers: Array<() => void> = []
-    private readonly _eventHandlers: LuaTable<string, Array<(...args: any[]) => void>> = new LuaTable()
+    private readonly _eventHandlers: LuaMap<string, Array<(...args: any[]) => void>> = new LuaMap()
 
     constructor() {
         this._frame.SetScript('OnUpdate', () => {
@@ -43,6 +43,6 @@ export class BladeFrame {
             this._frame.RegisterEvent(event as keyof TypedEvents)
         }
 
-        this._eventHandlers.get(event).push(handler)
+        this._eventHandlers.get(event)!.push(handler)
     }
 }

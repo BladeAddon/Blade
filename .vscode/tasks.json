@@ -10,23 +10,31 @@
 			"detail": "tstl",
 		},
 		{
-			"type": "npm",
-			"script": "publish",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "npm: publish"
-		},
-		{
 			"label": "publish",
 			"dependsOn": [
 				"npm: build",
-				"npm: publish"
+				"minify"
 			],
 			"dependsOrder": "sequence",
 			"group": {
 				"kind": "build",
 				"isDefault": true
-			}
+			},
+			"type": "shell",
+			"command": "node ./publish.mjs",
+		},
+		{
+			"label": "minify",
+			"dependsOn": [
+				"npm: build"
+			],
+			"dependsOrder": "sequence",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"type": "shell",
+			"command": "luamin -f ./dist/Blade.lua > ./dist/Blade.min.lua"
 		},
 		{
 			"label": "copy",
@@ -37,9 +45,8 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"type": "npm",
-			"script": "copy",
-			"problemMatcher": [],
+			"type": "shell",
+			"command": "node ./copy.mjs"
 		},
 	]
 }
