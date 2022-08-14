@@ -13,9 +13,6 @@ Blade:RegisterModule(
             options:AddCheckButton("ENABLED", "Enabled", "Automatically completes missions from mission table")
         enableButton:BindToSetting(moduleName, "ENABLED")
 
-        -- CovenantMissionFrame.MissionComplete.CompleteFrame.ContinueButton
-        -- CovenantMissionFrame.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton
-
         local hooked = false
 
         local blackList = {}
@@ -32,7 +29,7 @@ Blade:RegisterModule(
                 local covenantMissionFrame = _G["CovenantMissionFrame"]
                 covenantMissionFrame:HookScript(
                     "OnUpdate",
-                    function(self, sinceLastUpdate)
+                    function(self, _)
                         if not Blade:GetSetting(moduleName, "ENABLED") then
                             return
                         end
@@ -43,33 +40,18 @@ Blade:RegisterModule(
                             end
                         end
 
-                        if not self or not self.MissionComplete or not self.MissionComplete:IsVisible() then
-                            local cm = C_Garrison.GetCompleteMissions(followerTypeID)
-                            for i = 1, #cm do
-                                local missionID = cm[i].missionID
+                        if self:IsVisible() then
+                            local completeMissions = C_Garrison.GetCompleteMissions(followerTypeID)
+                            for i = 1, #completeMissions do
+                                local missionID = completeMissions[i].missionID
                                 if not blackList[missionID] then
-                                    cm[i].encounterIconInfo = C_Garrison.GetMissionEncounterIconInfo(missionID)
-                                    self:InitiateMissionCompletion(cm[i])
+                                    C_Garrison.RegenerateCombatLog(missionID)
+                                    C_Garrison.MarkMissionComplete(missionID)
+                                    C_Garrison.MissionBonusRoll(missionID)
                                     blackList[missionID] = GetTime()
                                     return
                                 end
                             end
-                        end
-
-                        if
-                            self.MissionComplete.RewardsScreen and self.MissionComplete.RewardsScreen.FinalRewardsPanel and
-                                self.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton and
-                                self.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton:IsVisible()
-                         then
-                            self.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton:Click()
-                            return
-                        end
-
-                        if
-                            self.MissionComplete.CompleteFrame and self.MissionComplete.CompleteFrame.ContinueButton and
-                                self.MissionComplete.CompleteFrame.ContinueButton:IsVisible()
-                         then
-                            self.MissionComplete.CompleteFrame.ContinueButton:Click()
                         end
                     end
                 )
