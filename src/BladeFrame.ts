@@ -1,14 +1,14 @@
 import { Frame, TypedEvents } from '@wartoshika/wow-declarations'
 
 export class BladeFrame {
-    private static _instance: BladeFrame | undefined
+    private static s_instance: BladeFrame | undefined
 
     public static get instance(): BladeFrame {
-        if (!BladeFrame._instance) {
-            BladeFrame._instance = new BladeFrame()
+        if (!BladeFrame.s_instance) {
+            BladeFrame.s_instance = new BladeFrame()
         }
 
-        return BladeFrame._instance
+        return BladeFrame.s_instance
     }
 
     private readonly _frame: Frame = CreateFrame('Frame')
