@@ -16,7 +16,7 @@ Blade:RegisterModule(
         local hooked = false
 
         local blackList = {}
-        local retryTime = 30
+        local retryTime = 1
 
         Blade:RegisterEvent(
             "GARRISON_MISSION_NPC_OPENED",
