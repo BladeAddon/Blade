@@ -24,7 +24,7 @@ Blade:RegisterModule(
                 end
 
                 local buttonSizeW = 48
-                local buttonSizeH = 32
+                local buttonSizeH = 36
 
                 local buttonFrame = Blade:CreateFrame()
 
