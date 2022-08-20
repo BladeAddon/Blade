@@ -1,8 +1,23 @@
 local ns, Blade = ...
+local moduleName = "MODULES.EXTRA.SPELLLOGGER"
 
 Blade:RegisterModule(
-    "MODULES.EXTRA.SPELLLOGGER",
+    moduleName,
     function(...)
+        -- set default values
+        Blade:GetSetting(moduleName, "ENABLED", true)
+
+        local options = Blade:CreateSubOptions("Spelllogger")
+        options:AddCheckButton(
+            "ENABLED",
+            "Enabled",
+            "Saves all spells in a DB for searching and processing(Requires a reload after enabling or disabling)"
+        ):BindToSetting(moduleName, "ENABLED")
+
+        if not Blade:GetSetting(moduleName, "ENABLED") then
+            return
+        end
+
         if not BLADEDATA.SPELLLOG then
             BLADEDATA.SPELLLOG = {}
         end

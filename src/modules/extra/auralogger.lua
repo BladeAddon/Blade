@@ -1,8 +1,23 @@
 local ns, Blade = ...
+local moduleName = "MODULES.EXTRA.AURALOGGER"
 
 Blade:RegisterModule(
-    "MODULES.EXTRA.AURALOGGER",
+    moduleName,
     function(...)
+        -- set default values
+        Blade:GetSetting(moduleName, "ENABLED", true)
+
+        local options = Blade:CreateSubOptions("Auralogger")
+        options:AddCheckButton(
+            "ENABLED",
+            "Enabled",
+            "Saves all auras in a DB for searching and processing(Requires a reload after enabling or disabling)"
+        ):BindToSetting(moduleName, "ENABLED")
+
+        if not Blade:GetSetting(moduleName, "ENABLED") then
+            return
+        end
+
         if not BLADEDATA.AURALOG then
             BLADEDATA.AURALOG = {}
         end

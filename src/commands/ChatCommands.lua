@@ -43,3 +43,11 @@ function Blade:RegisterCommand(command, handler, description)
 
     table.insert(self.commands[command], ChatCommand(command, description, handler))
 end
+
+Blade:RegisterCommand(
+    "help",
+    function(name)
+        DisplayHelp()
+    end,
+    "Displays a help for all commands"
+)
