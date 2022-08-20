@@ -29,8 +29,8 @@ $ui = $embeds.CreateElement("Ui")
 
 $libIncludes = @(
     "libs/LibStub/LibStub.lua",
-    "libs/LibSharedMedia-3.0/CallbackHandler-1.0/CallbackHandler-1.0.lua"
-    "libs/LibSharedMedia-3.0/LibSharedMedia-3.0/LibSharedMedia-3.0.lua"
+    "libs/CallbackHandler-1.0/CallbackHandler-1.0.lua"
+    "libs/LibSharedMedia-3.0/LibSharedMedia-3.0.lua"
     # "Libs/LibRangeCheck-2.0/LibRangeCheck-2.0.lua",
 )
 
