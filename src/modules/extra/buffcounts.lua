@@ -6,11 +6,11 @@ Blade:RegisterModule(
     moduleName,
     function(...)
         -- set default values
-        Blade:GetSetting(moduleName, "ENABLED", true)
+        Blade:GetSetting(moduleName, "ENABLED", false)
         Blade:GetSetting(moduleName, "BUFF_COUNT", BUFFS_PER_ROW)
 
         local options = Blade:CreateSubOptions("Buffs per Row")
-        options:AddCheckButton("ENABLED", "Enabled", "Change the number of Buffs per Row"):BindToSetting(
+        options:AddCheckButton("ENABLED", "Enabled", "Change the number of Buffs per Row(Requires reload)"):BindToSetting(
             moduleName,
             "ENABLED"
         )

@@ -6,7 +6,7 @@ Blade:RegisterModule(
     moduleName,
     function(...)
         -- set default values
-        Blade:GetSetting(moduleName, "ENABLED", true)
+        Blade:GetSetting(moduleName, "ENABLED", false)
         Blade:GetSetting(moduleName, "GUILD_REPAIR", true)
 
         Blade:RegisterEvent(

@@ -10,7 +10,7 @@ Blade:RegisterModule(
         end
 
         -- set default values
-        Blade:GetSetting(moduleName, "ENABLED", true)
+        Blade:GetSetting(moduleName, "ENABLED", false)
         Blade:GetSetting(moduleName, "SELL_JUNK", true)
         Blade:GetSetting(moduleName, "SELL_WHITELIST", true)
         Blade:GetSetting(moduleName, "FAST_SELL_CAP", 12)

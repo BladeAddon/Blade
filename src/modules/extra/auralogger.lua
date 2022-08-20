@@ -5,7 +5,7 @@ Blade:RegisterModule(
     moduleName,
     function(...)
         -- set default values
-        Blade:GetSetting(moduleName, "ENABLED", true)
+        Blade:GetSetting(moduleName, "ENABLED", false)
 
         local options = Blade:CreateSubOptions("Auralogger")
         options:AddCheckButton(

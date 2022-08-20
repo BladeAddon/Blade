@@ -17,7 +17,7 @@ Blade:RegisterModule(
         Blade:Init(
             function(...)
                 -- set default values
-                Blade:GetSetting(moduleName, "ENABLED", true)
+                Blade:GetSetting(moduleName, "ENABLED", false)
 
                 if not Blade:GetSetting(moduleName, "ENABLED") then
                     return
