@@ -6,6 +6,10 @@ Blade.combatlogevents = {}
 Blade.combatlogaffixes = {}
 Blade.EVENT_PREFIX = "BLADE_"
 
+function Blade:IsEventRegistered(event)
+    return self.events[event] ~= nil
+end
+
 function Blade:RegisterEvent(event, handler)
     if not self.events[event] then
         local retOK, ret1 = pcall(self.frame.RegisterEvent, self.frame, event)
@@ -53,7 +57,103 @@ function Blade:RemoveEventHandler(event, handler)
     end
 end
 
+local function registerCombatLogEvent()
+    Blade:RegisterEvent(
+        "COMBAT_LOG_EVENT_UNFILTERED",
+        function()
+            local timestamp,
+                event,
+                hideCaster,
+                sourceGUID,
+                sourceName,
+                sourceFlags,
+                sourceRaidFlags,
+                destGUID,
+                destName,
+                destFlags,
+                destRaidFlags,
+                arg1,
+                arg2,
+                arg3,
+                arg4,
+                arg5,
+                arg6,
+                arg7,
+                arg8,
+                arg9,
+                arg10,
+                arg11,
+                arg12,
+                arg13,
+                arg14,
+                arg15,
+                arg16,
+                arg17,
+                arg18,
+                arg19,
+                arg20 = CombatLogGetCurrentEventInfo()
+
+            local handlers = {}
+            for k, v in pairs(Blade.combatlogevents) do
+                if k == event then
+                    for i = 1, #v do
+                        table.insert(handlers, v[i])
+                    end
+                end
+            end
+
+            for k, v in pairs(Blade.combatlogaffixes) do
+                if string.find(event, k) then
+                    for i = 1, #v do
+                        table.insert(handlers, v[i])
+                    end
+                end
+            end
+
+            for i = 1, #handlers do
+                handlers[i](
+                    timestamp,
+                    event,
+                    hideCaster,
+                    sourceGUID,
+                    sourceName,
+                    sourceFlags,
+                    sourceRaidFlags,
+                    destGUID,
+                    destName,
+                    destFlags,
+                    destRaidFlags,
+                    arg1,
+                    arg2,
+                    arg3,
+                    arg4,
+                    arg5,
+                    arg6,
+                    arg7,
+                    arg8,
+                    arg9,
+                    arg10,
+                    arg11,
+                    arg12,
+                    arg13,
+                    arg14,
+                    arg15,
+                    arg16,
+                    arg17,
+                    arg18,
+                    arg19,
+                    arg20
+                )
+            end
+        end
+    )
+end
+
 function Blade:RegisterCombatLogEvent(event, handler)
+    if not self:IsEventRegistered("COMBAT_LOG_EVENT_UNFILTERED") then
+        registerCombatLogEvent()
+    end
+
     if not self.combatlogevents[event] then
         self.combatlogevents[event] = {}
     end
@@ -62,6 +162,10 @@ function Blade:RegisterCombatLogEvent(event, handler)
 end
 
 function Blade:RegisterCombatLogAffix(affix, handler)
+    if not self:IsEventRegistered("COMBAT_LOG_EVENT_UNFILTERED") then
+        registerCombatLogEvent()
+    end
+
     if not self.combatlogaffixes[affix] then
         self.combatlogaffixes[affix] = {}
     end

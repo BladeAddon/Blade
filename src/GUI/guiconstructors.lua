@@ -13,6 +13,7 @@ end
 local darkGrey = 0.11764705882
 local r, g, b = darkGrey, darkGrey, darkGrey
 
+local movingHandlers = {}
 Blade.MOVING = false
 
 local function onDragStart(frame)
@@ -67,9 +68,9 @@ local function addText(frame, text, size, autosize, flags)
 
     fstr:SetAllPoints()
 
-    frame:AddOnUpdate(
-        function(f, sinceLastUpdate)
-            if textType == "function" then
+    if textType == "function" then
+        frame:AddOnUpdate(
+            function(f, sinceLastUpdate)
                 f.text:SetText(text(f))
                 if autosize then
                     local textw, texth = fstr:GetStringWidth(), fstr:GetStringHeight()
@@ -81,8 +82,8 @@ local function addText(frame, text, size, autosize, flags)
                     end
                 end
             end
-        end
-    )
+        )
+    end
 end
 
 local function LoadFramePos(frame, posTable)
@@ -119,32 +120,33 @@ local function SaveFramePos(frame, name)
         t:Hide()
         fstr:Hide()
 
-        frame:AddOnUpdate(
-            function(f, sinceLastUpdate)
-                if f.movingtex then
-                    if Blade.MOVING then
-                        f.movingtex:Show()
-                        f.movingtex.text:Show()
+        local onupdatefunction = function(f)
+            if f.movingtex then
+                if Blade.MOVING then
+                    f.movingtex:Show()
+                    f.movingtex.text:Show()
 
-                        -- make this logic better, idea: create container on save call and put all childs in there so we can hide container
-                        local kids = {frame:GetChildren()}
-                        if #kids > 0 then
-                            local totalWidth = 0
-                            local visibleWidth = 0
-                            local maxHeight = 0
-                            for i, child in ipairs(kids) do
-                                if child:IsShown() then
-                                    child:Hide()
-                                end
+                    -- make this logic better, idea: create container on save call and put all childs in there so we can hide container
+                    local kids = {frame:GetChildren()}
+                    if #kids > 0 then
+                        local totalWidth = 0
+                        local visibleWidth = 0
+                        local maxHeight = 0
+                        for i, child in ipairs(kids) do
+                            if child:IsShown() then
+                                child:Hide()
                             end
                         end
-                    else
-                        f.movingtex:Hide()
-                        f.movingtex.text:Hide()
                     end
+                else
+                    f.movingtex:Hide()
+                    f.movingtex.text:Hide()
                 end
             end
-        )
+        end
+        -- frame:AddOnUpdate(onupdatefunction)
+        -- onupdatefunction(frame, 0)
+        frame:OnToggleMove(onupdatefunction)
     end
 
     frame:HookScript(
@@ -192,65 +194,97 @@ function Blade:CreateFrame(background, parent, name)
     end
 
     f.onupdatehandlers = {}
-    f.AddOnUpdate = addOnUpdate
+    f.on_toggle_move_handlers = {}
 
-    f.AddText = addText
+    function f:AddOnUpdate(...)
+        if not self.onUpdateActive then
+            self:SetScript(
+                "OnUpdate",
+                function(frame, sinceLastUpdate)
+                    for i = 1, #frame.onupdatehandlers do
+                        frame.onupdatehandlers[i](frame, sinceLastUpdate)
+                    end
+                end
+            )
+            self.onUpdateActive = true
+        end
+
+        addOnUpdate(self, ...)
+    end
+
+    function f:RemoveOnUpdate(...)
+        for i = 1, #self.onupdatehandlers do
+            if self.onupdatehandlers[i] == ... then
+                table.remove(self.onupdatehandlers, i)
+                break
+            end
+        end
+    end
+
     f.LoadFramePos = LoadFramePos
     f.LoadFrame = LoadFrame
     f.SaveFramePos = SaveFramePos
     f.HandleFramePos = HandleFramePos
 
-    -- fix this so it doesnt get called on every onupdate, only when it has to be, maybe on child size changed?
-    f:SetScript(
-        "OnUpdate",
-        function(frame, sinceLastUpdate)
-            if Blade.MOVING then
-                frame:SetMovable(true)
-                frame:EnableMouse(true)
-            elseif not Blade.MOVING then
-                frame:SetMovable(false)
-                frame:EnableMouse(false)
-            end
+    local function setMoving()
+        f:SetMovable(Blade.MOVING)
+        f:EnableMouse(Blade.MOVING)
 
-            if not parent then
-                local kids = {frame:GetChildren()}
-
-                if #kids > 0 then
-                    local totalWidth = 0
-                    local visibleWidth = 0
-                    local maxHeight = 0
-                    for i, child in ipairs(kids) do
-                        if Blade.MOVING and not lastmove then
-                            child.wasshown = child:IsShown()
-                            child:Hide()
-                        elseif not Blade.MOVING and lastmove and child.wasshown then
-                            child:Show()
-                        end
-                        if child:IsShown() then
-                            child:ClearAllPoints()
-                            child:SetPoint("TOPLEFT", visibleWidth, 0)
-                            visibleWidth = visibleWidth + child:GetWidth()
-                        end
-                        totalWidth = totalWidth + child:GetWidth()
-                        local h = child:GetHeight()
-                        if h > maxHeight then
-                            maxHeight = h
-                        end
-                    end
-
-                    frame:SetWidth(totalWidth)
-                    frame:SetHeight(maxHeight)
-                end
-            end
-
-            for i = 1, #frame.onupdatehandlers do
-                frame.onupdatehandlers[i](frame, sinceLastUpdate)
-            end
-
-            lastmove = Blade.MOVING
+        for i = 1, #f.on_toggle_move_handlers do
+            f.on_toggle_move_handlers[i](f)
         end
-    )
+    end
 
+    function f:OnToggleMove(handler)
+        if not self.on_toggle_move_handlers then
+            self.on_toggle_move_handlers = {}
+        end
+
+        table.insert(self.on_toggle_move_handlers, handler)
+    end
+
+    function f:AutoSize()
+        if not parent then
+            local kids = {self:GetChildren()}
+
+            if #kids > 0 then
+                local totalWidth = 0
+                local visibleWidth = 0
+                local maxHeight = 0
+                for i, child in ipairs(kids) do
+                    if Blade.MOVING then
+                        child.wasshown = child:IsShown()
+                        child:Hide()
+                    elseif not Blade.MOVING and child.wasshown then
+                        child:Show()
+                    end
+                    if child:IsShown() then
+                        child:ClearAllPoints()
+                        child:SetPoint("TOPLEFT", visibleWidth, 0)
+                        visibleWidth = visibleWidth + child:GetWidth()
+                    end
+                    totalWidth = totalWidth + child:GetWidth()
+                    local h = child:GetHeight()
+                    if h > maxHeight then
+                        maxHeight = h
+                    end
+                end
+
+                self:SetWidth(totalWidth)
+                self:SetHeight(maxHeight)
+            end
+        end
+    end
+
+    function f:AddText(...)
+        addText(self, ...)
+        self:AutoSize()
+    end
+
+    table.insert(movingHandlers, setMoving)
+
+    f:AutoSize()
+    setMoving()
     return f
 end
 
@@ -266,7 +300,7 @@ function Blade:CreateButton(onclick, name, parent)
     t:SetColorTexture(r, g, b)
 
     f:EnableMouse(true)
-    f:SetMovable(true)
+    f:SetMovable(false)
     f:RegisterForClicks("AnyUp")
     f:RegisterForDrag("LeftButton")
     f:SetScript("OnDragStart", f.StartMoving)
@@ -275,22 +309,34 @@ function Blade:CreateButton(onclick, name, parent)
     f.onupdatehandlers = {}
     f.AddOnUpdate = addOnUpdate
 
+    function f:AddOnUpdate(...)
+        if not self.onUpdateActive then
+            self:SetScript(
+                "OnUpdate",
+                function(frame, sinceLastUpdate)
+                    for i = 1, #frame.onupdatehandlers do
+                        frame.onupdatehandlers[i](frame, sinceLastUpdate)
+                    end
+                end
+            )
+            self.onUpdateActive = true
+        end
+
+        addOnUpdate(self, ...)
+    end
+
     f.onclickhandlers = {}
     f.AddOnClick = addOnClick
 
     f.AddText = addText
 
-    f:SetScript(
-        "OnUpdate",
-        function(frame, sinceLastUpdate)
-            for i = 1, #frame.onupdatehandlers do
-                frame.onupdatehandlers[i](frame, sinceLastUpdate)
-            end
-        end
-    )
-
     f:SetScript("OnClick", onclick)
     f:Show()
+
+    if parent.AutoSize then
+        parent:AutoSize()
+    end
+
     return f
 end
 
@@ -304,6 +350,7 @@ function Blade:CreateText(text, size, flags, parent)
     f:AddText(text, size, true, flags)
 
     f:Show()
+    f:AutoSize()
     return f
 end
 
@@ -331,6 +378,9 @@ Blade:RegisterCommand(
     "togglemove",
     function()
         Blade.MOVING = not Blade.MOVING
+        for i = 1, #movingHandlers do
+            movingHandlers[i]()
+        end
     end,
     "Toggle moving of all Blade Frame elements"
 )
