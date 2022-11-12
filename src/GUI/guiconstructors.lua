@@ -114,7 +114,7 @@ local function SaveFramePos(frame, name)
 
         fstr:SetFont(getFont(), 16)
         fstr:SetTextColor(1.0, 1.0, 1.0)
-        fstr:SetDrawLayer("OVERLAY", 1337)
+        fstr:SetDrawLayer("OVERLAY", 127)
         fstr:SetText(name and name or frame.name and frame.name or "Unnamed")
         fstr:SetAllPoints()
         t:Hide()
