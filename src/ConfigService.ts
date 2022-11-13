@@ -1,5 +1,23 @@
+export class ConfigEntry<T> {
+    private readonly _config: ConfigService
+
+    public readonly Key: string
+
+    public constructor(key: string, config: ConfigService) {
+        this.Key = key
+        this._config = config
+    }
+
+    public get value(): T | undefined {
+        return this._config.Get(this.Key)
+    }
+    public set value(v: T | undefined) {
+        this._config.Set(this.Key, v)
+    }
+}
+
 export class ConfigService {
-    public readonly _table: LuaTable<string, any>
+    private readonly _table: LuaTable<string, any>
     constructor(table: LuaTable<string, any>) {
         this._table = table
     }
@@ -9,7 +27,15 @@ export class ConfigService {
     }
 
     public Set<T>(key: string, value: T) {
+        if (this.Get(key) === value) {
+            return
+        }
+
         this._table.set(key, value)
+    }
+
+    public CreateEntry<T>(key: string): ConfigEntry<T> {
+        return new ConfigEntry<T>(key, this)
     }
 
     public GetConfig(key: string): ConfigService {
