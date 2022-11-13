@@ -1,5 +1,5 @@
 export class ConfigService {
-    private readonly _table: LuaTable<string, any>
+    public readonly _table: LuaTable<string, any>
     constructor(table: LuaTable<string, any>) {
         this._table = table
     }
@@ -17,6 +17,7 @@ export class ConfigService {
             this._table.set(key, {})
         }
 
-        return new ConfigService(this._table.get(key))
+        const configTable = this._table.get(key)
+        return new ConfigService(configTable)
     }
 }

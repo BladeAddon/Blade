@@ -3,5 +3,4 @@ interface IBootstrapper {
 }
 
 declare const Bootstrapper: IBootstrapper
-declare const BLADETSDATA: LuaTable<string, any>
 export = Bootstrapper
