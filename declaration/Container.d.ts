@@ -8,7 +8,7 @@ declare type ContainerItemInfoResult = [texture: string, itemCount: number, lock
 /** @noSelf **/
 declare function GetContainerItemInfo(bag_id: BAG_ID, slot: number): LuaMultiReturn<ContainerItemInfoResult>
 
-declare type ItemInfoResult = [itemName: string, itemLink: string, itemRarity: number, itemLevel: number, itemMinLevel: number, itemType: string, itemSubType: string, ItemStackCount: number, itemEquipLoc: string, itemTexture: string, itemSellPrice: number]
+declare type ItemInfoResult = [itemName: string, itemLink: string, itemRarity: number, itemLevel: number, itemMinLevel: number, itemType: string, itemSubType: string, ItemStackCount: number, itemEquipLoc: string, itemTexture: number, itemSellPrice: number, classID: number, subclassID: number, bindType: number, expacID: number, setID: number, isCraftingReagent: boolean]
 /** @noSelf **/
 declare function GetItemInfo(item_id: number): LuaMultiReturn<ItemInfoResult>
 /** @noSelf **/

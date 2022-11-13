@@ -1,6 +1,8 @@
+import { Item } from './Item'
+
 export class ContainerItem {
     private _containerItemInfo: ContainerItemInfoResult | undefined
-    private _itemInfo: ItemInfoResult | undefined
+    private _item: Item | undefined
     constructor(public readonly bag_id: BAG_ID, public readonly slot: number) {
     }
 
@@ -63,23 +65,23 @@ export class ContainerItem {
         return this.containerItemInfo[10]
     }
 
-    public get itemInfo(): ItemInfoResult {
-        return this._itemInfo ??= GetItemInfo(this.itemID)
+    public get item(): Item {
+        return this._item ??= new Item(this.itemID)
     }
 
     /**The localized name of the item. */
     public get name(): string {
-        return this.itemInfo[0]
+        return this.item.itemName
     }
 
     /**The base item level, not including upgrades. See GetDetailedItemLevelInfo() for getting the actual item level. */
     public get itemLevel(): number {
-        return this.itemInfo[3]
+        return this.item.itemLevel
     }
 
     /**The vendor price in copper, or 0 for items that cannot be sold. */
     public get sellPrice(): number {
-        return this.itemInfo[10]
+        return this.item.sellPrice
     }
 
     public Use(): void {
