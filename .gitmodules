@@ -1,0 +1,3 @@
+[submodule "src/tstl-di"]
+	path = src/tstl-di
+	url = https://github.com/mztikk/tstl-di
