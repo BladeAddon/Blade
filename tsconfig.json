@@ -101,7 +101,8 @@
   },
   "exclude": [
     "./publish.ts",
-    "./build/release.ts"
+    "./build/release.ts",
+    "./build/minify.ts"
   ],
   "tstl": {
     "luaTarget": "universal",
