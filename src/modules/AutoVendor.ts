@@ -9,7 +9,7 @@ export class AutoVendor extends Module {
         menu.AddToggle("SELL_JUNK", "Sell Junk")
     }
 
-    public OnLoad(): void {
+    protected OnLoad(): void {
         const merchantFrame = MerchantFrame
         merchantFrame.HookScript("OnUpdate", (_frame, _sinceLastUpdate) => {
             if (!this.ShouldLoad()) {
