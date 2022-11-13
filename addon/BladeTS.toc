@@ -1,0 +1,9 @@
+## Title: BladeTS
+## Interface: 90002
+## Notes: BladeTS
+## Author: mztikk
+## Version: 1
+
+## SavedVariables: BLADETSDATA
+
+embeds.xml
