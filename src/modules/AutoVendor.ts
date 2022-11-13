@@ -18,7 +18,6 @@ export class AutoVendor extends Module {
 
     public OnLoad(): void {
         const merchantFrame = MerchantFrame
-        print("merchantframe", merchantFrame)
         merchantFrame.HookScript("OnUpdate", (_frame, _sinceLastUpdate) => {
             if (!this.ShouldLoad()) {
                 return
