@@ -1,12 +1,5 @@
+import { ContainerItem } from '../api/ContainerItem'
 import { Module } from './Module'
-
-class TrashItem {
-    constructor(public bag: BAG_ID, public slot: number, public itemSellPrice: number, public name: string, public link: string, public itemID: number) { }
-
-    public Sell(): void {
-        UseContainerItem(this.bag, this.slot)
-    }
-}
 
 export class AutoVendor extends Module {
     constructor() {
@@ -23,25 +16,27 @@ export class AutoVendor extends Module {
                 return
             }
 
-            this.GetTrashItem()?.Sell()
+            this.GetTrashItems().slice(0, 4).forEach(x => x.Use())
         })
     }
 
-    private GetTrashItem(): TrashItem | undefined {
-        const sellJunk = this._moduleSettings.Get<boolean>("SELL_JUNK")
+    private shouldSell(item: ContainerItem): boolean {
+        return (item.itemID !== undefined &&
+            (item.quality === 0 && this._moduleSettings.Get<boolean>("SELL_JUNK"))
+            && item.sellPrice !== undefined && item.sellPrice > 0) === true
+    }
+
+    private GetTrashItems(): ContainerItem[] {
+        const items = []
         for (let bag = 0; bag < NUM_BAG_SLOTS; bag++) {
             for (let slot = 1; slot < GetContainerNumSlots(bag as BAG_ID); slot++) {
-                const [_, count, __, quality, ___, ____, link, _____, ______, itemID] = GetContainerItemInfo(bag as BAG_ID, slot)
-                if (itemID !== undefined) {
-                    const [name, _, __, ___, ____, _____, ______, _______, ________, _________, vendorPrice] = GetItemInfo(itemID)
-                    const shouldSell = (quality === 0 && sellJunk) && vendorPrice && vendorPrice > 0
-                    if (shouldSell) {
-                        return new TrashItem(bag as BAG_ID, slot, vendorPrice * count, name, link, itemID)
-                    }
+                const containerItem = new ContainerItem(bag as BAG_ID, slot)
+                if (this.shouldSell(containerItem)) {
+                    items.push(containerItem)
                 }
             }
         }
 
-        return undefined
+        return items
     }
 }
