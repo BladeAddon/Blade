@@ -4,9 +4,8 @@ import { Module } from './Module'
 export class AutoVendor extends Module {
     constructor() {
         super("AutoVendor")
-        const menu = this._options.AddMenu(this.name, this.name)
-        menu.AddToggle("ENABLED", "Enabled")
-        menu.AddToggle("SELL_JUNK", "Sell Junk")
+
+        this._menu.AddToggle("SELL_JUNK", "Sell Junk")
     }
 
     protected OnLoad(): void {

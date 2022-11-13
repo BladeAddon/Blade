@@ -35,13 +35,15 @@ export class OptionsMenu {
         return this._table
     }
 
-    public AddToggle(key: string, name: string) {
-        this.AddToggleItem(key, {
+    public AddToggle(key: string, name: string): ToggleItem {
+        const toggleItem: ToggleItem = {
             name: name,
             type: "toggle",
-            get: () => this._config.Get<boolean>(key),
+            get: () => this._config.Get<boolean>(key) as boolean,
             set: (_info, value) => this._config.Set(key, value)
-        })
+        }
+        this.AddToggleItem(key, toggleItem)
+        return toggleItem
     }
 
     public AddToggleItem(key: string, item: ToggleItem) {
