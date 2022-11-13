@@ -3,10 +3,11 @@ import { Options } from '../options'
 import { Inject } from '../tstl-di/src/Inject'
 
 export abstract class Module {
-    public readonly name: string
-    protected readonly _moduleSettings: ConfigService
     @Inject("Options") protected readonly _options!: Options
     @Inject("SettingsService") private readonly _settings!: ConfigService
+    public readonly name: string
+    protected readonly _moduleSettings: ConfigService
+    protected _loaded = false
 
     protected constructor(name: string) {
         this.name = name
@@ -17,5 +18,16 @@ export abstract class Module {
         return this._moduleSettings.Get<boolean>("ENABLED") === true
     }
 
-    public abstract OnLoad(): void
+    protected abstract OnLoad(): void
+
+    public get isLoaded(): boolean {
+        return this._loaded
+    }
+
+    public Load(): void {
+        print("Loading module", this.name)
+
+        this.OnLoad()
+        this._loaded = true
+    }
 }

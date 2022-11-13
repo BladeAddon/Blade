@@ -31,8 +31,7 @@ bladeFrame.RegisterEvent("ADDON_LOADED", (addon: string) => {
         const modules: Module[] = [new AutoVendor()]
         for (const module of modules) {
             if (module.ShouldLoad()) {
-                print("Loading module", module.name)
-                module.OnLoad()
+                module.Load()
             }
         }
 
