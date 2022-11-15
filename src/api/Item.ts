@@ -15,7 +15,7 @@ export class Item {
         return this.itemInfo[1]
     }
 
-    public get itemQuality(): number {
+    public get itemQuality(): Enum.ItemQuality {
         return this.itemInfo[2]
     }
 

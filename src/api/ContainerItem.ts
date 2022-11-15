@@ -26,7 +26,7 @@ export class ContainerItem {
     }
 
     /**The Quality of the item. */
-    public get quality(): number {
+    public get quality(): Enum.ItemQuality {
         return this.containerItemInfo[3]
     }
 
