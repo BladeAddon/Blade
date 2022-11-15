@@ -23,5 +23,8 @@
         "GetGuildBankWithdrawMoney",
         "InterfaceOptions_AddCategory",
         "strsplit"
+    ],
+    "cSpell.words": [
+        "tstl"
     ]
 }
