@@ -6,6 +6,7 @@ declare interface Frame {
     RegisterEvent(event: string)
     SetScript<T extends any[]>(event: string, handler: (T) => void)
     SetScript(event: "OnEvent", handler: (frame: Frame, eventName: string, ...args: any[]) => void): void
+    onEventAttached: boolean | undefined
 }
 
 /** @noSelf **/

@@ -5,7 +5,8 @@ import { ConfigService } from './ConfigService'
 import { Options } from './options'
 import { AutoVendor } from './modules/AutoVendor'
 import { Module } from './modules/Module'
-import { BladeFrame } from './BladeFrame'
+import { EventHandler } from './api/EventHandler'
+import { IEventHandler } from './api/IEventHandler'
 
 Bootstrapper.Load()
 
@@ -14,9 +15,9 @@ export class BladeTS {
     @Inject("Settings") settings!: LuaTable<string, any>
 }
 
-const bladeFrame = new BladeFrame()
-container.instance("BladeFrame", bladeFrame)
-bladeFrame.RegisterEvent("ADDON_LOADED", (addon: string) => {
+const eventHandler: IEventHandler = new EventHandler()
+container.instance("IEventHandler", new EventHandler())
+eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
     if (addon === "BladeTS") {
         container.instance("DB", BLADETSDATA)
         container.instance("Settings", BLADETSDATA.get("Settings"))
