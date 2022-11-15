@@ -20,14 +20,15 @@ export class BladeTS {
     @Inject("Settings") settings!: LuaTable<string, any>
 }
 
-container.instance("AddonInfo", new AddonInfo("Blade", ColorHelper.DEEP_PINK))
+const addonInfo = new AddonInfo("BladeTS", ColorHelper.DEEP_PINK)
+container.instance("AddonInfo", addonInfo)
 const output: IOutput = new Output()
 container.instance("IOutput", output)
 
 const eventHandler: IEventHandler = new EventHandler()
 container.instance("IEventHandler", new EventHandler())
 eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
-    if (addon === "BladeTS") {
+    if (addon === addonInfo.AddonName) {
         container.instance("DB", BLADETSDATA)
         container.instance("Settings", BLADETSDATA.get("Settings"))
 
@@ -35,7 +36,7 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
 
         const settingsService = new ConfigService(blade.settings)
         container.instance("SettingsService", settingsService)
-        const options = new Options("BladeTS")
+        const options = new Options(addonInfo.AddonName)
         container.instance("Options", options)
 
         const modules: Module[] = [new AutoVendor(), new AutoRepair()]
@@ -45,8 +46,8 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
             }
         }
 
-        LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable("BladeTS", options.get())
-        LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions("BladeTS", "BladeTS")
+        LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable(addonInfo.AddonName, options.get())
+        LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions(addonInfo.AddonName, addonInfo.AddonName)
         output.Print("loaded")
     }
 })
