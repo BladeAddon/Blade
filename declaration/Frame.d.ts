@@ -11,3 +11,5 @@ declare interface Frame {
 
 /** @noSelf **/
 declare function CreateFrame(frameType: string): Frame
+/** @noSelf **/
+declare function GetMoneyString(amount: number): string

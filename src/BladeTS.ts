@@ -7,6 +7,11 @@ import { AutoVendor } from './modules/AutoVendor'
 import { Module } from './modules/Module'
 import { EventHandler } from './api/EventHandler'
 import { IEventHandler } from './api/IEventHandler'
+import { AutoRepair } from './modules/AutoRepair'
+import { AddonInfo } from './api/AddonInfo'
+import { ColorHelper } from './api/ColorHelper'
+import { Output } from './api/Output'
+import { IOutput } from './api/IOutput'
 
 Bootstrapper.Load()
 
@@ -14,6 +19,10 @@ export class BladeTS {
     @Inject("DB") data!: LuaTable<string, any>
     @Inject("Settings") settings!: LuaTable<string, any>
 }
+
+container.instance("AddonInfo", new AddonInfo("Blade", ColorHelper.DEEP_PINK))
+const output: IOutput = new Output()
+container.instance("IOutput", output)
 
 const eventHandler: IEventHandler = new EventHandler()
 container.instance("IEventHandler", new EventHandler())
@@ -29,7 +38,7 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
         const options = new Options("BladeTS")
         container.instance("Options", options)
 
-        const modules: Module[] = [new AutoVendor()]
+        const modules: Module[] = [new AutoVendor(), new AutoRepair()]
         for (const module of modules) {
             if (module.ShouldLoad()) {
                 module.Load()
@@ -38,6 +47,6 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
 
         LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable("BladeTS", options.get())
         LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions("BladeTS", "BladeTS")
-        print("BladeTS loaded")
+        output.Print("loaded")
     }
 })

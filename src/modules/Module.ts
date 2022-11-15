@@ -1,10 +1,14 @@
+import { IOutput } from '../api/IOutput'
 import { ConfigService } from '../ConfigService'
 import { Options, OptionsMenu } from '../options'
 import { Inject } from '../tstl-di/src/Inject'
 
 export abstract class Module {
-    @Inject("Options") protected readonly _options!: Options
     @Inject("SettingsService") private readonly _settings!: ConfigService
+
+    @Inject("Options") protected readonly _options!: Options
+    @Inject("IOutput") protected readonly _output!: IOutput
+
     public readonly name: string
     protected readonly _moduleSettings: ConfigService
     protected readonly _menu: OptionsMenu
@@ -29,7 +33,7 @@ export abstract class Module {
     }
 
     public Load(): void {
-        print("Loading module", this.name)
+        this._output.Print("Loading module", this.name)
 
         this.OnLoad()
         this._loaded = true
