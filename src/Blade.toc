@@ -1,9 +1,0 @@
-## Title: Blade
-## Interface: 90002
-## Notes: Blade
-## Author: mztikk
-## Version: 1
-
-## SavedVariables: BLADEDATA
-
-embeds.xml

@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "tstl",
+    "minify": "deno run --allow-read --allow-write --allow-run ./build/minify.ts",
+    "release": "npm run build && npm run minify && deno run --allow-read --allow-write --allow-run ./build/release.ts",
+    "copy_to_addons": "robocopy /E out \"%WOW_ADDON_DIR%/Blade/\"",
+    "publish": "npm run release && npm run copy_to_addons"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "ace3decl": "file:../ace3decl",
+    "lua-types": "^2.13.0",
+    "luamin": "^1.0.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4",
+    "typescript-to-lua": "^1.10.1"
+  }
+}
