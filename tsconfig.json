@@ -106,8 +106,8 @@
   ],
   "tstl": {
     "luaTarget": "universal",
-    "luaBundle": "./BladeTS.lua",
-    "luaBundleEntry": "./src/BladeTS.ts",
+    "luaBundle": "./Blade.lua",
+    "luaBundleEntry": "./src/Blade.ts",
     "noImplicitSelf": false
   }
 }

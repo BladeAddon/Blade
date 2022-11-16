@@ -17,16 +17,16 @@ export class ConfigEntry<T> {
 }
 
 export class ConfigService {
-    private readonly _table: LuaTable<string, any>
-    constructor(table: LuaTable<string, any>) {
+    private readonly _table: LuaTable
+    constructor(table: LuaTable) {
         this._table = table
     }
 
-    public Get<T>(key: string): T | undefined {
+    public Get<T>(key: string|number): T | undefined {
         return this._table.get(key)
     }
 
-    public Set<T>(key: string, value: T) {
+    public Set<T>(key: string|number, value: T) {
         if (this.Get(key) === value) {
             return
         }

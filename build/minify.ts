@@ -1,7 +1,7 @@
 import * as fs from "https://deno.land/std@0.163.0/fs/mod.ts"
 import * as path from "https://deno.land/std@0.163.0/path/mod.ts"
 
-const addon_name = "BladeTS"
+const addon_name = "Blade"
 const out_directory = "./out"
 const out_directory_full = path.resolve(out_directory)
 const out_path = path.join(out_directory_full, `${addon_name}.lua`)

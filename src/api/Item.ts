@@ -1,77 +1,91 @@
 export class Item {
     private _itemInfo: ItemInfoResult | undefined
-    constructor(public readonly itemID: number) {
+    private _itemInfoInstant: ItemInfoInstantResult | undefined
+
+    constructor(public readonly item: number | string) {
     }
 
-    public get itemInfo(): ItemInfoResult {
-        return this._itemInfo ??= GetItemInfo(this.itemID)
+    public get itemInfo(): ItemInfoResult | undefined {
+        return this._itemInfo ??= GetItemInfo(this.item)
     }
 
-    public get itemName(): string {
-        return this.itemInfo[0]
+    public get itemInfoInstant(): ItemInfoInstantResult | undefined {
+        return this._itemInfoInstant ??= GetItemInfoInstant(this.item)
     }
 
-    public get itemLink(): string {
-        return this.itemInfo[1]
+    public get itemName(): string | undefined {
+        return this.itemInfo?.[0]
     }
 
-    public get itemQuality(): Enum.ItemQuality {
-        return this.itemInfo[2]
+    public get itemLink(): string | undefined {
+        return this.itemInfo?.[1]
     }
 
-    public get itemLevel(): number {
-        return this.itemInfo[3]
+    public get itemQuality(): Enum.ItemQuality | undefined {
+        return this.itemInfo?.[2]
     }
 
-    public get itemMinLevel(): number {
-        return this.itemInfo[4]
+    public get itemLevel(): number | undefined {
+        return this.itemInfo?.[3]
     }
 
-    public get itemType(): string {
-        return this.itemInfo[5]
+    public get itemMinLevel(): number | undefined {
+        return this.itemInfo?.[4]
     }
 
-    public get itemSubType(): string {
-        return this.itemInfo[6]
+    public get itemType(): string | undefined {
+        return this.itemInfo?.[5]
     }
 
-    public get itemStackCount(): number {
-        return this.itemInfo[7]
+    public get itemSubType(): string | undefined {
+        return this.itemInfo?.[6]
     }
 
-    public get itemEquipLoc(): string {
-        return this.itemInfo[8]
+    public get itemStackCount(): number | undefined {
+        return this.itemInfo?.[7]
     }
 
-    public get itemTexture(): number {
-        return this.itemInfo[9]
+    public get itemEquipLoc(): string | undefined {
+        return this.itemInfo?.[8]
     }
 
-    public get sellPrice(): number {
-        return this.itemInfo[10]
+    public get itemTexture(): number | undefined {
+        return this.itemInfo?.[9]
     }
 
-    public get classID(): number {
-        return this.itemInfo[11]
+    public get sellPrice(): number | undefined {
+        return this.itemInfo?.[10]
     }
 
-    public get subclassID(): number {
-        return this.itemInfo[12]
+    public get classID(): number | undefined {
+        return this.itemInfo?.[11]
     }
 
-    public get bindType(): number {
-        return this.itemInfo[13]
+    public get subclassID(): number | undefined {
+        return this.itemInfo?.[12]
     }
 
-    public get expacID(): number {
-        return this.itemInfo[14]
+    public get bindType(): number | undefined {
+        return this.itemInfo?.[13]
     }
 
-    public get setID(): number {
-        return this.itemInfo[15]
+    public get expacID(): number | undefined {
+        return this.itemInfo?.[14]
     }
 
-    public get isCraftingReagent(): boolean {
-        return this.itemInfo[16]
+    public get setID(): number | undefined {
+        return this.itemInfo?.[15]
+    }
+
+    public get isCraftingReagent(): boolean | undefined {
+        return this.itemInfo?.[16]
+    }
+
+    public get itemID(): number | undefined {
+        return this.itemInfoInstant?.[0]
+    }
+
+    public get icon(): number | undefined {
+        return this.itemInfoInstant?.[4]
     }
 }

@@ -1,1 +1,0 @@
-declare const BLADETSDATA: LuaTable<string, any>

@@ -4,7 +4,7 @@
     "build": "tstl",
     "minify": "deno run --allow-read --allow-write --allow-run ./build/minify.ts",
     "release": "npm run build && npm run minify && deno run --allow-read --allow-write --allow-run ./build/release.ts",
-    "copy_to_addons": "robocopy /E out \"%WOW_ADDON_DIR%/BladeTS/\"",
+    "copy_to_addons": "robocopy /E out \"%WOW_ADDON_DIR%/Blade/\"",
     "publish": "npm run release && npm run copy_to_addons"
   },
   "author": "",
