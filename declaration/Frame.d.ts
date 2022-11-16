@@ -6,6 +6,7 @@ declare interface Frame {
     RegisterEvent(event: string)
     SetScript<T extends any[]>(event: string, handler: (T) => void)
     SetScript(event: "OnEvent", handler: (frame: Frame, eventName: string, ...args: any[]) => void): void
+    IsVisible(): boolean
     onEventAttached: boolean | undefined
 }
 
@@ -13,3 +14,4 @@ declare interface Frame {
 declare function CreateFrame(frameType: string): Frame
 /** @noSelf **/
 declare function GetMoneyString(amount: number): string
+declare const CovenantMissionFrame: Frame

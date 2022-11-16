@@ -14,6 +14,7 @@ import { Output } from './api/Output'
 import { IOutput } from './api/IOutput'
 import { AutoKeyInserter } from './modules/AutoKeyInserter'
 import { CommandHandler } from './api/CommandHandler'
+import { AutoCompleteSLMissions } from './modules/AutoCompleteSLMissions'
 
 Bootstrapper.Load()
 
@@ -42,7 +43,7 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
         container.instance("Options", options)
         container.instance("CommandHandler", new CommandHandler())
 
-        const modules: Module[] = [new AutoVendor(), new AutoRepair(), new AutoKeyInserter()]
+        const modules: Module[] = [new AutoVendor(), new AutoRepair(), new AutoKeyInserter(), new AutoCompleteSLMissions()]
         for (const module of modules) {
             if (module.ShouldLoad()) {
                 module.Load()
