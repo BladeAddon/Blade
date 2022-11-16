@@ -1,5 +1,5 @@
 ## Title: Blade
-## Interface: 90002
+## Interface: 100002
 ## Notes: Blade
 ## Author: mztikk
 ## Version: 1
