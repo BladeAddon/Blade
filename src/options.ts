@@ -35,6 +35,10 @@ export class OptionsMenu {
         return this._table
     }
 
+    public setDescription(description: string): void {
+        this._table.desc = description
+    }
+
     public AddToggle(key: string, name: string): ToggleItem {
         const toggleItem: ToggleItem = {
             name: name,

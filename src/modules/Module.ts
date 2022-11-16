@@ -9,16 +9,17 @@ export abstract class Module {
     @Inject("Options") protected readonly _options!: Options
     @Inject("IOutput") protected readonly _output!: IOutput
 
-    public readonly name: string
     protected readonly _moduleSettings: ConfigService
     protected readonly _menu: OptionsMenu
     protected _loaded = false
 
-    protected constructor(name: string) {
-        this.name = name
+    protected constructor(public readonly name: string, public readonly description?: string) {
         this._moduleSettings = this._settings.GetConfig(name)
 
         this._menu = this._options.AddMenu(this.name, this.name)
+        if (this.description) {
+            this._menu.setDescription(this.description)
+        }
         this._menu.AddToggle("ENABLED", "Enabled").desc = `Enables module "${this.name}". If disabled it will not load and needs a reload after enabling.`
     }
 

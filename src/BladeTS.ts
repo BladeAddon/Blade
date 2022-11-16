@@ -12,6 +12,7 @@ import { AddonInfo } from './api/AddonInfo'
 import { ColorHelper } from './api/ColorHelper'
 import { Output } from './api/Output'
 import { IOutput } from './api/IOutput'
+import { AutoKeyInserter } from './modules/AutoKeyInserter'
 
 Bootstrapper.Load()
 
@@ -39,7 +40,7 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
         const options = new Options(addonInfo.AddonName)
         container.instance("Options", options)
 
-        const modules: Module[] = [new AutoVendor(), new AutoRepair()]
+        const modules: Module[] = [new AutoVendor(), new AutoRepair(), new AutoKeyInserter()]
         for (const module of modules) {
             if (module.ShouldLoad()) {
                 module.Load()
