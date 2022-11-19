@@ -54,7 +54,7 @@ export class AutoVendor extends Module {
     private GetTrashItems(): ContainerItem[] {
         const items = []
         for (let bag = 0; bag < NUM_BAG_SLOTS; bag++) {
-            for (let slot = 1; slot < C_Container.GetContainerNumSlots(bag as BAG_ID); slot++) {
+            for (let slot = 1; slot <= C_Container.GetContainerNumSlots(bag); slot++) {
                 const containerItem = new ContainerItem(bag as BAG_ID, slot)
                 if (this.shouldSell(containerItem)) {
                     items.push(containerItem)
