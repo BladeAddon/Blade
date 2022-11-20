@@ -1,3 +1,4 @@
+import { Bag } from '../api/Bag'
 import { ChatCommand } from '../api/ChatCommand'
 import { CommandHandler } from '../api/CommandHandler'
 import { ContainerItem } from '../api/ContainerItem'
@@ -41,7 +42,7 @@ export class AutoVendor extends Module {
                 return
             }
 
-            this.GetTrashItems().slice(0, 4).forEach(x => x.Use())
+            this.GetTrashItems(4).forEach(x => x.Use())
         })
     }
 
@@ -51,13 +52,13 @@ export class AutoVendor extends Module {
             && item.sellPrice !== undefined && item.sellPrice > 0) === true
     }
 
-    private GetTrashItems(): ContainerItem[] {
+    private GetTrashItems(maxItems?: number): ContainerItem[] {
         const items = []
-        for (let bag = 0; bag <= NUM_BAG_SLOTS; bag++) {
-            for (let slot = 1; slot <= C_Container.GetContainerNumSlots(bag); slot++) {
-                const containerItem = new ContainerItem(bag as BAG_ID, slot)
-                if (this.shouldSell(containerItem)) {
-                    items.push(containerItem)
+        for (const containerItem of Bag.GetContainerItems()) {
+            if (this.shouldSell(containerItem)) {
+                items.push(containerItem)
+                if (maxItems && items.length === maxItems) {
+                    break
                 }
             }
         }
