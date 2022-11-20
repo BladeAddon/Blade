@@ -27,6 +27,29 @@ export class AutoCompleteSLMissions extends Module {
         }
     }
 
+    private CompleteMissions(followerTypeID: number) {
+        this.EvaluateIgnoreListTimeout()
+
+        if (CovenantMissionFrame.IsVisible()) {
+            const completeMissions = C_Garrison.GetCompleteMissions(followerTypeID)
+            if (completeMissions.length == 0) {
+                this._waitingForWork = true
+                return
+            }
+            this._waitingForWork = false
+
+            for (const mission of completeMissions) {
+                const missionID = mission.missionID
+                if (!this._ignoreList.has(missionID)) {
+                    C_Garrison.RegenerateCombatLog(missionID)
+                    C_Garrison.MarkMissionComplete(missionID)
+                    C_Garrison.MissionBonusRoll(missionID)
+                    this._ignoreList.set(missionID, GetTime())
+                }
+            }
+        }
+    }
+
     private CovenantMissionFrame_OnUpdate(followerTypeID: number, elapsed: number): void {
         if (!this.ShouldLoad()) {
             return
@@ -34,29 +57,11 @@ export class AutoCompleteSLMissions extends Module {
 
         this._timeSinceLastMissionFrameUpdate = this._timeSinceLastMissionFrameUpdate + elapsed
 
-        if (this._timeSinceLastMissionFrameUpdate > waitTime || !this._waitingForWork) {
+        if (!this._waitingForWork) {
+            this.CompleteMissions(followerTypeID)
+        } else if (this._timeSinceLastMissionFrameUpdate > waitTime) {
             this._timeSinceLastMissionFrameUpdate = this._timeSinceLastMissionFrameUpdate - waitTime
-
-            this.EvaluateIgnoreListTimeout()
-
-            if (CovenantMissionFrame.IsVisible()) {
-                const completeMissions = C_Garrison.GetCompleteMissions(followerTypeID)
-                if (completeMissions.length == 0) {
-                    this._waitingForWork = true
-                    return
-                }
-                this._waitingForWork = false
-
-                for (const mission of completeMissions) {
-                    const missionID = mission.missionID
-                    if (!this._ignoreList.has(missionID)) {
-                        C_Garrison.RegenerateCombatLog(missionID)
-                        C_Garrison.MarkMissionComplete(missionID)
-                        C_Garrison.MissionBonusRoll(missionID)
-                        this._ignoreList.set(missionID, GetTime())
-                    }
-                }
-            }
+            this.CompleteMissions(followerTypeID)
         }
     }
 

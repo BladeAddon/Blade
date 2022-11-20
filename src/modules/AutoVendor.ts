@@ -2,15 +2,22 @@ import { Bag } from '../api/Bag'
 import { ChatCommand } from '../api/ChatCommand'
 import { CommandHandler } from '../api/CommandHandler'
 import { ContainerItem } from '../api/ContainerItem'
+import { IEventHandler } from '../api/IEventHandler'
 import { Item } from '../api/Item'
 import { ConfigService } from '../ConfigService'
 import { Inject } from '../tstl-di/src/Inject'
 import { Module } from './Module'
 
+const waitTime = 3
+
 export class AutoVendor extends Module {
     @Inject("CommandHandler") private readonly _commandHandler!: CommandHandler
+    @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
 
     private readonly _autoSellConfig: ConfigService
+
+    private _timeSinceLastMerchantFrameUpdate: number = 0
+    private _waitingForWork = false
 
     constructor() {
         super("AutoVendor")
@@ -18,6 +25,7 @@ export class AutoVendor extends Module {
         this._menu.AddToggle("SELL_JUNK", "Sell Junk")
         this._commandHandler.RegisterCommand(new ChatCommand("autosell", "Add or remove item to/from autosell list by linking it to this command with shift+click", this.onAutoSellCommand.bind(this)))
         this._autoSellConfig = this._moduleSettings.GetConfig("AUTO_SELL")
+        this._eventHandler.RegisterEvent("MERCHANT_SHOW", () => this._waitingForWork = false)
     }
 
     private onAutoSellCommand(itemString: string): void {
@@ -33,17 +41,6 @@ export class AutoVendor extends Module {
             this._autoSellConfig.Set(item.itemID, true)
             this._output.Print(`Added ${item.itemLink} to auto sell`)
         }
-    }
-
-    protected OnLoad(): void {
-        const merchantFrame = MerchantFrame
-        merchantFrame.HookScript("OnUpdate", (_frame, _sinceLastUpdate) => {
-            if (!this.ShouldLoad()) {
-                return
-            }
-
-            this.GetTrashItems(4).forEach(x => x.Use())
-        })
     }
 
     private shouldSell(item: ContainerItem): boolean {
@@ -64,5 +61,35 @@ export class AutoVendor extends Module {
         }
 
         return items
+    }
+
+    private SellTrashItems(): void {
+        const trashItems = this.GetTrashItems(4)
+        if (trashItems.length === 0) {
+            this._waitingForWork = true
+            return
+        }
+
+        this._waitingForWork = false
+
+        trashItems.forEach(x => x.Use())
+    }
+
+    protected OnLoad(): void {
+        const merchantFrame = MerchantFrame
+        merchantFrame.HookScript("OnUpdate", (elapsed: number) => {
+            if (!this.ShouldLoad()) {
+                return
+            }
+
+            this._timeSinceLastMerchantFrameUpdate = this._timeSinceLastMerchantFrameUpdate + elapsed
+
+            if (!this._waitingForWork) {
+                this.SellTrashItems()
+            } else if (this._timeSinceLastMerchantFrameUpdate > waitTime) {
+                this._timeSinceLastMerchantFrameUpdate = this._timeSinceLastMerchantFrameUpdate - waitTime
+                this.SellTrashItems()
+            }
+        })
     }
 }

@@ -7,3 +7,5 @@ declare const SlashCmdList: LuaTable<string, /** @noSelf **/(string) => void>
 
 /** @noSelf **/
 declare function GetTime(): number
+/** @noSelf **/
+declare function date(): string
