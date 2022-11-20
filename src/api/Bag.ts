@@ -1,7 +1,7 @@
 import { ContainerItem } from './ContainerItem'
 
 class ContainerItemIterator implements Iterable<ContainerItem> {
-    [Symbol.iterator](): Iterator<ContainerItem, any, undefined> {
+    [Symbol.iterator](): Iterator<ContainerItem> {
         let bag = 0
         let bagMax = NUM_BAG_SLOTS
         let slot = 1
@@ -32,15 +32,6 @@ class ContainerItemIterator implements Iterable<ContainerItem> {
 }
 
 export class Bag {
-
-    // public static *GetContainerItems() {
-    //     for (let bag = 0; bag <= NUM_BAG_SLOTS; bag++) {
-    //         for (let slot = 1; slot <= C_Container.GetContainerNumSlots(bag as BAG_ID); slot++) {
-    //             yield new ContainerItem(bag, slot)
-    //         }
-    //     }
-    // }
-
     public static GetContainerItems(): Iterable<ContainerItem> {
         return new ContainerItemIterator()
     }
