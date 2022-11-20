@@ -16,6 +16,8 @@ export class AutoVendor extends Module {
 
     private readonly _autoSellConfig: ConfigService
 
+    private readonly _shouldSellPredicate: (item: ContainerItem) => boolean
+
     private _timeSinceLastMerchantFrameUpdate: number = 0
     private _waitingForWork = false
 
@@ -26,6 +28,8 @@ export class AutoVendor extends Module {
         this._commandHandler.RegisterCommand(new ChatCommand("autosell", "Add or remove item to/from autosell list by linking it to this command with shift+click", this.onAutoSellCommand.bind(this)))
         this._autoSellConfig = this._moduleSettings.GetConfig("AUTO_SELL")
         this._eventHandler.RegisterEvent("MERCHANT_SHOW", () => this._waitingForWork = false)
+
+        this._shouldSellPredicate = this.shouldSell.bind(this)
     }
 
     private onAutoSellCommand(itemString: string): void {
@@ -50,7 +54,7 @@ export class AutoVendor extends Module {
     }
 
     private SellTrashItems(): void {
-        const trashItems = Array.from(Bag.FindItems(this.shouldSell.bind(this)))
+        const trashItems = Array.from(Bag.FindItems(this._shouldSellPredicate))
         if (trashItems.length === 0) {
             this._waitingForWork = true
             return
@@ -58,7 +62,9 @@ export class AutoVendor extends Module {
 
         this._waitingForWork = false
 
-        trashItems.forEach(x => x.Use())
+        for (const item of trashItems) {
+            item.Use()
+        }
     }
 
     protected OnLoad(): void {
