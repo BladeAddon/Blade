@@ -1,6 +1,8 @@
 import { ContainerItem } from './ContainerItem'
 
 class ContainerItemIterator implements Iterable<ContainerItem> {
+    public static Instance = new ContainerItemIterator();
+
     [Symbol.iterator](): Iterator<ContainerItem> {
         let bag = 0
         let bagMax = NUM_BAG_SLOTS
@@ -34,7 +36,7 @@ class ContainerItemIterator implements Iterable<ContainerItem> {
 class ContainerItemPredicateIterator implements Iterable<ContainerItem> {
     constructor(private readonly predicate: (item: ContainerItem) => boolean) { }
     [Symbol.iterator](): Iterator<ContainerItem, any, undefined> {
-        const containerItemIterator = new ContainerItemIterator()
+        const containerItemIterator = ContainerItemIterator.Instance
         const iter = containerItemIterator[Symbol.iterator]()
 
         return {
@@ -59,7 +61,7 @@ class ContainerItemPredicateIterator implements Iterable<ContainerItem> {
 
 export class Bag {
     public static GetContainerItems(): Iterable<ContainerItem> {
-        return new ContainerItemIterator()
+        return ContainerItemIterator.Instance
     }
 
     public static FindBagItemByID(itemID: number): ContainerItem | undefined {
