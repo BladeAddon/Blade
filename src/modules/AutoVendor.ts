@@ -49,22 +49,8 @@ export class AutoVendor extends Module {
             && item.sellPrice !== undefined && item.sellPrice > 0) === true
     }
 
-    private GetTrashItems(maxItems?: number): ContainerItem[] {
-        const items = []
-        for (const containerItem of Bag.GetContainerItems()) {
-            if (this.shouldSell(containerItem)) {
-                items.push(containerItem)
-                if (maxItems && items.length === maxItems) {
-                    break
-                }
-            }
-        }
-
-        return items
-    }
-
     private SellTrashItems(): void {
-        const trashItems = this.GetTrashItems(4)
+        const trashItems = Array.from(Bag.FindItems(this.shouldSell.bind(this)))
         if (trashItems.length === 0) {
             this._waitingForWork = true
             return
