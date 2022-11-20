@@ -31,6 +31,32 @@ class ContainerItemIterator implements Iterable<ContainerItem> {
     }
 }
 
+class ContainerItemPredicateIterator implements Iterable<ContainerItem> {
+    constructor(private readonly predicate: (item: ContainerItem) => boolean) { }
+    [Symbol.iterator](): Iterator<ContainerItem, any, undefined> {
+        const containerItemIterator = new ContainerItemIterator()
+        const iter = containerItemIterator[Symbol.iterator]()
+
+        return {
+            next: () => {
+                let v
+                while (!(v = iter.next()).done) {
+                    if (this.predicate(v.value)) {
+                        return {
+                            value: v.value
+                        }
+                    }
+                }
+
+                return {
+                    value: undefined,
+                    done: true
+                }
+            }
+        }
+    }
+}
+
 export class Bag {
     public static GetContainerItems(): Iterable<ContainerItem> {
         return new ContainerItemIterator()
@@ -44,5 +70,19 @@ export class Bag {
         }
 
         return undefined
+    }
+
+    public static FindItem(predicate: (item: ContainerItem) => boolean): ContainerItem | undefined {
+        for (const containerItem of this.GetContainerItems()) {
+            if (predicate(containerItem)) {
+                return containerItem
+            }
+        }
+
+        return undefined
+    }
+
+    public static FindItems(predicate: (item: ContainerItem) => boolean): Iterable<ContainerItem> {
+        return new ContainerItemPredicateIterator(predicate)
     }
 }
