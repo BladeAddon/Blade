@@ -33,8 +33,12 @@ class ContainerItemIterator implements Iterable<ContainerItem> {
     }
 }
 
+declare type ContainerItemPredicate = (item: ContainerItem) => boolean
+
+const ContainerItemPredicateIteratorCache: Map<ContainerItemPredicate, ContainerItemPredicateIterator> = new Map()
+
 class ContainerItemPredicateIterator implements Iterable<ContainerItem> {
-    constructor(private readonly predicate: (item: ContainerItem) => boolean) { }
+    constructor(private readonly predicate: ContainerItemPredicate) { }
     [Symbol.iterator](): Iterator<ContainerItem, any, undefined> {
         const containerItemIterator = ContainerItemIterator.Instance
         const iter = containerItemIterator[Symbol.iterator]()
@@ -57,6 +61,16 @@ class ContainerItemPredicateIterator implements Iterable<ContainerItem> {
             }
         }
     }
+}
+
+function CreateContainerItemPredicateIterator(predicate: ContainerItemPredicate): ContainerItemPredicateIterator {
+    if (ContainerItemPredicateIteratorCache.has(predicate)) {
+        return ContainerItemPredicateIteratorCache.get(predicate)!
+    }
+
+    const iterator = new ContainerItemPredicateIterator(predicate)
+    ContainerItemPredicateIteratorCache.set(predicate, iterator)
+    return iterator
 }
 
 export class Bag {
@@ -85,6 +99,6 @@ export class Bag {
     }
 
     public static FindItems(predicate: (item: ContainerItem) => boolean): Iterable<ContainerItem> {
-        return new ContainerItemPredicateIterator(predicate)
+        return CreateContainerItemPredicateIterator(predicate)
     }
 }
