@@ -1,7 +1,7 @@
 declare type BAG_ID = -4 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
 
 declare const NUM_BAG_SLOTS: number
-declare class ContainerItemInfo {
+declare interface ContainerItemInfo {
     iconFileID: number
     stackCount: number
     isLocked: boolean
@@ -19,7 +19,7 @@ declare namespace C_Container {
     /** @noSelf **/
     declare function GetContainerNumSlots(containerIndex: number): number
     /** @noSelf **/
-    declare function GetContainerItemInfo(containerIndex: number, slotIndex: number): LuaMultiReturn<ContainerItemInfoResult>
+    declare function GetContainerItemInfo(containerIndex: number, slotIndex: number): ContainerItemInfo | undefined
     /** @noSelf **/
     declare function UseContainerItem(containerIndex: number, slotIndex: number, unitToken?: string, reagentBankOpen?: boolean = false): void
 }
