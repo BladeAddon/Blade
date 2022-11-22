@@ -7,6 +7,7 @@ const KEYSTONE_ITEM_ID = 180653
 
 export class AutoKeyInserter extends Module {
     @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
+    @Inject("Bag") private readonly _bag!: Bag
 
     public constructor() {
         super("AutoKeyInserter", "Automatically insert Mythic Keystone into the Font")
@@ -18,7 +19,7 @@ export class AutoKeyInserter extends Module {
                 return
             }
 
-            Bag.FindBagItemByID(KEYSTONE_ITEM_ID)?.Use()
+            this._bag.FindBagItemByID(KEYSTONE_ITEM_ID)?.Use()
         })
     }
 }

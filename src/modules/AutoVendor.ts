@@ -13,6 +13,7 @@ const waitTime = 3
 export class AutoVendor extends Module {
     @Inject("CommandHandler") private readonly _commandHandler!: CommandHandler
     @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
+    @Inject("Bag") private readonly _bag!: Bag
 
     private readonly _autoSellConfig: ConfigService
 
@@ -48,22 +49,22 @@ export class AutoVendor extends Module {
     }
 
     private shouldSell(item: ContainerItem): boolean {
-        return (item.containerItemInfo !== undefined &&
-            ((item.quality === Enum.ItemQuality.Poor && this._moduleSettings.Get<boolean>("SELL_JUNK")) || this._autoSellConfig.Get<boolean>(item.itemID))
+        return (
+            ((item.quality === Enum.ItemQuality.Poor && this._moduleSettings.Get<boolean>("SELL_JUNK"))
+                || this._autoSellConfig.Get<boolean>(item.itemID))
             && item.sellPrice !== undefined && item.sellPrice > 0) === true
     }
 
     private SellTrashItems(): void {
-        const trashItems = Array.from(Bag.FindItems(this._shouldSellPredicate))
-        if (trashItems.length === 0) {
+        const itemsToSell = this._bag.FindItems(this._shouldSellPredicate)
+        if (itemsToSell.length === 0) {
             this._waitingForWork = true
-            return
-        }
+        } else {
+            this._waitingForWork = false
 
-        this._waitingForWork = false
-
-        for (const item of trashItems) {
-            item.Use()
+            for (const item of itemsToSell) {
+                item.Use()
+            }
         }
     }
 

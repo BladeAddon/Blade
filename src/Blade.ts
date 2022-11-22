@@ -15,6 +15,7 @@ import { IOutput } from './api/IOutput'
 import { AutoKeyInserter } from './modules/AutoKeyInserter'
 import { CommandHandler } from './api/CommandHandler'
 import { AutoCompleteSLMissions } from './modules/AutoCompleteSLMissions'
+import { Bag } from './api/Bag'
 
 Bootstrapper.Load()
 
@@ -42,6 +43,10 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
         const options = new Options(addonInfo.AddonName)
         container.instance("Options", options)
         container.instance("CommandHandler", new CommandHandler())
+        const bag = new Bag()
+        container.instance("Bag", bag)
+
+        bag.Load()
 
         const modules: Module[] = [new AutoVendor(), new AutoRepair(), new AutoKeyInserter(), new AutoCompleteSLMissions()]
         for (const module of modules) {

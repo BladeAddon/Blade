@@ -1,104 +1,85 @@
 import { ContainerItem } from './ContainerItem'
+import { Loadable } from '../Loadable'
+import { Inject } from '../tstl-di/src/Inject'
+import { IEventHandler } from './IEventHandler'
 
-class ContainerItemIterator implements Iterable<ContainerItem> {
-    public static Instance = new ContainerItemIterator();
-
-    [Symbol.iterator](): Iterator<ContainerItem> {
-        let bag = 0
-        let bagMax = NUM_BAG_SLOTS
-        let slot = 1
-        let slotMax = C_Container.GetContainerNumSlots(bag)
-        return {
-            next: () => {
-                if (slot > slotMax) {
-                    slot = 1
-                    bag++
-                    if (bag > bagMax) {
-                        return {
-                            value: undefined,
-                            done: true
-                        }
-                    } else {
-                        slotMax = C_Container.GetContainerNumSlots(bag)
-                    }
-                }
-
-                let item = new ContainerItem(bag, slot)
-                slot++
-                return {
-                    value: item
-                }
-            }
-        }
-    }
-}
-
+declare type ContainerItemFunction = (item: ContainerItem) => void
 declare type ContainerItemPredicate = (item: ContainerItem) => boolean
 
-const ContainerItemPredicateIteratorCache: Map<ContainerItemPredicate, ContainerItemPredicateIterator> = new Map()
+export class Bag extends Loadable {
+    @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
 
-class ContainerItemPredicateIterator implements Iterable<ContainerItem> {
-    constructor(private readonly predicate: ContainerItemPredicate) { }
-    [Symbol.iterator](): Iterator<ContainerItem, any, undefined> {
-        const containerItemIterator = ContainerItemIterator.Instance
-        const iter = containerItemIterator[Symbol.iterator]()
+    private readonly _containerLookup: LuaMap<number, LuaMap<number, ContainerItem>> = new LuaMap()
 
-        return {
-            next: () => {
-                let v
-                while (!(v = iter.next()).done) {
-                    if (this.predicate(v.value)) {
-                        return {
-                            value: v.value
-                        }
-                    }
-                }
+    private UpdateBags(): void {
+        for (let bagIndex = 0; bagIndex <= NUM_BAG_SLOTS; bagIndex++) {
+            this.UpdateBag(bagIndex)
+        }
+    }
 
-                return {
-                    value: undefined,
-                    done: true
-                }
+    private UpdateBag(bagIndex: number): void {
+        const bag: LuaMap<number, ContainerItem> = new LuaMap()
+        this._containerLookup.set(bagIndex, bag)
+
+        for (let slotIndex = 1; slotIndex <= C_Container.GetContainerNumSlots(bagIndex); slotIndex++) {
+            const containerItem = ContainerItem.Create(bagIndex, slotIndex)
+            if (containerItem) {
+                bag.set(slotIndex, containerItem)
             }
         }
     }
-}
 
-function CreateContainerItemPredicateIterator(predicate: ContainerItemPredicate): ContainerItemPredicateIterator {
-    if (ContainerItemPredicateIteratorCache.has(predicate)) {
-        return ContainerItemPredicateIteratorCache.get(predicate)!
+    protected OnLoad(): void {
+        this.UpdateBags()
+        this._eventHandler.RegisterEvent("BAG_UPDATE", this.UpdateBag.bind(this))
     }
 
-    const iterator = new ContainerItemPredicateIterator(predicate)
-    ContainerItemPredicateIteratorCache.set(predicate, iterator)
-    return iterator
-}
-
-export class Bag {
-    public static GetContainerItems(): Iterable<ContainerItem> {
-        return ContainerItemIterator.Instance
+    public GetContainerItem(bagIndex: number, slotIndex: number): ContainerItem | undefined {
+        return this._containerLookup.get(bagIndex)?.get(slotIndex)
     }
 
-    public static FindBagItemByID(itemID: number): ContainerItem | undefined {
-        for (const containerItem of this.GetContainerItems()) {
-            if (containerItem.itemID === itemID) {
-                return containerItem
+    public FindBagItemByID(itemID: number): ContainerItem | undefined {
+        for (const [_, bag] of this._containerLookup) {
+            for (const [_, item] of bag) {
+                if (item.itemID === itemID) {
+                    return item
+                }
             }
         }
 
         return undefined
     }
 
-    public static FindItem(predicate: (item: ContainerItem) => boolean): ContainerItem | undefined {
-        for (const containerItem of this.GetContainerItems()) {
-            if (predicate(containerItem)) {
-                return containerItem
+    public FindItem(predicate: ContainerItemPredicate): ContainerItem | undefined {
+        for (const [_, bag] of this._containerLookup) {
+            for (const [_, item] of bag) {
+                if (predicate(item)) {
+                    return item
+                }
             }
         }
 
         return undefined
     }
 
-    public static FindItems(predicate: (item: ContainerItem) => boolean): Iterable<ContainerItem> {
-        return CreateContainerItemPredicateIterator(predicate)
+    public FindItems(predicate: ContainerItemPredicate): ContainerItem[] {
+        let items = []
+        for (const [_, bag] of this._containerLookup) {
+            for (const [_, item] of bag) {
+                if (predicate(item)) {
+                    items.push(item)
+                }
+            }
+        }
+
+        return items
+    }
+
+    public CallOnItems(f: ContainerItemFunction): void {
+        for (const [_, bag] of this._containerLookup) {
+            for (const [_, item] of bag) {
+                f(item)
+            }
+        }
     }
 }
