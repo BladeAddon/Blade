@@ -34,6 +34,17 @@ export class Bag extends Loadable {
         this._eventHandler.RegisterEvent("BAG_UPDATE", this.UpdateBag.bind(this))
     }
 
+    public *IterItems() {
+        for (let bagIndex = 0; bagIndex <= NUM_BAG_SLOTS; bagIndex++) {
+            for (let slotIndex = 1; slotIndex <= C_Container.GetContainerNumSlots(bagIndex); slotIndex++) {
+                const containerItem = ContainerItem.Create(bagIndex, slotIndex)
+                if (containerItem) {
+                    yield containerItem
+                }
+            }
+        }
+    }
+
     public GetContainerItem(bagIndex: number, slotIndex: number): ContainerItem | undefined {
         return this._containerLookup.get(bagIndex)?.get(slotIndex)
     }
