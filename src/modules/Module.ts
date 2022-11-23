@@ -1,3 +1,4 @@
+import { ILocalization } from '../api/ILocalization'
 import { IOutput } from '../api/IOutput'
 import { ConfigService } from '../ConfigService'
 import { Options, OptionsMenu } from '../options'
@@ -8,6 +9,7 @@ export abstract class Module {
 
     @Inject("Options") protected readonly _options!: Options
     @Inject("IOutput") protected readonly _output!: IOutput
+    @Inject("ILocalization") protected readonly _localization!: ILocalization
 
     protected readonly _moduleSettings: ConfigService
     protected readonly _menu: OptionsMenu
@@ -20,7 +22,7 @@ export abstract class Module {
         if (this.description) {
             this._menu.setDescription(this.description)
         }
-        this._menu.AddToggle("ENABLED", "Enabled").desc = `Enables module "${this.name}". If disabled it will not load and needs a reload after enabling.`
+        this._menu.AddToggle("ENABLED", this._localization.Get("ENABLED")).desc = this._localization.Format("MODULE_ENABLE_DESCRIPTION", this.name)
     }
 
     ShouldLoad(): boolean {
@@ -34,7 +36,7 @@ export abstract class Module {
     }
 
     public Load(): void {
-        this._output.Print("Loading module", this.name)
+        this._output.Print(this._localization.Format("LOADING_MODULE", this.name))
 
         this.OnLoad()
         this._loaded = true

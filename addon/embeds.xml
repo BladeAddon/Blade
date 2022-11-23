@@ -4,7 +4,11 @@
   <Script file="lib/LibSharedMedia-3.0/LibSharedMedia-3.0.lua" />
   <Include file="lib/AceDB-3.0/AceDB-3.0.xml"/>
   <Include file="lib/AceDBOptions-3.0/AceDBOptions-3.0.xml"/>
+  <Include file="lib/AceLocale-3.0/AceLocale-3.0.xml"/>
   <Include file="lib/AceGUI-3.0/AceGUI-3.0.xml"/>
   <Include file="lib/AceConfig-3.0/AceConfig-3.0.xml"/>
+  
+  <Script file="locales/enUS.lua" />
+
   <Script file="blade.lua" />
 </Ui>

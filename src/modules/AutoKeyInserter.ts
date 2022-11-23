@@ -10,7 +10,8 @@ export class AutoKeyInserter extends Module {
     @Inject("Bag") private readonly _bag!: Bag
 
     public constructor() {
-        super("AutoKeyInserter", "Automatically insert Mythic Keystone into the Font")
+        super("AutoKeyInserter")
+        this._menu.setDescription(this._localization.Get("AUTO_KEY_INSERTER_DESCRIPTION"))
     }
 
     protected OnLoad(): void {

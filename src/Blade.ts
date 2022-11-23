@@ -16,6 +16,7 @@ import { AutoKeyInserter } from './modules/AutoKeyInserter'
 import { CommandHandler } from './api/CommandHandler'
 import { AutoCompleteSLMissions } from './modules/AutoCompleteSLMissions'
 import { Bag } from './api/Bag'
+import { Localization } from './api/Localization'
 
 Bootstrapper.Load()
 
@@ -26,6 +27,8 @@ export class Blade {
 
 const addonInfo = new AddonInfo("Blade", ColorHelper.DEEP_PINK)
 container.instance("AddonInfo", addonInfo)
+const localization = new Localization()
+container.instance("ILocalization", localization)
 const output: IOutput = new Output()
 container.instance("IOutput", output)
 
@@ -57,6 +60,6 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
 
         LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable(addonInfo.AddonName, options.get())
         LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions(addonInfo.AddonName, addonInfo.AddonName)
-        output.Print("loaded")
+        output.Print(localization.Format("LOADED", addonInfo.AddonName))
     }
 })

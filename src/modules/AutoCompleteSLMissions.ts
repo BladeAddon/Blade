@@ -16,7 +16,8 @@ export class AutoCompleteSLMissions extends Module {
     private _waitingForWork = false
 
     constructor() {
-        super("AutoCompleteSLMissions", "Automatically completes missions from mission table")
+        super("AutoCompleteSLMissions")
+        this._menu.setDescription(this._localization.Get("AUTO_COMPLETE_SL_MISSIONS_DESCRIPTION"))
     }
 
     private EvaluateIgnoreListTimeout() {

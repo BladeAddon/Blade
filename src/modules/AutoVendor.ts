@@ -20,8 +20,8 @@ export class AutoVendor extends Module {
     constructor() {
         super("AutoVendor")
 
-        this._menu.AddToggle("SELL_JUNK", "Sell Junk")
-        this._commandHandler.RegisterCommand(new ChatCommand("autosell", "Add or remove item to/from autosell list by linking it to this command with shift+click", this.onAutoSellCommand.bind(this)))
+        this._menu.AddToggle("SELL_JUNK", this._localization.Get("SELL_JUNK"))
+        this._commandHandler.RegisterCommand(new ChatCommand("autosell", this._localization.Get("AUTO_SELL_COMMAND_DESCRIPTION"), this.onAutoSellCommand.bind(this)))
         this._autoSellConfig = this._moduleSettings.GetConfig("AUTO_SELL")
 
         this._shouldSellPredicate = this.shouldSell.bind(this)
@@ -35,10 +35,10 @@ export class AutoVendor extends Module {
 
         if (this._autoSellConfig.Get(item.itemID)) {
             this._autoSellConfig.Set(item.itemID, undefined)
-            this._output.Print(`Removed ${item.itemLink} from auto sell`)
+            this._output.Print(this._localization.Get("AUTO_SELL_REMOVED"))
         } else {
             this._autoSellConfig.Set(item.itemID, true)
-            this._output.Print(`Added ${item.itemLink} to auto sell`)
+            this._output.Print(this._localization.Get("AUTO_SELL_ADDED"))
         }
     }
 

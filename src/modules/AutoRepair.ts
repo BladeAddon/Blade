@@ -8,7 +8,7 @@ export class AutoRepair extends Module {
     constructor() {
         super("AutoRepair")
 
-        this._menu.AddToggle("GUILD_REPAIR", "Guild Repair").desc = "Try to use guild repair if you are allowed and have sufficient funds available"
+        this._menu.AddToggle("GUILD_REPAIR", "Guild Repair").desc = this._localization.Get("GUILD_REPAIR_DESCRIPTION")
     }
 
     protected OnLoad(): void {
@@ -31,7 +31,7 @@ export class AutoRepair extends Module {
         const [repairCost, canRepair] = GetRepairAllCost()
         if (canRepair) {
             RepairAllItems(this._moduleSettings.Get<boolean>("GUILD_REPAIR") && CanGuildBankRepair() && GetGuildBankWithdrawMoney() >= repairCost)
-            this._output.Print(`Repairing has cost ${GetMoneyString(repairCost)}`)
+            this._output.Print(this._localization.Format("REPAIRING_COST", GetMoneyString(repairCost)))
         }
     }
 }
