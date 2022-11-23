@@ -50,6 +50,10 @@ export class AutoVendor extends Module {
     }
 
     private SellTrashItems(): void {
+        if (!C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant)) {
+            return
+        }
+
         const itemsToSell = this._bag.FindItems(this._shouldSellPredicate)
         if (itemsToSell.length === 0) {
             return
@@ -60,13 +64,7 @@ export class AutoVendor extends Module {
         }
 
         // recheck for items that failed to sell
-        C_Timer.After(1, () => {
-            if (!C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant)) {
-                return
-            }
-
-            this.SellTrashItems()
-        })
+        C_Timer.After(1, this.SellTrashItems)
     }
 
     private OnManagerFrameShow(type: Enum.PlayerInteractionType) {
