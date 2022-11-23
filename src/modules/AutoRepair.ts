@@ -10,6 +10,7 @@ export class AutoRepair extends Module {
 
         this._menu.AddToggle("GUILD_REPAIR", "Guild Repair").desc = "Try to use guild repair if you are allowed and have sufficient funds available"
     }
+
     protected OnLoad(): void {
         this._eventHandler.RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW", this.OnManagerFrameShow.bind(this))
     }

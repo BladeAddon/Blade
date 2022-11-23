@@ -9,3 +9,5 @@ declare namespace C_Garrison {
     declare function MarkMissionComplete(missionID: number): void
     declare function MissionBonusRoll(missionID: number): void
 }
+
+declare const GarrisonFollowerOptions: LuaTable<number, Frame>
