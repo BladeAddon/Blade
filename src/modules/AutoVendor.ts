@@ -8,8 +8,6 @@ import { ConfigService } from '../ConfigService'
 import { Inject } from '../tstl-di/src/Inject'
 import { Module } from './Module'
 
-const waitTime = 3
-
 export class AutoVendor extends Module {
     @Inject("CommandHandler") private readonly _commandHandler!: CommandHandler
     @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
@@ -19,16 +17,12 @@ export class AutoVendor extends Module {
 
     private readonly _shouldSellPredicate: (item: ContainerItem) => boolean
 
-    private _timeSinceLastMerchantFrameUpdate: number = 0
-    private _waitingForWork = false
-
     constructor() {
         super("AutoVendor")
 
         this._menu.AddToggle("SELL_JUNK", "Sell Junk")
         this._commandHandler.RegisterCommand(new ChatCommand("autosell", "Add or remove item to/from autosell list by linking it to this command with shift+click", this.onAutoSellCommand.bind(this)))
         this._autoSellConfig = this._moduleSettings.GetConfig("AUTO_SELL")
-        this._eventHandler.RegisterEvent("MERCHANT_SHOW", () => this._waitingForWork = false)
 
         this._shouldSellPredicate = this.shouldSell.bind(this)
     }
@@ -58,31 +52,32 @@ export class AutoVendor extends Module {
     private SellTrashItems(): void {
         const itemsToSell = this._bag.FindItems(this._shouldSellPredicate)
         if (itemsToSell.length === 0) {
-            this._waitingForWork = true
-        } else {
-            this._waitingForWork = false
-
-            for (const item of itemsToSell) {
-                item.Use()
-            }
+            return
         }
-    }
 
-    protected OnLoad(): void {
-        const merchantFrame = MerchantFrame
-        merchantFrame.HookScript("OnUpdate", (elapsed: number) => {
-            if (!this.ShouldLoad()) {
+        for (const item of itemsToSell) {
+            item.Use()
+        }
+
+        // recheck for items that failed to sell
+        C_Timer.After(1, () => {
+            if (!C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant)) {
                 return
             }
 
-            this._timeSinceLastMerchantFrameUpdate = this._timeSinceLastMerchantFrameUpdate + elapsed
-
-            if (!this._waitingForWork) {
-                this.SellTrashItems()
-            } else if (this._timeSinceLastMerchantFrameUpdate > waitTime) {
-                this._timeSinceLastMerchantFrameUpdate = this._timeSinceLastMerchantFrameUpdate - waitTime
-                this.SellTrashItems()
-            }
+            this.SellTrashItems()
         })
+    }
+
+    private OnManagerFrameShow(type: Enum.PlayerInteractionType) {
+        if (type !== Enum.PlayerInteractionType.Merchant) {
+            return
+        }
+
+        this.SellTrashItems()
+    }
+
+    protected OnLoad(): void {
+        this._eventHandler.RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW", this.OnManagerFrameShow.bind(this))
     }
 }

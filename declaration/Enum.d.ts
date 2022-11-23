@@ -10,4 +10,14 @@ declare namespace Enum {
         Heirloom = 7,
         WoWToken = 8
     }
+
+    declare enum PlayerInteractionType {
+        None = 0,
+        TradePartner = 1,
+        Item = 2,
+        Gossip = 3,
+        QuestGiver = 4,
+        Merchant = 5,
+        Vendor=12,
+    }
 }
