@@ -11,10 +11,14 @@ export class AutoRepair extends Module {
         this._menu.AddToggle("GUILD_REPAIR", "Guild Repair").desc = "Try to use guild repair if you are allowed and have sufficient funds available"
     }
     protected OnLoad(): void {
-        this._eventHandler.RegisterEvent("MERCHANT_SHOW", this.OnMerchantShow.bind(this))
+        this._eventHandler.RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW", this.OnManagerFrameShow.bind(this))
     }
 
-    private OnMerchantShow(): void {
+    private OnManagerFrameShow(type: Enum.PlayerInteractionType) {
+        if (type !== Enum.PlayerInteractionType.Merchant) {
+            return
+        }
+
         if (!this.ShouldLoad()) {
             return
         }
