@@ -16,7 +16,7 @@ export class AutoCompleteSLMissions extends Module {
     private _waitingForWork = false
 
     constructor() {
-        super("AutoCompleteSLMissions")
+        super("AutoCompleteSLMissions", "Auto complete SL Missions")
         this._menu.setDescription(this._localization.Get("AUTO_COMPLETE_SL_MISSIONS_DESCRIPTION"))
     }
 

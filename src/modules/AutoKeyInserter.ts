@@ -10,7 +10,7 @@ export class AutoKeyInserter extends Module {
     @Inject("Bag") private readonly _bag!: Bag
 
     public constructor() {
-        super("AutoKeyInserter")
+        super("AutoKeyInserter", "Auto Key-inserter")
         this._menu.setDescription(this._localization.Get("AUTO_KEY_INSERTER_DESCRIPTION"))
     }
 

@@ -43,7 +43,7 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
 
         const settingsService = new ConfigService(blade.settings)
         container.instance("SettingsService", settingsService)
-        const options = new Options(addonInfo.AddonName)
+        const options = new Options(addonInfo.AddonName, addonInfo.AddonName)
         container.instance("Options", options)
         container.instance("CommandHandler", new CommandHandler())
         const bag = new Bag()

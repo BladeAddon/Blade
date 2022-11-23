@@ -15,13 +15,14 @@ export abstract class Module {
     protected readonly _menu: OptionsMenu
     protected _loaded = false
 
-    protected constructor(public readonly name: string, public readonly description?: string) {
-        this._moduleSettings = this._settings.GetConfig(name)
+    protected constructor(public readonly key: string, public readonly name: string, public readonly description?: string) {
+        this._moduleSettings = this._settings.GetConfig(key)
 
-        this._menu = this._options.AddMenu(this.name, this.name)
+        this._menu = this._options.AddMenu(this.key, this.name)
         if (this.description) {
             this._menu.setDescription(this.description)
         }
+        this._menu.AddHeader(key, name)
         this._menu.AddToggle("ENABLED", this._localization.Get("ENABLED")).desc = this._localization.Format("MODULE_ENABLE_DESCRIPTION", this.name)
     }
 

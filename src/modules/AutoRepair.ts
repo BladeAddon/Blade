@@ -6,7 +6,7 @@ export class AutoRepair extends Module {
     @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
 
     constructor() {
-        super("AutoRepair")
+        super("AutoRepair", "Auto Repair")
 
         this._menu.AddToggle("GUILD_REPAIR", "Guild Repair").desc = this._localization.Get("GUILD_REPAIR_DESCRIPTION")
     }

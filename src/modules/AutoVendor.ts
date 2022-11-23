@@ -18,7 +18,7 @@ export class AutoVendor extends Module {
     private readonly _shouldSellPredicate: (item: ContainerItem) => boolean
 
     constructor() {
-        super("AutoVendor")
+        super("AutoVendor", "Auto Vendor")
 
         this._menu.AddToggle("SELL_JUNK", this._localization.Get("SELL_JUNK"))
         this._commandHandler.RegisterCommand(new ChatCommand("autosell", this._localization.Get("AUTO_SELL_COMMAND_DESCRIPTION"), this.onAutoSellCommand.bind(this)))

@@ -1,34 +1,19 @@
 import { ConfigService } from './ConfigService'
 import { Inject } from './tstl-di/src/Inject'
 
-// let value = false
-
-// export const options: OptionsTable = {
-//     name: "test",
-//     type: "group",
-//     args: {
-//         autovendor: {
-//             name: "autovendor",
-//             type: "toggle",
-//             get: () => value,
-//             set: (_info, val) => value = val
-//         }
-//     }
-// }
-
 export class OptionsMenu {
-    protected readonly _name?: string
+    protected readonly _name: string
     protected readonly _table: GroupItem
     @Inject("SettingsService") private readonly _settings!: ConfigService
     protected readonly _config: ConfigService
-    constructor(name: string) {
+    constructor(protected readonly key: string, name: string) {
         this._name = name
         this._table = {
             name: this._name,
             type: "group",
             args: {}
         }
-        this._config = this._settings.GetConfig(name)
+        this._config = this._settings.GetConfig(key)
     }
 
     public get(): GroupItem {
@@ -69,15 +54,19 @@ export class OptionsMenu {
     public AddRangeItem(key: string, item: RangeItem) {
         this._table.args[key] = item
     }
+
+    public AddHeader(key: string, name: string): void {
+        this._table.args[key] = { type: "header", name: name }
+    }
 }
 
 export class Options extends OptionsMenu {
-    constructor(name: string) {
-        super(name)
+    constructor(key: string, name: string) {
+        super(key, name)
     }
 
     public AddMenu(key: string, name: string): OptionsMenu {
-        const menu = new OptionsMenu(name)
+        const menu = new OptionsMenu(key, name)
         if (!this._table.args) {
             this._table.args = {}
         }
