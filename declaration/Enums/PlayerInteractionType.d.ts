@@ -1,16 +1,4 @@
 declare namespace Enum {
-    declare enum ItemQuality {
-        Poor = 0,
-        Common = 1,
-        Uncommon = 2,
-        Rare = 3,
-        Epic = 4,
-        Legendary = 5,
-        Artifact = 6,
-        Heirloom = 7,
-        WoWToken = 8
-    }
-
     declare enum PlayerInteractionType {
         None = 0,
         TradePartner = 1,
@@ -77,13 +65,5 @@ declare namespace Enum {
         BarbersChoice = 62,
         JailersTowerBuffs = 63,
         MajorFactionRenown = 64,
-    }
-
-    declare enum GarrisonFollowerType {
-        FollowerType_6_0 = 1,
-        FollowerType_6_2 = 2,
-        FollowerType_7_0 = 4,
-        FollowerType_8_0 = 22,
-        FollowerType_9_0 = 123
     }
 }
