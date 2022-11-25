@@ -226,6 +226,11 @@ export class ActionBarSaver extends Module {
     }
 
     private LoadProfile(profile: string): void {
+        if (!this._profileDb.Get(profile)) {
+            this._output.Print(this._localization.Format("PROFILE_DOES_NOT_EXIST", profile))
+            return
+        }
+
         const db = this._profileDb.GetConfig(profile)
         new ActionBarLoader(profile, db).Execute()
     }
