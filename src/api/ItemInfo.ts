@@ -90,22 +90,17 @@ export class ItemInfo {
     }
 
     public static LoadItems(itemIDs: number[], handler: () => void): void {
-        const itemCache = new LuaMap<number, boolean>()
-        for (const itemID of itemIDs) {
-            itemCache.set(itemID, false)
-        }
+        const items = new Set<number>(itemIDs)
+        const numToLoad = items.size
+        let numLoaded = 0
 
-        for (const [item, _] of itemCache) {
+        for (const item of items) {
             const itemMixin = Item.CreateFromItemID(item)
             itemMixin.ContinueOnItemLoad(() => {
-                itemCache.set(item, true)
-                for (const [_, loaded] of itemCache) {
-                    if (!loaded) {
-                        return
-                    }
+                numLoaded++
+                if (numToLoad === numLoaded) {
+                    handler()
                 }
-
-                handler()
             })
         }
     }
