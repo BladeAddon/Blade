@@ -22,7 +22,6 @@ export class ActionBarSaver extends Module {
         for (let slot = 1; slot <= 512; slot++) {
             const [actionType, id, _subType] = GetActionInfo(slot)
             if (actionType !== undefined && id !== 0) {
-                this._output.Print(...GetActionInfo(slot))
                 if (actionType === "macro") {
                     const [name, icon, body] = GetMacroInfo(id)
                     const macro: Macro = {
@@ -70,17 +69,38 @@ export class ActionBarSaver extends Module {
         return undefined
     }
 
+    private ClearActionSlot(slot: number): void {
+        const [actionType, _id, _subType] = GetActionInfo(slot)
+        if (actionType !== undefined) {
+            PickupAction(slot)
+            ClearCursor()
+        }
+    }
+
+    private FindSpellBook(id: number): { index: number, bookType: BookType } | undefined {
+        for (let spellTab = 1; spellTab <= GetNumSpellTabs(); spellTab++) {
+            const [_name, _texture, offset, numSlots, _isGuild, _offspecID] = GetSpellTabInfo(spellTab)
+            for (let index = offset + 1; index <= offset + numSlots; index++) {
+                const [_spellType, spellBookItemID] = GetSpellBookItemInfo(index, BOOKTYPE_SPELL)
+                if (id === spellBookItemID) {
+                    return {
+                        index: index,
+                        bookType: BOOKTYPE_SPELL
+                    }
+                }
+            }
+        }
+
+        return undefined
+    }
+
     private LoadProfile(profile: string): void {
         ClearCursor()
         const db = this._db.GetConfig(profile)
         const macros = db.GetConfig("macros")
         const actions = db.GetConfig("actions")
         for (let slot = 1; slot <= 512; slot++) {
-            const [actionType, _id, _subType] = GetActionInfo(slot)
-            if (actionType !== undefined) {
-                PickupAction(slot)
-                ClearCursor()
-            }
+            this.ClearActionSlot(slot)
 
             const action = actions.Get<Action>(slot)
             if (action) {
@@ -99,15 +119,12 @@ export class ActionBarSaver extends Module {
                     }
 
                     PlaceAction(slot)
-                    this._output.Print(slot, action.type, action.id, macro.name)
                 } else if (action.type === "spell") {
                     PickupSpell(action.id)
                     PlaceAction(slot)
-                    this._output.Print(slot, action.type, action.id, C_SpellBook.GetSpellLinkFromSpellID(action.id))
                 } else if (action.type === "item") {
                     PickupItem(action.id)
                     PlaceAction(slot)
-                    this._output.Print(slot, action.type, action.id)
                 } else if (action.type === "summonmount") {
                     // random favorite
                     if (action.id === 268435455) {
@@ -123,7 +140,12 @@ export class ActionBarSaver extends Module {
                     }
 
                     PlaceAction(slot)
-                    this._output.Print(slot, action.type, action.id)
+                } else if (action.type === "flyout") {
+                    const spellbookItem = this.FindSpellBook(action.id)
+                    if (spellbookItem) {
+                        PickupSpellBookItem(spellbookItem.index, spellbookItem.bookType)
+                        PlaceAction(slot)
+                    }
                 }
 
                 ClearCursor()
