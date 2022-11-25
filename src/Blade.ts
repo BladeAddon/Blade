@@ -3,21 +3,16 @@ import * as Bootstrapper from "./bootstrapper"
 import { container } from './tstl-di/src/Container'
 import { ConfigService } from './ConfigService'
 import { Options } from './options'
-import { AutoVendor } from './modules/AutoVendor'
-import { Module } from './modules/Module'
 import { EventHandler } from './api/EventHandler'
 import { IEventHandler } from './api/IEventHandler'
-import { AutoRepair } from './modules/AutoRepair'
 import { AddonInfo } from './api/AddonInfo'
 import { ColorHelper } from './api/ColorHelper'
 import { Output } from './api/Output'
 import { IOutput } from './api/IOutput'
-import { AutoKeyInserter } from './modules/AutoKeyInserter'
 import { CommandHandler } from './api/CommandHandler'
-import { AutoCompleteSLMissions } from './modules/AutoCompleteSLMissions'
 import { Bag } from './api/Bag'
 import { Localization } from './api/Localization'
-import { ActionBarSaver } from './modules/ActionBarSaver'
+import { ModuleLoader } from './ModuleLoader'
 
 Bootstrapper.Load()
 
@@ -52,12 +47,9 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
 
         bag.Load()
 
-        const modules: Module[] = [new AutoVendor(), new AutoRepair(), new AutoKeyInserter(), new AutoCompleteSLMissions(), new ActionBarSaver()]
-        for (const module of modules) {
-            if (module.ShouldLoad()) {
-                module.Load()
-            }
-        }
+        const moduleLoader = new ModuleLoader()
+        container.instance("ModuleLoader", moduleLoader)
+        moduleLoader.Load()
 
         LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable(addonInfo.AddonName, options.get())
         LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions(addonInfo.AddonName, addonInfo.AddonName)
