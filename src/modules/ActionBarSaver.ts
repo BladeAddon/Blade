@@ -1,5 +1,6 @@
 import { ChatCommand } from '../api/ChatCommand'
 import { CommandHandler } from '../api/CommandHandler'
+import { Macros } from '../api/Macros'
 import { ConfigService } from '../ConfigService'
 import { Inject } from '../tstl-di/src/Inject'
 import { Module } from './Module'
@@ -7,6 +8,7 @@ import { Module } from './Module'
 class ActionBarLoader {
     private readonly _macros: ConfigService
     private readonly _actions: ConfigService
+
     constructor(private readonly _db: ConfigService) {
         this._macros = this._db.GetConfig("macros")
         this._actions = this._db.GetConfig("actions")
@@ -20,13 +22,10 @@ class ActionBarLoader {
         }
     }
 
-    private FindMacro(macro: Macro): number | undefined {
-        for (let index = 0; index < 999; index++) {
-            const [name, _icon, body] = GetMacroInfo(index)
-            if (name !== undefined) {
-                if (name === macro.name && body === macro.body) {
-                    return index
-                }
+    private FindMacro(macroToFind: Macro): number | undefined {
+        for (const macro of Macros.IterMacros()) {
+            if (macro.name === macroToFind.name && macro.body === macroToFind.body) {
+                return macro.id
             }
         }
 

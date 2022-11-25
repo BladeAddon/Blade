@@ -1,3 +1,6 @@
+declare const MAX_ACCOUNT_MACROS: number
+declare const MAX_CHARACTER_MACROS: number
+
 declare type ActionType = "spell" | "item" | "macro" | "companion" | "equipmentset" | "flyout" | "summonmount"
 declare type SpellType = "SPELL" | "FUTURESPELL" | "PETACTION" | "FLYOUT"
 declare const BOOKTYPE_SPELL: "spell"
@@ -17,6 +20,8 @@ declare function GetActionInfo(slot: number): LuaMultiReturn<ActionInfoSpell | A
 
 /** @noSelf **/
 declare function GetMacroInfo(macroSlot: number): LuaMultiReturn<[name: string, icon: number, body: string]>
+/** @noSelf **/
+declare function GetNumMacros(): LuaMultiReturn<[global: number, perChar: number]>
 /** @noSelf **/
 declare function GetMacroInfo(name: string): LuaMultiReturn<[name: string, icon: number, body: string]>
 /** @noSelf **/
