@@ -134,9 +134,12 @@ class ActionBarLoader {
 
 export class ActionBarSaver extends Module {
     @Inject("CommandHandler") private readonly _commandHandler!: CommandHandler
+    protected readonly _profileDb: ConfigService
 
     constructor() {
         super("ActionBarSaver", "ActionBarSaver")
+
+        this._profileDb = this._db.GetConfig("profiles")
     }
 
     protected OnLoad(): void {
@@ -145,10 +148,8 @@ export class ActionBarSaver extends Module {
     }
 
     private SaveProfile(profile: string): void {
-        this._db.Set(profile, undefined)
-        const db = this._db.GetConfig(profile)
-        const macros = db.GetConfig("macros")
-        const actions = db.GetConfig("actions")
+        const macros = new LuaTable()
+        const actions = new LuaTable()
         for (let slot = 1; slot <= 512; slot++) {
             const [actionType, id, _subType] = GetActionInfo(slot)
             if (actionType !== undefined && id !== 0) {
@@ -160,7 +161,7 @@ export class ActionBarSaver extends Module {
                         body: body,
                         icon: icon
                     }
-                    macros.Set(id, macro)
+                    macros.set(id, macro)
                 }
 
                 if (actionType === "equipmentset") {
@@ -170,7 +171,7 @@ export class ActionBarSaver extends Module {
                         type: actionType
                     }
 
-                    actions.Set(slot, action)
+                    actions.set(slot, action)
                 } else {
                     const action: Action = {
                         slot: slot,
@@ -178,16 +179,21 @@ export class ActionBarSaver extends Module {
                         type: actionType
                     }
 
-                    actions.Set(slot, action)
+                    actions.set(slot, action)
                 }
             }
         }
+
+        const profileDb = new LuaTable()
+        profileDb.set("macros", macros)
+        profileDb.set("actions", actions)
+        this._profileDb.Set(profile, profileDb)
 
         this._output.Print(this._localization.Format("SAVED_PROFILE", profile))
     }
 
     private LoadProfile(profile: string): void {
-        const db = this._db.GetConfig(profile)
+        const db = this._profileDb.GetConfig(profile)
         new ActionBarLoader(db).Execute()
         this._output.Print(this._localization.Format("LOADED_PROFILE", profile))
     }
