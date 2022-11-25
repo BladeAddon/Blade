@@ -111,6 +111,7 @@ class ActionBarLoader {
                 this.LoadFlyout(slot, action)
                 break
             default:
+                error(`ActionType: '${action.type}' not supported`)
                 break
         }
 
