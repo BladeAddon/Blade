@@ -16,4 +16,8 @@ if L then
     L["ENABLED"] = "Enabled"
     L["MODULE_ENABLE_DESCRIPTION"] =
         "Enables module %s. If disabled it will not load and needs a reload after enabling."
+    L["SAVE_ACTIONS_DESCRIPTION"] = "Saves the current actions on the actionbar in a profile"
+    L["LOAD_ACTIONS_DESCRIPTION"] = "Loads the actions from a profile"
+    L["SAVED_PROFILE"] = "Saved profile %s"
+    L["LOADED_PROFILE"] = "Loaded profile %s"
 end

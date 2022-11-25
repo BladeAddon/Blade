@@ -17,6 +17,7 @@ import { CommandHandler } from './api/CommandHandler'
 import { AutoCompleteSLMissions } from './modules/AutoCompleteSLMissions'
 import { Bag } from './api/Bag'
 import { Localization } from './api/Localization'
+import { ActionBarSaver } from './modules/ActionBarSaver'
 
 Bootstrapper.Load()
 
@@ -51,7 +52,7 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
 
         bag.Load()
 
-        const modules: Module[] = [new AutoVendor(), new AutoRepair(), new AutoKeyInserter(), new AutoCompleteSLMissions()]
+        const modules: Module[] = [new AutoVendor(), new AutoRepair(), new AutoKeyInserter(), new AutoCompleteSLMissions(), new ActionBarSaver()]
         for (const module of modules) {
             if (module.ShouldLoad()) {
                 module.Load()

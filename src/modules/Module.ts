@@ -12,12 +12,13 @@ export abstract class Module {
     @Inject("ILocalization") protected readonly _localization!: ILocalization
 
     protected readonly _moduleSettings: ConfigService
+    protected readonly _db: ConfigService
     protected readonly _menu: OptionsMenu
     protected _loaded = false
 
     protected constructor(public readonly key: string, public readonly name: string, public readonly description?: string) {
         this._moduleSettings = this._settings.GetConfig(key)
-
+        this._db = this._moduleSettings
         this._menu = this._options.AddMenu(this.key, this.name)
         if (this.description) {
             this._menu.setDescription(this.description)
