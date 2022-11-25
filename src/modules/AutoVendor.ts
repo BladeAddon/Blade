@@ -21,7 +21,6 @@ export class AutoVendor extends Module {
         super("AutoVendor", "Auto Vendor")
 
         this._menu.AddToggle("SELL_JUNK", this._localization.Get("SELL_JUNK"))
-        this._commandHandler.RegisterCommand(new ChatCommand("autosell", this._localization.Get("AUTO_SELL_COMMAND_DESCRIPTION"), this.onAutoSellCommand.bind(this)))
         this._autoSellConfig = this._moduleSettings.GetConfig("AUTO_SELL")
 
         this._shouldSellPredicate = this.shouldSell.bind(this)
@@ -76,6 +75,8 @@ export class AutoVendor extends Module {
     }
 
     protected OnLoad(): void {
+        this._commandHandler.RegisterCommand(new ChatCommand("autosell", this._localization.Get("AUTO_SELL_COMMAND_DESCRIPTION"), this.onAutoSellCommand.bind(this)))
+
         this._eventHandler.RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW", this.OnManagerFrameShow.bind(this))
     }
 }
