@@ -63,7 +63,7 @@ export class AutoVendor extends Module {
         }
 
         // recheck for items that failed to sell
-        C_Timer.After(1, this.SellTrashItems)
+        C_Timer.After(1, this.SellTrashItems.bind(this))
     }
 
     private OnManagerFrameShow(type: Enum.PlayerInteractionType) {
