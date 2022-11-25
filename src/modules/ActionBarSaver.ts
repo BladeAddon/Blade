@@ -92,12 +92,12 @@ export class ActionBarSaver extends Module {
                         error(`macro ${action.id} for slot ${slot} was saved doesn't exist`)
                     }
 
-                    const [name, _icon, _body] = GetMacroInfo(action.id)
-                    if (name === undefined) {
+                    const [name, icon, body] = GetMacroInfo(action.id)
+                    if (name === macro.name && icon === macro.icon && body == macro.body) {
+                        PickupMacro(macro.id)
+                    } else {
                         const macroID = this.FindMacro(macro) ?? CreateMacro(macro.name, macro.icon, macro.body, true)
                         PickupMacro(macroID)
-                    } else {
-                        PickupMacro(macro.id)
                     }
 
                     PlaceAction(slot)
