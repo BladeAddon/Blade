@@ -92,18 +92,26 @@ class ActionBarLoader {
     }
 
     private LoadAction(slot: number, action: Action): void {
-        if (action.type === "macro") {
-            this.LoadMacro(slot, action)
-        } else if (action.type === "spell") {
-            PickupSpell(action.id)
-            PlaceAction(slot)
-        } else if (action.type === "item") {
-            PickupItem(action.id)
-            PlaceAction(slot)
-        } else if (action.type === "summonmount") {
-            this.LoadMount(slot, action)
-        } else if (action.type === "flyout") {
-            this.LoadFlyout(slot, action)
+        switch (action.type) {
+            case "macro":
+                this.LoadMacro(slot, action)
+                break
+            case "spell":
+                PickupSpell(action.id)
+                PlaceAction(slot)
+                break
+            case "item":
+                PickupItem(action.id)
+                PlaceAction(slot)
+                break
+            case "summonmount":
+                this.LoadMount(slot, action)
+                break
+            case "flyout":
+                this.LoadFlyout(slot, action)
+                break
+            default:
+                break
         }
 
         ClearCursor()
