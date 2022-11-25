@@ -1,4 +1,4 @@
-import { Item } from './Item'
+import { ItemInfo } from './ItemInfo'
 
 export class ContainerItem {
     private constructor(public readonly containerIndex: number, public readonly slotIndex: number, private readonly itemLocation: ItemLocationMixin) {
@@ -13,9 +13,9 @@ export class ContainerItem {
         return undefined
     }
 
-    private _item?: Item
-    public get item(): Item {
-        return this._item ??= new Item(this.itemID)
+    private _item?: ItemInfo
+    public get item(): ItemInfo {
+        return this._item ??= new ItemInfo(this.itemID)
     }
 
     private _quality?: Enum.ItemQuality

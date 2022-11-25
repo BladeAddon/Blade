@@ -15,15 +15,6 @@ declare interface ContainerItemInfo {
     isBound: boolean
 }
 
-declare namespace C_Container {
-    /** @noSelf **/
-    declare function GetContainerNumSlots(containerIndex: number): number
-    /** @noSelf **/
-    declare function GetContainerItemInfo(containerIndex: number, slotIndex: number): ContainerItemInfo | undefined
-    /** @noSelf **/
-    declare function UseContainerItem(containerIndex: number, slotIndex: number, unitToken?: string, reagentBankOpen?: boolean = false): void
-}
-
 declare type ItemInfoResult = [itemName: string, itemLink: string, itemRarity: number, itemLevel: number, itemMinLevel: number, itemType: string, itemSubType: string, ItemStackCount: number, itemEquipLoc: string, itemTexture: number, itemSellPrice: number, classID: number, subclassID: number, bindType: number, expacID: number, setID: number, isCraftingReagent: boolean]
 /** @noSelf **/
 declare function GetItemInfo(item: number | string): LuaMultiReturn<ItemInfoResult>

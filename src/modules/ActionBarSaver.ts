@@ -1,15 +1,21 @@
 import { ChatCommand } from '../api/ChatCommand'
 import { CommandHandler } from '../api/CommandHandler'
+import { IOutput } from '../api/IOutput'
 import { Macros } from '../api/Macros'
 import { ConfigService } from '../ConfigService'
 import { Inject } from '../tstl-di/src/Inject'
 import { Module } from './Module'
+import { ItemInfo } from '../api/ItemInfo'
+import { ILocalization } from '../api/ILocalization'
 
 class ActionBarLoader {
+    @Inject("IOutput") protected readonly _output!: IOutput
+    @Inject("ILocalization") protected readonly _localization!: ILocalization
+
     private readonly _macros: ConfigService
     private readonly _actions: ConfigService
 
-    constructor(private readonly _db: ConfigService) {
+    constructor(private readonly profile: string, private readonly _db: ConfigService) {
         this._macros = this._db.GetConfig("macros")
         this._actions = this._db.GetConfig("actions")
     }
@@ -118,7 +124,7 @@ class ActionBarLoader {
         ClearCursor()
     }
 
-    public Execute(): void {
+    private LoadActions(): void {
         ClearCursor()
 
         for (let slot = 1; slot <= 512; slot++) {
@@ -129,6 +135,33 @@ class ActionBarLoader {
                 this.LoadAction(slot, action)
             }
         }
+
+        this._output.Print(this._localization.Format("LOADED_PROFILE", this.profile))
+    }
+
+    public Execute(): void {
+        const itemIds = []
+        for (let slot = 1; slot <= 512; slot++) {
+            this.ClearActionSlot(slot)
+
+            const action = this._actions.Get<Action>(slot)
+            if (action?.type === "item") {
+                itemIds.push(action.id)
+            }
+        }
+
+        if (itemIds.length > 0) {
+            // we have some items in the actions and maybe need to wait for them to be loaded
+            this._output.Print(this._localization.Get("WAIT_ITEM_CACHE"))
+            ItemInfo.LoadItems(itemIds, () => {
+                this._output.Print(this._localization.Get("LOADED_ITEM_CACHE"))
+                this.LoadActions()
+            })
+
+            return
+        }
+
+        this.LoadActions()
     }
 }
 
@@ -194,7 +227,6 @@ export class ActionBarSaver extends Module {
 
     private LoadProfile(profile: string): void {
         const db = this._profileDb.GetConfig(profile)
-        new ActionBarLoader(db).Execute()
-        this._output.Print(this._localization.Format("LOADED_PROFILE", profile))
+        new ActionBarLoader(profile, db).Execute()
     }
 }

@@ -20,4 +20,6 @@ if L then
     L["LOAD_ACTIONS_DESCRIPTION"] = "Loads the actions from a profile"
     L["SAVED_PROFILE"] = "Saved profile %s"
     L["LOADED_PROFILE"] = "Loaded profile %s"
+    L["WAIT_ITEM_CACHE"] = "Waiting for items to be loaded into cache"
+    L["LOADED_ITEM_CACHE"] = "All items have been loaded and cached"
 end

@@ -3,7 +3,7 @@ import { ChatCommand } from '../api/ChatCommand'
 import { CommandHandler } from '../api/CommandHandler'
 import { ContainerItem } from '../api/ContainerItem'
 import { IEventHandler } from '../api/IEventHandler'
-import { Item } from '../api/Item'
+import { ItemInfo } from '../api/ItemInfo'
 import { ConfigService } from '../ConfigService'
 import { Inject } from '../tstl-di/src/Inject'
 import { Module } from './Module'
@@ -27,7 +27,7 @@ export class AutoVendor extends Module {
     }
 
     private onAutoSellCommand(itemString: string): void {
-        const item = new Item(itemString)
+        const item = new ItemInfo(itemString)
         if (!item.itemID || !item.itemLink) {
             return
         }

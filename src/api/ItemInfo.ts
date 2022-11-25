@@ -1,4 +1,4 @@
-export class Item {
+export class ItemInfo {
     private _itemInfo: ItemInfoResult | undefined
     private _itemInfoInstant: ItemInfoInstantResult | undefined
 
@@ -87,5 +87,26 @@ export class Item {
 
     public get icon(): number | undefined {
         return this.itemInfoInstant?.[4]
+    }
+
+    public static LoadItems(itemIDs: number[], handler: () => void): void {
+        const itemCache = new LuaMap<number, boolean>()
+        for (const itemID of itemIDs) {
+            itemCache.set(itemID, false)
+        }
+
+        for (const [item, _] of itemCache) {
+            const itemMixin = Item.CreateFromItemID(item)
+            itemMixin.ContinueOnItemLoad(() => {
+                itemCache.set(item, true)
+                for (const [_, loaded] of itemCache) {
+                    if (!loaded) {
+                        return
+                    }
+                }
+
+                handler()
+            })
+        }
     }
 }
