@@ -27,17 +27,17 @@ export class AutoVendor extends Module {
     }
 
     private onAutoSellCommand(itemString: string): void {
-        const item = new ItemInfo(itemString)
-        if (!item.itemID || !item.itemLink) {
+        const item = ItemInfo.CreateFromName(itemString)
+        if (!item) {
             return
         }
 
         if (this._autoSellConfig.Get(item.itemID)) {
             this._autoSellConfig.Set(item.itemID, undefined)
-            this._output.LocalizedPrint("AUTO_SELL_REMOVED")
+            this._output.LocalizedPrint("AUTO_SELL_REMOVED", item.itemLink)
         } else {
             this._autoSellConfig.Set(item.itemID, true)
-            this._output.LocalizedPrint("AUTO_SELL_ADDED")
+            this._output.LocalizedPrint("AUTO_SELL_ADDED", item.itemLink)
         }
     }
 

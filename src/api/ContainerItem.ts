@@ -15,7 +15,8 @@ export class ContainerItem {
 
     private _item?: ItemInfo
     public get item(): ItemInfo {
-        return this._item ??= new ItemInfo(this.itemID)
+        // can this actually be null since we create it from an item in the bag?
+        return this._item ??= ItemInfo.Create(this.itemID)!
     }
 
     private _quality?: Enum.ItemQuality
@@ -29,7 +30,7 @@ export class ContainerItem {
     }
 
     public get sellPrice(): number {
-        return this.item.sellPrice!
+        return this.item.sellPrice
     }
 
     public Use(): void {
