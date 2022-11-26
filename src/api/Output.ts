@@ -8,12 +8,14 @@ export class Output implements IOutput {
     @Inject("AddonInfo") private readonly _addonInfo!: AddonInfo
     @Inject("ILocalization") protected readonly _localization!: ILocalization
 
-    private getPrintPrefix(): string {
-        return ColorHelper.Encode("[", ColorHelper.WHITE) + ColorHelper.Encode(this._addonInfo.AddonName, this._addonInfo.AddonColor) + ColorHelper.Encode("]", ColorHelper.WHITE)
+    private _printPrefix?: string
+
+    private get printPrefix(): string {
+        return this._printPrefix ??= ColorHelper.Encode("[", ColorHelper.WHITE) + ColorHelper.Encode(this._addonInfo.AddonName, this._addonInfo.AddonColor) + ColorHelper.Encode("]", ColorHelper.WHITE)
     }
 
     public Print(...args: any[]): void {
-        print(this.getPrintPrefix(), ...args)
+        print(this.printPrefix, ...args)
     }
 
     public LocalizedPrint(key: string, ...args: any[]): void {
