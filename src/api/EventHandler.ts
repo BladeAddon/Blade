@@ -31,7 +31,7 @@ export class EventHandler implements IEventHandler {
         this.frame.RegisterEvent(event)
     }
 
-    public RegisterEvent<T extends any[]>(event: string, handler: (...args: T) => void) {
+    public RegisterEvent<T extends unknown[]>(event: string, handler: (...args: T) => void) {
         if (!this._eventHandlers.has(event)) {
             this._eventHandlers.set(event, [])
             this.registerEventOnFrame(event)

@@ -1,5 +1,5 @@
 /** @noSelf **/
 
 declare namespace C_Timer {
-    declare function After(seconds: number, callback: (this:any) => void): void
+    declare function After(seconds: number, callback: (this:unknown) => void): void
 }

@@ -18,7 +18,7 @@ import { Items } from './api/Items'
 Bootstrapper.Load()
 
 export class Blade {
-    @Inject("DB") data!: LuaTable<string, any>
+    @Inject("DB") data!: LuaTable<string, unknown>
     @Inject("Settings") settings!: LuaTable
 }
 

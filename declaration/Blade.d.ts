@@ -1,4 +1,4 @@
-declare const BLADEDATA: LuaTable<string, any>
+declare const BLADEDATA: LuaTable<string, unknown>
 declare let SLASH_Blade1: string | undefined
 declare let SLASH_Blade2: string | undefined
 declare let SLASH_Blade3: string | undefined

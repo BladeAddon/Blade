@@ -12,7 +12,7 @@ export class AutoCompleteSLMissions extends Module {
 
     private _hooked = false
 
-    private _timeSinceLastMissionFrameUpdate: number = 0
+    private _timeSinceLastMissionFrameUpdate = 0
     private _waitingForWork = false
 
     constructor() {

@@ -1,7 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "build": "tstl",
+    "lint": "eslint ./declaration/ ./src/",
+    "lint:fix": "eslint --fix ./declaration/ ./src/",
+    "build": "npm run lint && tstl",
     "minify": "deno run --allow-read --allow-write --allow-run ./build/minify.ts",
     "release": "npm run build && npm run minify && deno run --allow-read --allow-write --allow-run ./build/release.ts",
     "copy_to_addons": "robocopy /E out \"%WOW_ADDON_DIR%/Blade/\"",
@@ -10,7 +12,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "ace3decl": "file:../ace3decl",
+    "eslint": "^8.28.0",
+    "eslint-plugin-sonarjs": "^0.16.0",
     "lua-types": "^2.13.0",
     "luamin": "^1.0.4",
     "ts-node": "^10.9.1",

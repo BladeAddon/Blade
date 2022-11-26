@@ -19,11 +19,11 @@ declare type ActionInfoFlyout = [actionType: "flyout", id: number, subType: stri
 declare function GetActionInfo(slot: number): LuaMultiReturn<ActionInfoSpell | ActionInfoItem | ActionInfoMacro | ActionInfoCompanion | ActionInfoMount | ActionInfoEquipmentset | ActionInfoFlyout | undefined>
 
 /** @noSelf **/
-declare function GetMacroInfo(macroSlot: number): LuaMultiReturn<[name: string, icon: number, body: string]>
-/** @noSelf **/
 declare function GetNumMacros(): LuaMultiReturn<[global: number, perChar: number]>
 /** @noSelf **/
 declare function GetMacroInfo(name: string): LuaMultiReturn<[name: string, icon: number, body: string]>
+/** @noSelf **/
+declare function GetMacroInfo(macroSlot: number): LuaMultiReturn<[name: string, icon: number, body: string]>
 /** @noSelf **/
 declare function EditMacro(macroSlot: number, name: string, icon?: number, body?: string): number
 /** @noSelf **/

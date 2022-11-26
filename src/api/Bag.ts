@@ -74,7 +74,7 @@ export class Bag extends Loadable {
     }
 
     public FindItems(predicate: ContainerItemPredicate): ContainerItem[] {
-        let items = []
+        const items = []
         for (const [_, bag] of this._containerLookup) {
             for (const [_, item] of bag) {
                 if (predicate(item)) {
