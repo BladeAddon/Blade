@@ -88,20 +88,4 @@ export class ItemInfo {
     public get icon(): number | undefined {
         return this.itemInfoInstant?.[4]
     }
-
-    public static LoadItems(itemIDs: number[], handler: () => void): void {
-        const items = new Set<number>(itemIDs)
-        const numToLoad = items.size
-        let numLoaded = 0
-
-        for (const item of items) {
-            const itemMixin = Item.CreateFromItemID(item)
-            itemMixin.ContinueOnItemLoad(() => {
-                numLoaded++
-                if (numToLoad === numLoaded) {
-                    handler()
-                }
-            })
-        }
-    }
 }

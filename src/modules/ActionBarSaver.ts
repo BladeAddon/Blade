@@ -5,12 +5,11 @@ import { Macros } from '../api/Macros'
 import { ConfigService } from '../ConfigService'
 import { Inject } from '../tstl-di/src/Inject'
 import { Module } from './Module'
-import { ItemInfo } from '../api/ItemInfo'
-import { ILocalization } from '../api/ILocalization'
+import { Items } from '../api/Items'
 
 class ActionBarLoader {
     @Inject("IOutput") protected readonly _output!: IOutput
-    @Inject("ILocalization") protected readonly _localization!: ILocalization
+    @Inject("Items") protected readonly _items!: Items
 
     private readonly _macros: ConfigService
     private readonly _actions: ConfigService
@@ -136,7 +135,7 @@ class ActionBarLoader {
             }
         }
 
-        this._output.Print(this._localization.Format("LOADED_PROFILE", this.profile))
+        this._output.LocalizedPrint("LOADED_PROFILE", this.profile)
     }
 
     public Execute(): void {
@@ -152,9 +151,9 @@ class ActionBarLoader {
 
         if (itemIds.length > 0) {
             // we have some items in the actions and maybe need to wait for them to be loaded
-            this._output.Print(this._localization.Get("WAIT_ITEM_CACHE"))
-            ItemInfo.LoadItems(itemIds, () => {
-                this._output.Print(this._localization.Get("LOADED_ITEM_CACHE"))
+            this._output.LocalizedPrint("WAIT_ITEM_CACHE")
+            this._items.LoadItems(itemIds, () => {
+                this._output.LocalizedPrint("LOADED_ITEM_CACHE")
                 this.LoadActions()
             })
 
@@ -222,12 +221,12 @@ export class ActionBarSaver extends Module {
         profileDb.set("actions", actions)
         this._profileDb.Set(profile, profileDb)
 
-        this._output.Print(this._localization.Format("SAVED_PROFILE", profile))
+        this._output.LocalizedPrint("SAVED_PROFILE", profile)
     }
 
     private LoadProfile(profile: string): void {
         if (!this._profileDb.Get(profile)) {
-            this._output.Print(this._localization.Format("PROFILE_DOES_NOT_EXIST", profile))
+            this._output.LocalizedPrint("PROFILE_DOES_NOT_EXIST", profile)
             return
         }
 

@@ -31,7 +31,7 @@ export class AutoRepair extends Module {
         const [repairCost, canRepair] = GetRepairAllCost()
         if (canRepair) {
             RepairAllItems(this._moduleSettings.Get<boolean>("GUILD_REPAIR") && CanGuildBankRepair() && GetGuildBankWithdrawMoney() >= repairCost)
-            this._output.Print(this._localization.Format("REPAIRING_COST", GetMoneyString(repairCost)))
+            this._output.LocalizedPrint("REPAIRING_COST", GetMoneyString(repairCost))
         }
     }
 }

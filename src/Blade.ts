@@ -13,6 +13,7 @@ import { CommandHandler } from './api/CommandHandler'
 import { Bag } from './api/Bag'
 import { Localization } from './api/Localization'
 import { ModuleLoader } from './ModuleLoader'
+import { Items } from './api/Items'
 
 Bootstrapper.Load()
 
@@ -42,6 +43,7 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
         const options = new Options(addonInfo.AddonName, addonInfo.AddonName)
         container.instance("Options", options)
         container.instance("CommandHandler", new CommandHandler())
+        container.singleton("Items", Items)
         const bag = new Bag()
         container.instance("Bag", bag)
 
@@ -53,6 +55,6 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
 
         LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable(addonInfo.AddonName, options.get())
         LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions(addonInfo.AddonName, addonInfo.AddonName)
-        output.Print(localization.Format("LOADED", addonInfo.AddonName))
+        output.LocalizedPrint("LOADED", addonInfo.AddonName)
     }
 })

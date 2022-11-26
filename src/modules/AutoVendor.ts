@@ -34,10 +34,10 @@ export class AutoVendor extends Module {
 
         if (this._autoSellConfig.Get(item.itemID)) {
             this._autoSellConfig.Set(item.itemID, undefined)
-            this._output.Print(this._localization.Get("AUTO_SELL_REMOVED"))
+            this._output.LocalizedPrint("AUTO_SELL_REMOVED")
         } else {
             this._autoSellConfig.Set(item.itemID, true)
-            this._output.Print(this._localization.Get("AUTO_SELL_ADDED"))
+            this._output.LocalizedPrint("AUTO_SELL_ADDED")
         }
     }
 

@@ -38,7 +38,7 @@ export abstract class Module {
     }
 
     public Load(): void {
-        this._output.Print(this._localization.Format("LOADING_MODULE", this.name))
+        this._output.LocalizedPrint("LOADING_MODULE", this.name)
 
         this.OnLoad()
         this._loaded = true
