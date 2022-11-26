@@ -75,17 +75,20 @@ class ActionBarLoader {
         // random favorite
         if (action.id === 268435455) {
             C_MountJournal.Pickup(0)
-        } else {
-            // find displayIndex
-            for (let index = 1; index <= C_MountJournal.GetNumMounts(); index++) {
-                if (C_MountJournal.GetDisplayedMountID(index) === action.id) {
-                    C_MountJournal.Pickup(index)
-                    break
-                }
+            PlaceAction(slot)
+            return
+        }
+
+        // find displayIndex
+        for (let index = 1; index <= C_MountJournal.GetNumMounts(); index++) {
+            if (C_MountJournal.GetDisplayedMountID(index) === action.id) {
+                C_MountJournal.Pickup(index)
+                PlaceAction(slot)
+                return
             }
         }
 
-        PlaceAction(slot)
+        error(`Failed to find mount with id ${action.id}`)
     }
 
     private LoadFlyout(slot: number, action: FlyoutAction): void {
@@ -93,6 +96,8 @@ class ActionBarLoader {
         if (spellbookItem) {
             PickupSpellBookItem(spellbookItem.index, spellbookItem.bookType)
             PlaceAction(slot)
+        } else {
+            error(`Failed to find flyout with id ${action.id}`)
         }
     }
 
