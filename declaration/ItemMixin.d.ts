@@ -1,5 +1,5 @@
 declare namespace Item {
-    declare function CreateFromItemID(itemID: number): ItemMixin
+    function CreateFromItemID(itemID: number): ItemMixin
 }
 
 declare interface ItemMixin {

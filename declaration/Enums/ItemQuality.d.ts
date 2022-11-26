@@ -1,5 +1,5 @@
 declare namespace Enum {
-    declare enum ItemQuality {
+    enum ItemQuality {
         Poor = 0,
         Common = 1,
         Uncommon = 2,

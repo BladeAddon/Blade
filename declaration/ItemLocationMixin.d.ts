@@ -1,7 +1,7 @@
 declare namespace ItemLocation {
-    declare function CreateEmpty(): ItemLocationMixin
-    declare function CreateFromBagAndSlot(bagID: number, slotIndex: number): ItemLocationMixin
-    declare function CreateFromEquipmentSlot(equipmentSlotIndex: number): ItemLocationMixin
+    function CreateEmpty(): ItemLocationMixin
+    function CreateFromBagAndSlot(bagID: number, slotIndex: number): ItemLocationMixin
+    function CreateFromEquipmentSlot(equipmentSlotIndex: number): ItemLocationMixin
 }
 
 declare interface ItemLocationMixin {

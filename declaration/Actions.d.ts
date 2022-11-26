@@ -16,7 +16,7 @@ declare type ActionInfoMount = [actionType: "summonmount", id: number, subType: 
 declare type ActionInfoEquipmentset = [actionType: "equipmentset", id: string, subType: string]
 declare type ActionInfoFlyout = [actionType: "flyout", id: number, subType: string]
 /** @noSelf **/
-declare function GetActionInfo(slot: number): LuaMultiReturn<ActionInfoSpell | ActionInfoItem | ActionInfoMacro | ActionInfoCompanion | ActionInfoMount | ActionInfoEquipmentset | ActionInfoFlyout | undefined>
+declare function GetActionInfo(slot: number): LuaMultiReturn<ActionInfoSpell | ActionInfoItem | ActionInfoMacro | ActionInfoCompanion | ActionInfoMount | ActionInfoEquipmentset | ActionInfoFlyout> | LuaMultiReturn<undefined[]>
 
 /** @noSelf **/
 declare function GetNumMacros(): LuaMultiReturn<[global: number, perChar: number]>
@@ -72,6 +72,31 @@ declare interface Macro {
 declare interface Action {
     type: ActionType
     slot: number,
+    id: number | string
+}
+
+declare interface ItemAction extends Action {
+    type: "item"
+    id: number
+}
+
+declare interface SpellAction extends Action {
+    type: "spell"
+    id: number
+}
+
+declare interface MacroAction extends Action {
+    type: "macro"
+    id: number
+}
+
+declare interface FlyoutAction extends Action {
+    type: "flyout"
+    id: number
+}
+
+declare interface MountAction extends Action {
+    type: "summonmount"
     id: number
 }
 
@@ -79,3 +104,5 @@ declare interface EquipmentsetAction extends Action {
     type: "equipmentset"
     id: string
 }
+
+declare type AnyAction = ItemAction | SpellAction | MacroAction | FlyoutAction | MountAction | EquipmentsetAction

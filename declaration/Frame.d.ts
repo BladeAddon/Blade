@@ -3,9 +3,8 @@ declare type WidgetHandler = "OnUpdate"
 declare interface Frame {
     HookScript(event: WidgetHandler, handler: (...args: any[]) => void): void
     // HookScript(event: "OnUpdate", handler: (frame: Frame, elapsed: number) => void): void
-    RegisterEvent(event: string)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    SetScript<T extends unknown[]>(event: string, handler: (T) => void)
+    RegisterEvent(event: string): void
+    SetScript<T extends unknown[]>(event: string, handler: (...args: T) => void): void
     IsVisible(): boolean
     onEventAttached: boolean | undefined
 }

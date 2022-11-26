@@ -1,5 +1,5 @@
 declare namespace Enum {
-    declare enum PlayerInteractionType {
+    enum PlayerInteractionType {
         None = 0,
         TradePartner = 1,
         Item = 2,

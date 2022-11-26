@@ -54,7 +54,7 @@ class ActionBarLoader {
         return undefined
     }
 
-    private LoadMacro(slot: number, action: Action): void {
+    private LoadMacro(slot: number, action: MacroAction): void {
         const macro = this._macros.Get<Macro>(action.id)
         if (!macro) {
             error(`macro ${action.id} for slot ${slot} was saved doesn't exist`)
@@ -71,7 +71,7 @@ class ActionBarLoader {
         PlaceAction(slot)
     }
 
-    private LoadMount(slot: number, action: Action): void {
+    private LoadMount(slot: number, action: MountAction): void {
         // random favorite
         if (action.id === 268435455) {
             C_MountJournal.Pickup(0)
@@ -88,7 +88,7 @@ class ActionBarLoader {
         PlaceAction(slot)
     }
 
-    private LoadFlyout(slot: number, action: Action): void {
+    private LoadFlyout(slot: number, action: FlyoutAction): void {
         const spellbookItem = this.FindSpellBook(action.id)
         if (spellbookItem) {
             PickupSpellBookItem(spellbookItem.index, spellbookItem.bookType)
@@ -96,7 +96,7 @@ class ActionBarLoader {
         }
     }
 
-    private LoadAction(slot: number, action: Action): void {
+    private LoadAction(slot: number, action: AnyAction): void {
         switch (action.type) {
             case "macro":
                 this.LoadMacro(slot, action)
@@ -129,7 +129,7 @@ class ActionBarLoader {
         for (let slot = 1; slot <= 512; slot++) {
             this.ClearActionSlot(slot)
 
-            const action = this._actions.Get<Action>(slot)
+            const action = this._actions.Get<AnyAction>(slot)
             if (action) {
                 this.LoadAction(slot, action)
             }
@@ -143,7 +143,7 @@ class ActionBarLoader {
         for (let slot = 1; slot <= 512; slot++) {
             this.ClearActionSlot(slot)
 
-            const action = this._actions.Get<Action>(slot)
+            const action = this._actions.Get<AnyAction>(slot)
             if (action?.type === "item") {
                 itemIds.push(action.id)
             }

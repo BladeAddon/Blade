@@ -1,5 +1,5 @@
 declare namespace Enum {
-    declare enum GarrisonFollowerType {
+    enum GarrisonFollowerType {
         FollowerType_6_0 = 1,
         FollowerType_6_2 = 2,
         FollowerType_7_0 = 4,
