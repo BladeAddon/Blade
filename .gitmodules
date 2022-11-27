@@ -1,3 +1,6 @@
 [submodule "src/tstl-di"]
 	path = src/tstl-di
 	url = https://github.com/mztikk/tstl-di
+[submodule "ace3decl"]
+	path = ace3decl
+	url = https://github.com/mztikk/ace3decl.git
