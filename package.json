@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "setup": "npm install && git submodule update --init --recursive",
     "lint": "eslint ./declaration/ ./src/",
     "lint:fix": "eslint --fix ./declaration/ ./src/",
     "build": "npm run lint && tstl",

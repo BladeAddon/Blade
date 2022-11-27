@@ -2,7 +2,7 @@
 ## Interface: 100002
 ## Notes: Blade
 ## Author: mztikk
-## Version: 1
+## Version: 1.0.0
 
 ## SavedVariables: BLADEDATA
 
