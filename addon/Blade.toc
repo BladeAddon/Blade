@@ -2,7 +2,8 @@
 ## Interface: 100002
 ## Notes: Blade
 ## Author: mztikk
-## Version: 1.0.0
+## X-Curse-Project-ID: 714501
+## Version: @project-version@
 
 ## SavedVariables: BLADEDATA
 
