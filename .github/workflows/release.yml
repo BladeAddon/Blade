@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+env: 
+  CF_API_KEY: ${{ secrets.CF_API_KEY }}
+  GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+  
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -26,3 +30,4 @@ jobs:
       
       - run: npm run setup
       - run: npm run release
+      - run: ./release.sh -t ./out  
