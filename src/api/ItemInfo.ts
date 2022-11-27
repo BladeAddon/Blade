@@ -35,8 +35,9 @@ export class ItemInfo {
         return this._itemInfoInstant ??= GetItemInfoInstant(this.itemID)
     }
 
+    private _itemName?: string
     public get itemName(): string {
-        return this.itemInfo[0]
+        return this._itemName ??= C_Item.GetItemNameByID(this.itemID)
     }
 
     public get itemLink(): string {
@@ -103,7 +104,8 @@ export class ItemInfo {
         return this.itemInfo[16]
     }
 
+    private _icon?: number
     public get icon(): number {
-        return this.itemInfoInstant[4]
+        return this._icon ??= C_Item.GetItemIconByID(this.itemID)
     }
 }
