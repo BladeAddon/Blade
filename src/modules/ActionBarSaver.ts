@@ -182,6 +182,7 @@ export class ActionBarSaver extends Module {
     protected OnLoad(): void {
         this._commandHandler.RegisterCommand(new ChatCommand("saveactions", this._localization.Get("SAVE_ACTIONS_DESCRIPTION"), this.SaveProfile.bind(this)))
         this._commandHandler.RegisterCommand(new ChatCommand("loadactions", this._localization.Get("LOAD_ACTIONS_DESCRIPTION"), this.LoadProfile.bind(this)))
+        this._commandHandler.RegisterCommand(new ChatCommand("deleteactions", this._localization.Get("DELETE_ACTIONS_DESCRIPTION"), this.DeleteProfile.bind(this)))
     }
 
     private SaveProfile(profile: string): void {
@@ -237,5 +238,15 @@ export class ActionBarSaver extends Module {
 
         const db = this._profileDb.GetConfig(profile)
         new ActionBarLoader(profile, db).Execute()
+    }
+
+    private DeleteProfile(profile: string): void {
+        if (!this._profileDb.Get(profile)) {
+            this._output.LocalizedPrint("PROFILE_DOES_NOT_EXIST", profile)
+            return
+        }
+
+        this._profileDb.Set(profile, undefined)
+        this._output.LocalizedPrint("DELETED_PROFILE", profile)
     }
 }
