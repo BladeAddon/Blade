@@ -13,4 +13,3 @@ for await (const entry of fs.walk(addon_directory_full)) {
     console.log(new_path)
     await fs.copy(file_path_full, new_path, { overwrite: true })
 }
-
