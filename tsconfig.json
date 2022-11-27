@@ -34,8 +34,7 @@
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
     "types": [
       "lua-types/5.1",
-      "@typescript-to-lua/language-extensions",
-      "ace3decl"
+      "@typescript-to-lua/language-extensions"
     ], /* Specify type package names to be included without being referenced in a source file. */
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
     // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */

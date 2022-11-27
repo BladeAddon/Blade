@@ -42,7 +42,7 @@ export class AutoVendor extends Module {
     }
 
     private shouldSell(item: ContainerItem): boolean {
-        return (
+        return item.IsValid() && (
             ((item.quality === Enum.ItemQuality.Poor && this._moduleSettings.Get<boolean>("SELL_JUNK"))
                 || this._autoSellConfig.Get<boolean>(item.itemID))
             && item.sellPrice !== undefined && item.sellPrice > 0) === true

@@ -36,4 +36,8 @@ export class ContainerItem {
     public Use(): void {
         C_Container.UseContainerItem(this.containerIndex, this.slotIndex)
     }
+
+    public IsValid(): boolean {
+        return this.itemLocation.IsValid()
+    }
 }
