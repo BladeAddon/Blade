@@ -1,4 +1,8 @@
 export abstract class Loadable {
+    protected constructor(public readonly name: string) {
+
+    }
+
     protected _loaded = false
 
     protected abstract OnLoad(): void

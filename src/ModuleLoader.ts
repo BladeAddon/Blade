@@ -8,8 +8,30 @@ import { Module } from './modules/Module'
 export class ModuleLoader {
     private readonly _loadedModules: Module[] = []
 
+    private _modules: Module[] = [];
+
+    private instance(module: Module): void {
+        this._modules.push(module)
+    }
+
+    private singleton(moduleType: { new(): Module }): void {
+        this.instance(new moduleType())
+    }
+
+    public RegisterModule(moduleType: { new(): Module }): void {
+        this.singleton(moduleType)
+    }
+
+    public Init(): void {
+        this.RegisterModule(AutoVendor)
+        this.RegisterModule(AutoRepair)
+        this.RegisterModule(AutoKeyInserter)
+        this.RegisterModule(AutoCompleteSLMissions)
+        this.RegisterModule(ActionBarSaver)
+    }
+
     public Load(): void {
-        for (const module of [new AutoVendor(), new AutoRepair(), new AutoKeyInserter(), new AutoCompleteSLMissions(), new ActionBarSaver()]) {
+        for (const module of this._modules) {
             if (module.ShouldLoad()) {
                 this._loadedModules.push(module)
                 module.Load()

@@ -9,6 +9,10 @@ declare type ContainerItemPredicate = (item: ContainerItem) => boolean
 export class Bag extends Loadable {
     @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
 
+    constructor() {
+        super("Bag")
+    }
+
     private readonly _containerLookup: LuaMap<number, LuaMap<number, ContainerItem>> = new LuaMap()
 
     private UpdateBags(): void {

@@ -10,10 +10,10 @@ import { ColorHelper } from './api/ColorHelper'
 import { Output } from './api/Output'
 import { IOutput } from './api/IOutput'
 import { CommandHandler } from './api/CommandHandler'
-import { Bag } from './api/Bag'
 import { Localization } from './api/Localization'
 import { ModuleLoader } from './ModuleLoader'
 import { Items } from './api/Items'
+import { Loader } from './Loader'
 
 Bootstrapper.Load()
 
@@ -24,8 +24,7 @@ export class Blade {
 
 const addonInfo = new AddonInfo("Blade", ColorHelper.DEEP_PINK)
 container.instance("AddonInfo", addonInfo)
-const localization = new Localization()
-container.instance("ILocalization", localization)
+container.singleton("ILocalization", Localization)
 const output: IOutput = new Output()
 container.instance("IOutput", output)
 
@@ -42,16 +41,13 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
         container.instance("SettingsService", settingsService)
         const options = new Options(addonInfo.AddonName, addonInfo.AddonName)
         container.instance("Options", options)
-        container.instance("CommandHandler", new CommandHandler())
+        container.singleton("CommandHandler", CommandHandler)
         container.singleton("Items", Items)
-        const bag = new Bag()
-        container.instance("Bag", bag)
+        container.singleton("ModuleLoader", ModuleLoader)
 
-        bag.Load()
-
-        const moduleLoader = new ModuleLoader()
-        container.instance("ModuleLoader", moduleLoader)
-        moduleLoader.Load()
+        const loader = new Loader()
+        loader.Init()
+        loader.Load()
 
         LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable(addonInfo.AddonName, options.get())
         LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions(addonInfo.AddonName, addonInfo.AddonName)
