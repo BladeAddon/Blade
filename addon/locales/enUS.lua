@@ -19,6 +19,7 @@ if L then
     L["SAVE_ACTIONS_DESCRIPTION"] = "Saves the current actions on the actionbar in a profile"
     L["LOAD_ACTIONS_DESCRIPTION"] = "Loads the actions from a profile"
     L["DELETE_ACTIONS_DESCRIPTION"] = "Deletes a saved actions profile"
+    L["LIST_ACTIONS_DESCRIPTION"] = "Lists all saved actions profiles"
     L["SAVED_PROFILE"] = "Saved profile %s"
     L["LOADED_PROFILE"] = "Loaded profile %s"
     L["DELETED_PROFILE"] = "Deleted profile %s"

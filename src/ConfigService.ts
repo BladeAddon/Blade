@@ -22,11 +22,11 @@ export class ConfigService {
         this._table = table
     }
 
-    public Get<T>(key: string|number): T | undefined {
+    public Get<T>(key: string | number): T | undefined {
         return this._table.get(key)
     }
 
-    public Set<T>(key: string|number, value: T) {
+    public Set<T>(key: string | number, value: T) {
         if (this.Get(key) === value) {
             return
         }
@@ -45,5 +45,11 @@ export class ConfigService {
 
         const configTable = this._table.get(key)
         return new ConfigService(configTable)
+    }
+
+    public *IterKeys() {
+        for (const [key, _] of this._table) {
+            yield key
+        }
     }
 }
