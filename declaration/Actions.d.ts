@@ -15,6 +15,7 @@ declare type ActionInfoCompanion = [actionType: "companion", id: number, subType
 declare type ActionInfoMount = [actionType: "summonmount", id: number, subType: string]
 declare type ActionInfoEquipmentset = [actionType: "equipmentset", id: string, subType: string]
 declare type ActionInfoFlyout = [actionType: "flyout", id: number, subType: string]
+
 /** @noSelf **/
 declare function GetActionInfo(slot: number): LuaMultiReturn<ActionInfoSpell | ActionInfoItem | ActionInfoMacro | ActionInfoCompanion | ActionInfoMount | ActionInfoEquipmentset | ActionInfoFlyout> | LuaMultiReturn<undefined[]>
 
@@ -42,10 +43,7 @@ declare function PickupSpellBookItem(spellName: string, bookType: BookType): voi
 /** @noSelf **/
 declare function PickupSpellBookItem(index: number, bookType: BookType): void
 
-/** @noSelf **/
-declare function GetCursorInfo(): ActionType
-/** @noSelf **/
-declare function ClearCursor(): void
+
 /** @noSelf **/
 declare function PickupAction(slot: number): void
 /** @noSelf **/
