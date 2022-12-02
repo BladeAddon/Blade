@@ -55,8 +55,10 @@ export class OptionsMenu {
         this._table.args[key] = item
     }
 
-    public AddHeader(key: string, name: string): void {
-        this._table.args[key] = { type: "header", name: name }
+    public AddHeader(key: string, name: string): HeaderItem {
+        const item: HeaderItem = { type: "header", name: name }
+        this._table.args[key] = item
+        return item
     }
 }
 

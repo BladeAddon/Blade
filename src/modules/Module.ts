@@ -23,7 +23,7 @@ export abstract class Module {
         if (this.description) {
             this._menu.setDescription(this.description)
         }
-        this._menu.AddHeader(key, name)
+        this._menu.AddHeader(key, name).order = 0
         this._menu.AddToggle("ENABLED", this._localization.Get("ENABLED")).desc = this._localization.Format("MODULE_ENABLE_DESCRIPTION", this.name)
     }
 
