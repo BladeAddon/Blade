@@ -10,7 +10,11 @@ declare interface AuraTooltipData extends BaseTooltipData {
     id: number
 }
 
-declare type TooltipData = SpellTooltipData | AuraTooltipData
+declare interface ItemTooltipData extends BaseTooltipData {
+    id: number
+}
+
+declare type TooltipData = SpellTooltipData | AuraTooltipData | ItemTooltipData
 
 /** @noSelf **/
 declare namespace TooltipDataProcessor {
