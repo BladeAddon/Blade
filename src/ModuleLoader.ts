@@ -4,6 +4,7 @@ import { AutoKeyInserter } from './modules/AutoKeyInserter'
 import { AutoRepair } from './modules/AutoRepair'
 import { AutoVendor } from './modules/AutoVendor'
 import { Module } from './modules/Module'
+import { TooltipInfo } from './modules/TooltipInfo'
 
 export class ModuleLoader {
     private readonly _loadedModules: Module[] = []
@@ -28,6 +29,7 @@ export class ModuleLoader {
         this.RegisterModule(AutoKeyInserter)
         this.RegisterModule(AutoCompleteSLMissions)
         this.RegisterModule(ActionBarSaver)
+        this.RegisterModule(TooltipInfo)
     }
 
     public Load(): void {

@@ -31,6 +31,10 @@ export abstract class Module {
         return this._moduleSettings.Get<boolean>("ENABLED") === true
     }
 
+    protected IsOptionEnabled(option: string): boolean {
+        return this._moduleSettings.Get<boolean>(option) === true
+    }
+
     protected abstract OnLoad(): void
 
     public get isLoaded(): boolean {
