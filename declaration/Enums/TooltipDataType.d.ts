@@ -3,6 +3,7 @@ declare namespace Enum {
         Spell,
         Unit,
         Item,
-        UnitAura
+        UnitAura,
+        Macro
     }
 }

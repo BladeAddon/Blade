@@ -1,21 +1,34 @@
 import { ColorHelper } from '../api/ColorHelper'
+import { OptionsMenu } from '../options'
 import { Module } from './Module'
 
 export class TooltipInfo extends Module {
+    private readonly _spellGroup: OptionsMenu
+    private readonly _auraGroup: OptionsMenu
+    private readonly _itemGroup: OptionsMenu
+
     constructor() {
         super("TooltipInfo", "Tooltip Info")
 
-        this._menu.AddToggle("SHOW_SPELL_ID", "Show Spell ID").desc = this._localization.Get("TOOLTIP_SHOW_SPELL_ID")
-        this._menu.AddToggle("SHOW_AURA_ID", "Show Aura ID").desc = this._localization.Get("TOOLTIP_SHOW_AURA_ID")
-        this._menu.AddToggle("SHOW_ITEM_ID", "Show Item ID").desc = this._localization.Get("TOOLTIP_SHOW_ITEM_ID")
+        this._menu.setChildGroups("tab")
+
+        this._spellGroup = this._menu.AddMenu("TooltipSpellOptions", "Spell")
+        this._spellGroup.AddToggle("SHOW_SPELL_ID", "Spell ID").desc = this._localization.Get("TOOLTIP_SHOW_SPELL_ID")
+
+        this._auraGroup = this._menu.AddMenu("TooltipAuraOptions", "Aura")
+        this._auraGroup.AddToggle("SHOW_AURA_ID", "Aura ID").desc = this._localization.Get("TOOLTIP_SHOW_AURA_ID")
+        this._auraGroup.AddToggle("SHOW_AURA_SOURCE", "Aura Source").desc = this._localization.Get("TOOLTIP_SHOW_AURA_SOURCE")
+
+        this._itemGroup = this._menu.AddMenu("TooltipItemOptions", "Item")
+        this._itemGroup.AddToggle("SHOW_ITEM_ID", "Item ID").desc = this._localization.Get("TOOLTIP_SHOW_ITEM_ID")
     }
 
-    private AddColoredDoubleLine(tooltip: GameTooltip, leftText: string, rightText: string): void {
+    private AddColoredDoubleLine(tooltip: IGameTooltip, leftText: string, rightText: string): void {
         tooltip.AddDoubleLine(ColorHelper.Encode(leftText, ColorHelper.HIGHLIGHT_COLOR), ColorHelper.Encode(rightText, ColorHelper.WHITE))
     }
 
-    private OnSpellTooltip(tooltip: GameTooltip, data: SpellTooltipData): void {
-        if (!this.IsOptionEnabled("SHOW_SPELL_ID")) {
+    private OnSpellTooltip(tooltip: IGameTooltip, data: SpellTooltipData): void {
+        if (!this._spellGroup.IsOptionEnabled("SHOW_SPELL_ID")) {
             return
         }
 
@@ -27,8 +40,12 @@ export class TooltipInfo extends Module {
         this.AddColoredDoubleLine(tooltip, "spellid:", spellID.toString())
     }
 
-    private OnAuraTooltip(tooltip: GameTooltip, data: AuraTooltipData): void {
-        if (!this.IsOptionEnabled("SHOW_AURA_ID")) {
+    private OnMacroTooltip(_tooltip: IGameTooltip, data: MacroTooltipData): void {
+        print(data.id)
+    }
+
+    private OnAuraTooltip(tooltip: IGameTooltip, data: AuraTooltipData): void {
+        if (!this._auraGroup.IsOptionEnabled("SHOW_AURA_ID")) {
             return
         }
 
@@ -40,8 +57,8 @@ export class TooltipInfo extends Module {
         this.AddColoredDoubleLine(tooltip, "spellid:", spellID.toString())
     }
 
-    private OnItemTooltip(tooltip: GameTooltip, data: ItemTooltipData): void {
-        if (!this.IsOptionEnabled("SHOW_ITEM_ID")) {
+    private OnItemTooltip(tooltip: IGameTooltip, data: ItemTooltipData): void {
+        if (!this._itemGroup.IsOptionEnabled("SHOW_ITEM_ID")) {
             return
         }
 
@@ -60,9 +77,17 @@ export class TooltipInfo extends Module {
             instance.OnSpellTooltip(tooltip, data)
         })
 
+        TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Macro, (tooltip, data: MacroTooltipData) => {
+            instance.OnMacroTooltip(tooltip, data)
+        })
+
         TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.UnitAura, (tooltip, data: AuraTooltipData) => {
             instance.OnAuraTooltip(tooltip, data)
         })
+
+        //     hooksecurefunc(GameTooltip, "SetUnitAura", function(self, ...)
+        //     print(...)
+        // end)
 
         TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, (tooltip, data: ItemTooltipData) => {
             instance.OnItemTooltip(tooltip, data)

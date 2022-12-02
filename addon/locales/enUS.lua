@@ -28,5 +28,6 @@ if L then
     L["PROFILE_DOES_NOT_EXIST"] = "Profile %s does not exist"
     L["TOOLTIP_SHOW_SPELL_ID"] = "Show Spell ID in Tooltips"
     L["TOOLTIP_SHOW_AURA_ID"] = "Show Aura ID in Tooltips"
+    L["TOOLTIP_SHOW_AURA_SOURCE"] = "Show Aura Source in Tooltips"
     L["TOOLTIP_SHOW_ITEM_ID"] = "Show Item ID in Tooltips"
 end

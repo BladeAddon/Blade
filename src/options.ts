@@ -24,6 +24,10 @@ export class OptionsMenu {
         this._table.desc = description
     }
 
+    public setChildGroups(type: ChildGroupType): void {
+        this._table.childGroups = type
+    }
+
     public AddToggle(key: string, name: string): ToggleItem {
         const toggleItem: ToggleItem = {
             name: name,
@@ -60,12 +64,6 @@ export class OptionsMenu {
         this._table.args[key] = item
         return item
     }
-}
-
-export class Options extends OptionsMenu {
-    constructor(key: string, name: string) {
-        super(key, name)
-    }
 
     public AddMenu(key: string, name: string): OptionsMenu {
         const menu = new OptionsMenu(key, name)
@@ -75,5 +73,15 @@ export class Options extends OptionsMenu {
 
         this._table.args[key] = menu.get()
         return menu
+    }
+
+    public IsOptionEnabled(option: string): boolean {
+        return this._config.Get<boolean>(option) === true
+    }
+}
+
+export class Options extends OptionsMenu {
+    constructor(key: string, name: string) {
+        super(key, name)
     }
 }
