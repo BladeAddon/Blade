@@ -11,6 +11,8 @@ declare interface Frame {
     SetScript<T extends unknown[]>(event: string, handler: (...args: T) => void): void
     SetScript(event: "OnEvent", handler: OnEventHandler): void
     IsVisible(): boolean
+    Show(): void
+    Hide(): void
     onEventAttached: boolean | undefined
 }
 

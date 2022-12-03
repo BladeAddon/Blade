@@ -6,6 +6,7 @@ import { ConfigService } from '../ConfigService'
 import { Inject } from '../tstl-di/src/Inject'
 import { Module } from './Module'
 import { Items } from '../api/Items'
+import { AllianceToHordeMountLookup, HordeToAllianceMountLookup } from '../data/MountData'
 
 class ActionBarLoader {
     @Inject("IOutput") protected readonly _output!: IOutput
@@ -71,6 +72,17 @@ class ActionBarLoader {
         PlaceAction(slot)
     }
 
+    private GetFactionMountID(mountID: number): number {
+        switch (UnitFactionGroup("player")) {
+            case "Alliance":
+                return HordeToAllianceMountLookup[mountID] ?? mountID
+            case "Horde":
+                return AllianceToHordeMountLookup[mountID] ?? mountID
+            default:
+                return mountID
+        }
+    }
+
     private LoadMount(slot: number, action: MountAction): void {
         // random favorite
         if (action.id === 268435455) {
@@ -79,9 +91,11 @@ class ActionBarLoader {
             return
         }
 
+        const idToFind = this.GetFactionMountID(action.id)
+
         // find displayIndex
         for (let index = 1; index <= C_MountJournal.GetNumMounts(); index++) {
-            if (C_MountJournal.GetDisplayedMountID(index) === action.id) {
+            if (C_MountJournal.GetDisplayedMountID(index) === idToFind) {
                 C_MountJournal.Pickup(index)
                 PlaceAction(slot)
                 return
@@ -130,6 +144,8 @@ class ActionBarLoader {
 
     private LoadActions(): void {
         ClearCursor()
+        CollectionsJournal.Show()
+        CollectionsJournal_SetTab(CollectionsJournal, 1)
 
         for (let slot = 1; slot <= 512; slot++) {
             this.ClearActionSlot(slot)
@@ -140,6 +156,7 @@ class ActionBarLoader {
             }
         }
 
+        CollectionsJournal.Hide()
         this._output.LocalizedPrint("LOADED_PROFILE", this.profile)
     }
 
