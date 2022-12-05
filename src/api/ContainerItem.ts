@@ -13,6 +13,11 @@ export class ContainerItem {
         return undefined
     }
 
+    private _containerItemInfo?: ContainerItemInfo
+    public get containerItemInfo(): ContainerItemInfo {
+        return this._containerItemInfo ??= C_Container.GetContainerItemInfo(this.containerIndex, this.slotIndex)!
+    }
+
     private _item?: ItemInfo
     public get item(): ItemInfo {
         // can this actually be null since we create it from an item in the bag?
@@ -31,6 +36,16 @@ export class ContainerItem {
 
     public get sellPrice(): number {
         return this.item.sellPrice
+    }
+
+    private _name?: string
+    public get name(): string {
+        return this._name ??= C_Item.GetItemName(this.itemLocation)
+    }
+
+    private _noValue?: boolean
+    public get noValue(): boolean {
+        return this._noValue ??= this.containerItemInfo.hasNoValue
     }
 
     public Use(): void {

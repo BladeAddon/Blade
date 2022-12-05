@@ -47,7 +47,7 @@ export class AutoVendor extends Module {
         return item.IsValid() && !this._temporaryIgnoreList?.has(item.lookupKey) && (
             ((item.quality === Enum.ItemQuality.Poor && this._moduleSettings.Get<boolean>("SELL_JUNK"))
                 || this._autoSellConfig.Get<boolean>(item.itemID))
-            && item.sellPrice !== undefined && item.sellPrice > 0) === true
+            && item.sellPrice !== undefined && item.sellPrice > 0 && !item.noValue) === true
     }
 
     private SellTrashItems(): void {
