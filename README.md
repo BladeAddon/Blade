@@ -6,7 +6,7 @@ Blade is a WoW Addon that aims to make the game easier by providing convenience 
     - Guild and/or normal
 - Auto Vendor
     - Trash items
-    - Other whitelisted items
+    - Any item set to be sold
 - Auto insert M+ keys
 - Auto complete Missions on SL Mission Table
 - Save and restore actionbar profiles

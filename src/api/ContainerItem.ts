@@ -40,4 +40,9 @@ export class ContainerItem {
     public IsValid(): boolean {
         return this.itemLocation.IsValid()
     }
+
+    private _lookupKey?: string
+    public get lookupKey(): string {
+        return this._lookupKey ??= `${this.containerIndex}_${this.slotIndex}`
+    }
 }
