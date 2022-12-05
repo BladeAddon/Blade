@@ -17,6 +17,8 @@ export class AutoVendor extends Module {
 
     private readonly _shouldSellPredicate: (item: ContainerItem) => boolean
 
+    private _temporaryIgnoreList: LuaMap<string, number> | undefined
+
     constructor() {
         super("AutoVendor", "Auto Vendor")
 
@@ -42,13 +44,21 @@ export class AutoVendor extends Module {
     }
 
     private shouldSell(item: ContainerItem): boolean {
-        return item.IsValid() && (
+        return item.IsValid() && !this._temporaryIgnoreList?.has(item.lookupKey) && (
             ((item.quality === Enum.ItemQuality.Poor && this._moduleSettings.Get<boolean>("SELL_JUNK"))
                 || this._autoSellConfig.Get<boolean>(item.itemID))
             && item.sellPrice !== undefined && item.sellPrice > 0) === true
     }
 
     private SellTrashItems(): void {
+        if (this._temporaryIgnoreList) {
+            for (const [item, time] of this._temporaryIgnoreList) {
+                if (GetTime() - time > 0.3) {
+                    this._temporaryIgnoreList?.delete(item)
+                }
+            }
+        }
+
         if (!C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant)) {
             return
         }
@@ -60,6 +70,7 @@ export class AutoVendor extends Module {
 
         for (const item of itemsToSell) {
             item.Use()
+            this._temporaryIgnoreList?.set(item.lookupKey, GetTime())
         }
 
         // recheck for items that failed to sell
@@ -71,6 +82,7 @@ export class AutoVendor extends Module {
             return
         }
 
+        this._temporaryIgnoreList = new LuaMap()
         this.SellTrashItems()
     }
 
