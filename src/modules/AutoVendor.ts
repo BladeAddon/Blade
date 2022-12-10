@@ -17,8 +17,6 @@ export class AutoVendor extends Module {
 
     private readonly _shouldSellPredicate: (item: ContainerItem) => boolean
 
-    private _temporaryIgnoreList: LuaMap<string, number> | undefined
-
     constructor() {
         super("AutoVendor", "Auto Vendor")
 
@@ -44,21 +42,25 @@ export class AutoVendor extends Module {
     }
 
     private shouldSell(item: ContainerItem): boolean {
-        return item.IsValid() && !this._temporaryIgnoreList?.has(item.lookupKey) && (
+        return item.IsValid() && (
             ((item.quality === Enum.ItemQuality.Poor && this._moduleSettings.Get<boolean>("SELL_JUNK"))
                 || this._autoSellConfig.Get<boolean>(item.itemID))
             && item.sellPrice !== undefined && item.sellPrice > 0 && !item.noValue) === true
     }
 
-    private SellTrashItems(): void {
-        if (this._temporaryIgnoreList) {
-            for (const [item, time] of this._temporaryIgnoreList) {
-                if (GetTime() - time > 0.3) {
-                    this._temporaryIgnoreList?.delete(item)
-                }
-            }
+    private forceSell(item: ContainerItem): void {
+        const newItem = ContainerItem.Create(item.containerIndex, item.slotIndex)
+        // if it still exists and is the same item and we also still have a merchant open
+        if (newItem?.itemID === item.itemID && C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant)) {
+            item.Use()
+            // try to sell until it doesn't exist
+            C_Timer.After(0, () => {
+                this.forceSell(item)
+            })
         }
+    }
 
+    private SellTrashItems(): void {
         if (!C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant)) {
             return
         }
@@ -69,12 +71,8 @@ export class AutoVendor extends Module {
         }
 
         for (const item of itemsToSell) {
-            item.Use()
-            this._temporaryIgnoreList?.set(item.lookupKey, GetTime())
+            this.forceSell(item)
         }
-
-        // recheck for items that failed to sell
-        C_Timer.After(1, this.SellTrashItems.bind(this))
     }
 
     private OnManagerFrameShow(type: Enum.PlayerInteractionType) {
@@ -82,7 +80,6 @@ export class AutoVendor extends Module {
             return
         }
 
-        this._temporaryIgnoreList = new LuaMap()
         this.SellTrashItems()
     }
 
