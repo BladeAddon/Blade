@@ -1,7 +1,7 @@
-import { Inject } from '../tstl-di/src/Inject'
 import { ChatCommand } from './ChatCommand'
-import { IOutput } from './IOutput'
-import * as Bootstrapper from "../bootstrapper"
+import * as Bootstrapper from "../../bootstrapper"
+import { IOutput } from '../IOutput'
+import { Inject } from '../../tstl-di/src/Inject'
 
 export class CommandHandler {
     @Inject("IOutput") protected readonly _output!: IOutput

@@ -1,12 +1,12 @@
-import { Bag } from '../api/Bag'
-import { ChatCommand } from '../api/ChatCommand'
-import { CommandHandler } from '../api/CommandHandler'
-import { ContainerItem } from '../api/ContainerItem'
-import { IEventHandler } from '../api/IEventHandler'
-import { ItemInfo } from '../api/ItemInfo'
-import { ConfigService } from '../ConfigService'
-import { Inject } from '../tstl-di/src/Inject'
+import { Bag } from '../../item/bag/Bag'
+import { ChatCommand } from '../../chat/command/ChatCommand'
+import { ConfigService } from '../../ConfigService'
+import { Inject } from '../../tstl-di/src/Inject'
 import { Module } from './Module'
+import { CommandHandler } from '../../chat/command/CommandHandler'
+import { IEventHandler } from '../../event/IEventHandler'
+import { ContainerItem } from '../../item/bag/ContainerItem'
+import { ItemInfo } from '../../item/ItemInfo'
 
 export class AutoVendor extends Module {
     @Inject("CommandHandler") private readonly _commandHandler!: CommandHandler

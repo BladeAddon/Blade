@@ -1,6 +1,6 @@
-import { Bag } from '../api/Bag'
-import { IEventHandler } from '../api/IEventHandler'
-import { Inject } from '../tstl-di/src/Inject'
+import { IEventHandler } from '../../event/IEventHandler'
+import { Bag } from '../../item/bag/Bag'
+import { Inject } from '../../tstl-di/src/Inject'
 import { Module } from './Module'
 
 const KEYSTONE_ITEM_ID = 180653

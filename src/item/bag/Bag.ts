@@ -1,7 +1,7 @@
+import { IEventHandler } from '../../event/IEventHandler'
+import { Loadable } from '../../loadable/Loadable'
+import { Inject } from '../../tstl-di/src/Inject'
 import { ContainerItem } from './ContainerItem'
-import { Loadable } from '../Loadable'
-import { Inject } from '../tstl-di/src/Inject'
-import { IEventHandler } from './IEventHandler'
 
 declare type ContainerItemFunction = (item: ContainerItem) => void
 declare type ContainerItemPredicate = (item: ContainerItem) => boolean

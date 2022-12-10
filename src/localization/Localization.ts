@@ -1,5 +1,5 @@
+import { AddonInfo } from '../AddonInfo'
 import { Inject } from '../tstl-di/src/Inject'
-import { AddonInfo } from './AddonInfo'
 import { ILocalization } from './ILocalization'
 
 export class Localization implements ILocalization {

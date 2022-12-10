@@ -1,8 +1,8 @@
-import { ILocalization } from '../api/ILocalization'
-import { IOutput } from '../api/IOutput'
-import { ConfigService } from '../ConfigService'
-import { Options, OptionsMenu } from '../options'
-import { Inject } from '../tstl-di/src/Inject'
+import { ILocalization } from '../../localization/ILocalization'
+import { IOutput } from '../../chat/IOutput'
+import { ConfigService } from '../../ConfigService'
+import { Options, OptionsMenu } from '../../options'
+import { Inject } from '../../tstl-di/src/Inject'
 
 export abstract class Module {
     @Inject("SettingsService") private readonly _settings!: ConfigService
