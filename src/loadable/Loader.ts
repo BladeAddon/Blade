@@ -1,8 +1,8 @@
-import { Bag } from './api/Bag'
+import { Bag } from '../item/bag/Bag'
+import { container } from '../tstl-di/src/Container'
+import { Inject } from '../tstl-di/src/Inject'
 import { Loadable } from './Loadable'
 import { ModuleLoader } from './ModuleLoader'
-import { container } from './tstl-di/src/Container'
-import { Inject } from './tstl-di/src/Inject'
 
 export class Loader {
     @Inject("ModuleLoader") private readonly _moduleLoader!: ModuleLoader

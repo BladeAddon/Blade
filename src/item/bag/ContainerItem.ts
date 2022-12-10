@@ -1,4 +1,4 @@
-import { ItemInfo } from './ItemInfo'
+import { ItemInfo } from '../ItemInfo'
 
 export class ContainerItem {
     private constructor(public readonly containerIndex: number, public readonly slotIndex: number, private readonly itemLocation: ItemLocationMixin) {

@@ -1,5 +1,5 @@
-import { IEventHandler } from '../api/IEventHandler'
-import { Inject } from '../tstl-di/src/Inject'
+import { IEventHandler } from '../../event/IEventHandler'
+import { Inject } from '../../tstl-di/src/Inject'
 import { Module } from './Module'
 
 export class AutoRepair extends Module {

@@ -1,7 +1,7 @@
 import { Inject } from '../tstl-di/src/Inject'
-import { AddonInfo } from './AddonInfo'
-import { ColorHelper } from './ColorHelper'
-import { ILocalization } from './ILocalization'
+import { AddonInfo } from '../AddonInfo'
+import { ColorHelper } from '../color/ColorHelper'
+import { ILocalization } from '../localization/ILocalization'
 import { IOutput } from './IOutput'
 
 export class Output implements IOutput {

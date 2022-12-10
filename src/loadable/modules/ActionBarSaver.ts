@@ -1,12 +1,12 @@
-import { ChatCommand } from '../api/ChatCommand'
-import { CommandHandler } from '../api/CommandHandler'
-import { IOutput } from '../api/IOutput'
-import { Macros } from '../api/Macros'
-import { ConfigService } from '../ConfigService'
-import { Inject } from '../tstl-di/src/Inject'
+import { ChatCommand } from '../../chat/command/ChatCommand'
+import { IOutput } from '../../chat/IOutput'
+import { Macros } from '../../macro/Macros'
+import { ConfigService } from '../../ConfigService'
+import { Inject } from '../../tstl-di/src/Inject'
 import { Module } from './Module'
-import { Items } from '../api/Items'
-import { AllianceToHordeMountLookup, HordeToAllianceMountLookup } from '../data/MountData'
+import { Items } from '../../item/Items'
+import { AllianceToHordeMountLookup, HordeToAllianceMountLookup } from '../../data/MountData'
+import { CommandHandler } from '../../chat/command/CommandHandler'
 
 class ActionBarLoader {
     @Inject("IOutput") protected readonly _output!: IOutput
