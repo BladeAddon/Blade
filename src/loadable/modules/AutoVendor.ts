@@ -65,12 +65,7 @@ export class AutoVendor extends Module {
             return
         }
 
-        const itemsToSell = this._bag.FindItems(this._shouldSellPredicate)
-        if (itemsToSell.length === 0) {
-            return
-        }
-
-        for (const item of itemsToSell) {
+        for (const item of this._bag.SelectItems(this._shouldSellPredicate)) {
             this.forceSell(item)
         }
     }

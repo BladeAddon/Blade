@@ -38,13 +38,10 @@ export class Bag extends Loadable {
         this._eventHandler.RegisterEvent("BAG_UPDATE", this.UpdateBag.bind(this))
     }
 
-    public static *IterItems() {
-        for (let bagIndex = 0; bagIndex <= NUM_BAG_SLOTS; bagIndex++) {
-            for (let slotIndex = 1; slotIndex <= C_Container.GetContainerNumSlots(bagIndex); slotIndex++) {
-                const containerItem = ContainerItem.Create(bagIndex, slotIndex)
-                if (containerItem) {
-                    yield containerItem
-                }
+    public *IterItems() {
+        for (const [_, bag] of this._containerLookup) {
+            for (const [_, item] of bag) {
+                yield item
             }
         }
     }
@@ -54,11 +51,9 @@ export class Bag extends Loadable {
     }
 
     public FindBagItemByID(itemID: number): ContainerItem | undefined {
-        for (const [_, bag] of this._containerLookup) {
-            for (const [_, item] of bag) {
-                if (item.itemID === itemID) {
-                    return item
-                }
+        for (const item of this.IterItems()) {
+            if (item.itemID === itemID) {
+                return item
             }
         }
 
@@ -66,11 +61,9 @@ export class Bag extends Loadable {
     }
 
     public FindItem(predicate: ContainerItemPredicate): ContainerItem | undefined {
-        for (const [_, bag] of this._containerLookup) {
-            for (const [_, item] of bag) {
-                if (predicate(item)) {
-                    return item
-                }
+        for (const item of this.IterItems()) {
+            if (predicate(item)) {
+                return item
             }
         }
 
@@ -79,22 +72,26 @@ export class Bag extends Loadable {
 
     public FindItems(predicate: ContainerItemPredicate): ContainerItem[] {
         const items = []
-        for (const [_, bag] of this._containerLookup) {
-            for (const [_, item] of bag) {
-                if (predicate(item)) {
-                    items.push(item)
-                }
+        for (const item of this.IterItems()) {
+            if (predicate(item)) {
+                items.push(item)
             }
         }
 
         return items
     }
 
-    public CallOnItems(f: ContainerItemFunction): void {
-        for (const [_, bag] of this._containerLookup) {
-            for (const [_, item] of bag) {
-                f(item)
+    public *SelectItems(predicate: ContainerItemPredicate) {
+        for (const item of this.IterItems()) {
+            if (predicate(item)) {
+                yield item
             }
+        }
+    }
+
+    public CallOnItems(f: ContainerItemFunction): void {
+        for (const item of this.IterItems()) {
+            f(item)
         }
     }
 }
