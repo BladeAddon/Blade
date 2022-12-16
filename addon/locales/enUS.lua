@@ -26,4 +26,5 @@ if L then
     L["WAIT_ITEM_CACHE"] = "Waiting for items to be loaded into cache"
     L["LOADED_ITEM_CACHE"] = "All items have been loaded and cached"
     L["PROFILE_DOES_NOT_EXIST"] = "Profile %s does not exist"
+    L["KEY_RESPONDER_DESCRIPTION"] = "Responds to !keys in chat and links m+ keystone"
 end

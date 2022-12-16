@@ -5,4 +5,6 @@ declare namespace C_Container {
     function GetContainerItemInfo(containerIndex: number, slotIndex: number): ContainerItemInfo | undefined
     /** @noSelf **/
     function UseContainerItem(containerIndex: number, slotIndex: number, unitToken?: string, reagentBankOpen?: boolean): void
+    /** @noSelf **/
+    function GetContainerItemLink(containerIndex: number, slotIndex: number): string
 }
