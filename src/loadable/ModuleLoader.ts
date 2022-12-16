@@ -3,6 +3,7 @@ import { AutoCompleteSLMissions } from './modules/AutoCompleteSLMissions'
 import { AutoKeyInserter } from './modules/AutoKeyInserter'
 import { AutoRepair } from './modules/AutoRepair'
 import { AutoVendor } from './modules/AutoVendor'
+import { KeyResponder } from './modules/KeyResponder'
 import { Module } from './modules/Module'
 
 export class ModuleLoader {
@@ -28,6 +29,7 @@ export class ModuleLoader {
         this.RegisterModule(AutoKeyInserter)
         this.RegisterModule(AutoCompleteSLMissions)
         this.RegisterModule(ActionBarSaver)
+        this.RegisterModule(KeyResponder)
     }
 
     public Load(): void {

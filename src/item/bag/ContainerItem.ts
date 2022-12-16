@@ -60,4 +60,9 @@ export class ContainerItem {
     public get lookupKey(): string {
         return this._lookupKey ??= `${this.containerIndex}_${this.slotIndex}`
     }
+
+    private _itemLink?: string
+    public get itemLink(): string {
+        return this._itemLink ??= C_Container.GetContainerItemLink(this.containerIndex, this.slotIndex)
+    }
 }
