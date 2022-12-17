@@ -60,6 +60,14 @@ export class Bag extends Loadable {
         return undefined
     }
 
+    public *FindBagItemsByID(itemID: number) {
+        for (const item of this.IterItems()) {
+            if (item.itemID === itemID) {
+                yield item
+            }
+        }
+    }
+
     public FindItem(predicate: ContainerItemPredicate): ContainerItem | undefined {
         for (const item of this.IterItems()) {
             if (predicate(item)) {
