@@ -1,9 +1,9 @@
 import { IEventHandler } from '../../event/IEventHandler'
 import { Bag } from '../../item/bag/Bag'
+import { Items } from '../../item/Items'
 import { Inject } from '../../tstl-di/src/Inject'
 import { Module } from './Module'
 
-const KEYSTONE_ITEM_ID = 180653
 const TRIGGER = "!keys"
 
 export class KeyResponder extends Module {
@@ -16,35 +16,22 @@ export class KeyResponder extends Module {
     }
 
     private LinkKey(chatType: string): void {
-        const keystone = this._bag.FindBagItemByID(KEYSTONE_ITEM_ID)
-        if (keystone) {
+        for (const keystone of this._bag.FindBagItemsByID(Items.KEYSTONE_ITEM_ID)) {
             SendChatMessage(keystone.itemLink, chatType)
         }
     }
 
+    private OnPartyMsg(text: string): void {
+        if (!this.ShouldLoad() || text !== TRIGGER) {
+            return
+        }
+
+        this.LinkKey("PARTY")
+    }
+
     protected OnLoad(): void {
-        this._eventHandler.RegisterEvent("CHAT_MSG_PARTY", (text: string, _playerName: string) => {
-            if (!this.ShouldLoad()) {
-                return
-            }
-
-            if (text !== TRIGGER) {
-                return
-            }
-
-            this.LinkKey("PARTY")
-        })
-
-        this._eventHandler.RegisterEvent("CHAT_MSG_PARTY_LEADER", (text: string, _playerName: string) => {
-            if (!this.ShouldLoad()) {
-                return
-            }
-
-            if (text !== TRIGGER) {
-                return
-            }
-
-            this.LinkKey("PARTY")
-        })
+        const onPartyMsg = this.OnPartyMsg.bind(this)
+        this._eventHandler.RegisterEvent("CHAT_MSG_PARTY", onPartyMsg)
+        this._eventHandler.RegisterEvent("CHAT_MSG_PARTY_LEADER", onPartyMsg)
     }
 }
