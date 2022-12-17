@@ -1,9 +1,8 @@
 import { IEventHandler } from '../../event/IEventHandler'
 import { Bag } from '../../item/bag/Bag'
+import { Items } from '../../item/Items'
 import { Inject } from '../../tstl-di/src/Inject'
 import { Module } from './Module'
-
-const KEYSTONE_ITEM_ID = 180653
 
 export class AutoKeyInserter extends Module {
     @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
@@ -20,7 +19,7 @@ export class AutoKeyInserter extends Module {
                 return
             }
 
-            this._bag.FindBagItemByID(KEYSTONE_ITEM_ID)?.Use()
+            this._bag.FindBagItemByID(Items.KEYSTONE_ITEM_ID)?.Use()
         })
     }
 }
