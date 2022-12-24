@@ -27,4 +27,8 @@ if L then
     L["LOADED_ITEM_CACHE"] = "All items have been loaded and cached"
     L["PROFILE_DOES_NOT_EXIST"] = "Profile %s does not exist"
     L["KEY_RESPONDER_DESCRIPTION"] = "Responds to !keys in chat and links m+ keystone"
+    L["RESPOND_KEYS_PARTY_DESCRIPTION"] = "Responds to !keys in party chat and links m+ keystone"
+    L["RESPOND_KEYS_PARTY_NAME"] = "!keys in party"
+    L["ANNOUNCE_NEW_KEYS_PARTY_NAME"] = "Announce new keys in party"
+    L["ANNOUNCE_NEW_KEYS_PARTY_DESCRIPTION"] = "Announces new keys in party chat"
 end
