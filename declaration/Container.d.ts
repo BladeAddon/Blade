@@ -1,6 +1,7 @@
 declare type BAG_ID = -4 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
 
 declare const NUM_BAG_SLOTS: number
+declare const NUM_TOTAL_EQUIPPED_BAG_SLOTS: number
 declare interface ContainerItemInfo {
     iconFileID: number
     stackCount: number

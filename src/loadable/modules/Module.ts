@@ -24,7 +24,9 @@ export abstract class Module {
             this._menu.setDescription(this.description)
         }
         this._menu.AddHeader(key, name).order = 0
-        this._menu.AddToggle("ENABLED", this._localization.Get("ENABLED")).desc = this._localization.Format("MODULE_ENABLE_DESCRIPTION", this.name)
+        const enabledToggle = this._menu.AddToggle("ENABLED", this._localization.Get("ENABLED"))
+        enabledToggle.desc = this._localization.Format("MODULE_ENABLE_DESCRIPTION", this.name)
+        enabledToggle.order = 0.1
     }
 
     ShouldLoad(): boolean {
