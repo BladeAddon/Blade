@@ -52,9 +52,9 @@ export class AutoVendor extends Module {
         const newItem = ContainerItem.Create(item.containerIndex, item.slotIndex)
         // if it still exists and is the same item and we also still have a merchant open
         if (newItem?.itemID === item.itemID && C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant)) {
-            item.Use()
             // try to sell until it doesn't exist
             C_Timer.After(0, () => {
+                item.Use()
                 this.forceSell(item)
             })
         }
