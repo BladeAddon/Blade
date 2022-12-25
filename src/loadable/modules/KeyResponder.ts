@@ -1,6 +1,5 @@
 import { IEventHandler } from '../../event/IEventHandler'
 import { Bag } from '../../item/bag/Bag'
-import { ContainerItem } from '../../item/bag/ContainerItem'
 import { Items } from '../../item/Items'
 import { Inject } from '../../tstl-di/src/Inject'
 import { Module } from './Module'
@@ -11,7 +10,6 @@ export class KeyResponder extends Module {
     @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
     @Inject("Bag") private readonly _bag!: Bag
 
-    private _lastKeyLink: string | undefined
 
     public constructor() {
         super("KeyResponder", "KeyResponder")
@@ -30,38 +28,34 @@ export class KeyResponder extends Module {
     }
 
     private OnPartyMsg(text: string): void {
-        if (!this.ShouldLoad() || text !== TRIGGER) {
+        if (!this.ShouldLoad() || !this._moduleSettings.Get("RESPOND_KEYS_PARTY") || text !== TRIGGER) {
             return
         }
 
         this.LinkKey("PARTY")
     }
 
-    private OnChangedContainerItem(item: ContainerItem): void {
-        if (!this._moduleSettings.Get("ANNOUNCE_NEW_KEYS_PARTY")) {
-            return
+    private OnLootMessage(lootMessage: string): void {
+        const lootPattern = string.format(LOOT_ITEM_SELF, "(.*)")
+        const itemPattern = string.format(LOOT_ITEM_PUSHED_SELF, "(.*)")
+
+        const keystonePattern = `keystone:${Items.KEYSTONE_ITEM_ID}`
+
+        const [itemMatch] = string.match(lootMessage, lootPattern) || string.match(lootMessage, itemPattern)
+        if (itemMatch) {
+            const [keystoneMatch] = string.match(itemMatch, keystonePattern)
+            if (keystoneMatch) {
+                this._output.Print("new keystone", itemMatch)
+                // this._lastKeyLink = this._bag.FindBagItemByID(Items.KEYSTONE_ITEM_ID)?.itemLink
+            }
         }
-
-        if (item.itemID !== Items.KEYSTONE_ITEM_ID) {
-            return
-        }
-
-        if (item.itemLink === this._lastKeyLink) {
-            return
-        }
-
-        this._lastKeyLink = item.itemLink
-
-        this._output.Print("new keystone", item.itemLink)
     }
 
     protected OnLoad(): void {
-        this._lastKeyLink = this._bag.FindBagItemByID(Items.KEYSTONE_ITEM_ID)?.itemLink
-
         const onPartyMsg = this.OnPartyMsg.bind(this)
         this._eventHandler.RegisterEvent("CHAT_MSG_PARTY", onPartyMsg)
         this._eventHandler.RegisterEvent("CHAT_MSG_PARTY_LEADER", onPartyMsg)
 
-        this._bag.AddChangedItemEventListener(this.OnChangedContainerItem.bind(this))
+        this._eventHandler.RegisterEvent("CHAT_MSG_LOOT", this.OnLootMessage.bind(this))
     }
 }

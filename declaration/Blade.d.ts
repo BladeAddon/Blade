@@ -9,3 +9,6 @@ declare const SlashCmdList: LuaTable<string, /** @noSelf **/(name: string) => vo
 declare function GetTime(): number
 /** @noSelf **/
 declare function date(): string
+
+declare const LOOT_ITEM_SELF: string
+declare const LOOT_ITEM_PUSHED_SELF: string
