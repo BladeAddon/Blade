@@ -65,4 +65,9 @@ export class ContainerItem {
     public get itemLink(): string {
         return this._itemLink ??= C_Container.GetContainerItemLink(this.containerIndex, this.slotIndex)
     }
+
+    private _stackCount?: number
+    public get stackCount(): number {
+        return this._stackCount ??= this.containerItemInfo.stackCount
+    }
 }

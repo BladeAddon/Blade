@@ -1,3 +1,5 @@
+import { ChatCommand } from '../../chat/command/ChatCommand'
+import { CommandHandler } from '../../chat/command/CommandHandler'
 import { IEventHandler } from '../../event/IEventHandler'
 import { Loadable } from '../../loadable/Loadable'
 import { Inject } from '../../tstl-di/src/Inject'
@@ -6,8 +8,30 @@ import { ContainerItem } from './ContainerItem'
 declare type ContainerItemFunction = (item: ContainerItem) => void
 declare type ContainerItemPredicate = (item: ContainerItem) => boolean
 
+class ItemSplitter {
+    constructor(private readonly containerIndex: number, private readonly slotIndex: number, private readonly bag: Bag) { }
+
+    public Split(): void {
+        const containerItem = ContainerItem.Create(this.containerIndex, this.slotIndex)
+        if (!containerItem || containerItem.stackCount <= 1) {
+            return
+        }
+
+        C_Container.SplitContainerItem(this.containerIndex, this.slotIndex, 1)
+        const emptySlot = this.bag.GetFirstEmptySlot()
+        if (emptySlot) {
+            C_Container.PickupContainerItem(emptySlot[0], emptySlot[1])
+            C_Timer.After(0, this.Split.bind(this))
+        }
+        else {
+            ClearCursor()
+        }
+    }
+}
+
 export class Bag extends Loadable {
     @Inject("IEventHandler") private readonly _eventHandler!: IEventHandler
+    @Inject("CommandHandler") private readonly _commandHandler!: CommandHandler
 
     private readonly _changedItemEventListeners: Set<(item: ContainerItem) => void> = new Set()
 
@@ -54,10 +78,30 @@ export class Bag extends Loadable {
         }
     }
 
+    private UpdateBags(): void {
+        for (let bagIndex = 0; bagIndex <= NUM_TOTAL_EQUIPPED_BAG_SLOTS; bagIndex++) {
+            this.UpdateBag(bagIndex)
+        }
+    }
+
+    private SplitItemOnCursor(): void {
+        const cursorItem = C_Cursor.GetCursorItem()
+        if (cursorItem?.IsValid() && cursorItem.IsBagAndSlot()) {
+            const [bag, slot] = cursorItem.GetBagAndSlot()
+            ClearCursor()
+
+            const splitter = new ItemSplitter(bag, slot, this)
+            splitter.Split()
+        }
+    }
+
     protected OnLoad(): void {
         this.InitializeBags()
 
+        this._commandHandler.RegisterCommand(new ChatCommand("split", "split", this.SplitItemOnCursor.bind(this)))
+
         this._eventHandler.RegisterEvent("BAG_UPDATE", this.UpdateBag.bind(this))
+        this._eventHandler.RegisterEvent("CHALLENGE_MODE_COMPLETED", this.UpdateBags.bind(this))
     }
 
     public AddChangedItemEventListener(listener: (item: ContainerItem) => void): void {
@@ -131,5 +175,18 @@ export class Bag extends Loadable {
         for (const item of this.IterItems()) {
             f(item)
         }
+    }
+
+    public GetFirstEmptySlot(): [bag: number, slot: number] | undefined {
+        for (let bagIndex = 0; bagIndex <= NUM_TOTAL_EQUIPPED_BAG_SLOTS; bagIndex++) {
+            for (let slotIndex = 1; slotIndex <= C_Container.GetContainerNumSlots(bagIndex); slotIndex++) {
+                const containerItem = ContainerItem.Create(bagIndex, slotIndex)
+                if (!containerItem) {
+                    return [bagIndex, slotIndex]
+                }
+            }
+        }
+
+        return undefined
     }
 }

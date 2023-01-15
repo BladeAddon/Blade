@@ -9,4 +9,5 @@ declare interface ItemLocationMixin {
     SetBagAndSlot(bagID: number, slotIndex: number): void
     GetBagAndSlot(): LuaMultiReturn<[bagID: number, slotIndex: number]>
     IsValid(): boolean
+    IsBagAndSlot(): boolean
 }

@@ -30,6 +30,7 @@ container.instance("IOutput", output)
 
 const eventHandler: IEventHandler = new EventHandler()
 container.instance("IEventHandler", new EventHandler())
+
 eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
     if (addon === addonInfo.AddonName) {
         container.instance("DB", BLADEDATA)
@@ -45,12 +46,18 @@ eventHandler.RegisterEvent("ADDON_LOADED", (addon: string) => {
         container.singleton("Items", Items)
         container.singleton("ModuleLoader", ModuleLoader)
 
-        const loader = new Loader()
-        loader.Init()
-        loader.Load()
+        eventHandler.RegisterEvent("PLAYER_ENTERING_WORLD", (isInitialLogin: boolean, isReloadingUi: boolean) => {
+            if (!isInitialLogin && !isReloadingUi) {
+                return
+            }
 
-        LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable(addonInfo.AddonName, options.get())
-        LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions(addonInfo.AddonName, addonInfo.AddonName)
-        output.LocalizedPrint("LOADED", addonInfo.AddonName)
+            const loader = new Loader()
+            loader.Init()
+            loader.Load()
+
+            LibStub<IAceConfig>("AceConfig-3.0").RegisterOptionsTable(addonInfo.AddonName, options.get())
+            LibStub<IAceConfigDialog>("AceConfigDialog-3.0").AddToBlizOptions(addonInfo.AddonName, addonInfo.AddonName)
+            output.LocalizedPrint("LOADED", addonInfo.AddonName)
+        })
     }
 })
