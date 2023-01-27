@@ -107,6 +107,7 @@
     "luaTarget": "universal",
     "luaBundle": "./Blade.lua",
     "luaBundleEntry": "./src/Blade.ts",
-    "noImplicitSelf": false
+    "noImplicitSelf": false,
+    "luaLibImport": "require-minimal"
   }
 }
