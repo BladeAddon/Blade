@@ -70,8 +70,7 @@ export class Bag extends Loadable {
             const containerItem = ContainerItem.Create(bagIndex, slotIndex)
             if (containerItem) {
                 bag.set(slotIndex, containerItem)
-                const oldSlot = oldBag?.get(slotIndex)
-                if (!oldSlot || oldSlot.itemLink !== containerItem.itemLink) {
+                if (oldBag?.get(slotIndex)?.itemLink !== containerItem.itemLink) {
                     this.OnChangedItem(containerItem)
                 }
             }
@@ -79,6 +78,7 @@ export class Bag extends Loadable {
     }
 
     private UpdateBags(): void {
+        print("updating all bags")
         for (let bagIndex = 0; bagIndex <= NUM_TOTAL_EQUIPPED_BAG_SLOTS; bagIndex++) {
             this.UpdateBag(bagIndex)
         }
@@ -101,7 +101,9 @@ export class Bag extends Loadable {
         this._commandHandler.RegisterCommand(new ChatCommand("split", "split", this.SplitItemOnCursor.bind(this)))
 
         this._eventHandler.RegisterEvent("BAG_UPDATE", this.UpdateBag.bind(this))
-        this._eventHandler.RegisterEvent("CHALLENGE_MODE_COMPLETED", this.UpdateBags.bind(this))
+        this._eventHandler.RegisterEvent("CHALLENGE_MODE_COMPLETED", () => {
+            C_Timer.After(3, this.UpdateBags.bind(this))
+        })
     }
 
     public AddChangedItemEventListener(listener: (item: ContainerItem) => void): void {
