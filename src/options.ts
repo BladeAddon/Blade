@@ -1,4 +1,4 @@
-import { ConfigService } from './ConfigService'
+import { ConfigEntry, ConfigService } from './ConfigService'
 import { Inject } from './tstl-di/src/Inject'
 
 export class OptionsMenu {
@@ -59,6 +59,10 @@ export class OptionsMenu {
         const item: HeaderItem = { type: "header", name: name }
         this._table.args[key] = item
         return item
+    }
+
+    public GetEntry<T>(key: ConfigKey): ConfigEntry<T> {
+        return this._config.GetEntry<T>(key)
     }
 }
 
