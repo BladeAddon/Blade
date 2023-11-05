@@ -14,11 +14,11 @@ export class Loader {
         container.instance(loadable.name, loadable)
     }
 
-    private singleton(loadableType: { new(): Loadable }): void {
+    private singleton(loadableType: new () => Loadable): void {
         this.instance(new loadableType())
     }
 
-    public RegisterLoadable(loadableType: { new(): Loadable }): void {
+    public RegisterLoadable(loadableType: new () => Loadable): void {
         this.singleton(loadableType)
     }
 

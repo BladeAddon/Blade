@@ -27,6 +27,12 @@ export abstract class Module {
         const enabledToggle = this._menu.AddToggle("ENABLED", this._localization.Get("ENABLED"))
         enabledToggle.desc = this._localization.Format("MODULE_ENABLE_DESCRIPTION", this.name)
         enabledToggle.order = 0.1
+
+        this._menu.GetEntry<boolean>("ENABLED").AddListener((value) => {
+            if (value && !this._loaded) {
+                this.Load()
+            }
+        })
     }
 
     ShouldLoad(): boolean {

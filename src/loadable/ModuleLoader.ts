@@ -15,11 +15,11 @@ export class ModuleLoader {
         this._modules.push(module)
     }
 
-    private singleton(moduleType: { new(): Module }): void {
+    private singleton(moduleType: new() => Module): void {
         this.instance(new moduleType())
     }
 
-    public RegisterModule(moduleType: { new(): Module }): void {
+    public RegisterModule(moduleType: new() => Module): void {
         this.singleton(moduleType)
     }
 
