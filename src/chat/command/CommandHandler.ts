@@ -32,8 +32,8 @@ export class CommandHandler {
     }
 
     private onChatCmd(msg: string): void {
-        const [cmd, params] = string.match(msg, "^(%S*)%s*(.-)$")
-        this.onCommand(cmd, params as string)
+        const [cmd, ...params] = string.match(msg, "^(%S*)%s*(.-)$")
+        this.onCommand(cmd, ...params)
     }
 
     private onCommand(cmd: string | undefined, ...params: string[]): void {
