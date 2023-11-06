@@ -1,6 +1,7 @@
 import { ChatCommand } from './ChatCommand'
 import { IOutput } from '../IOutput'
 import { Inject } from '../../tstl-di/src/Inject'
+import { MapHelper } from '../../Helpers/MapHelper'
 
 export class CommandHandler {
     @Inject("IOutput") protected readonly _output!: IOutput
@@ -49,10 +50,8 @@ export class CommandHandler {
     }
 
     public RegisterCommand(command: ChatCommand): void {
-        if (!this._commands.has(command.command)) {
-            this._commands.set(command.command, [])
-        }
-
-        this._commands.get(command.command)!.push(command)
+        MapHelper
+            .GetOrCreate<ChatCommand[]>(this._commands, command.command, (_) => [])
+            .push(command)
     }
 }
