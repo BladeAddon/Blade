@@ -1,5 +1,5 @@
 ## Title: Blade
-## Interface: 100002
+## Interface: 100200
 ## Notes: Blade
 ## Author: mztikk
 ## X-Curse-Project-ID: 714501
