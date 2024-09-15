@@ -1,5 +1,8 @@
-local bootstrapper = {}
-function bootstrapper:Load()
+local ns, addon = ...
+
+local ace_addon = LibStub("AceAddon-3.0"):NewAddon("Blade")
+
+function ace_addon:OnInitialize()
     if not BLADEDATA then
         BLADEDATA = {}
     end
@@ -8,5 +11,3 @@ function bootstrapper:Load()
         BLADEDATA.Settings = {}
     end
 end
-
-return bootstrapper
