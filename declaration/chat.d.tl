@@ -2,7 +2,7 @@
 global interface ChatCommand
     command: string
     description: string
-    handler: function (args: {string})
+    handler: function (...: string)
 end
 
 global interface CommandHandler

@@ -1,4 +1,4 @@
-local input: {string, {any:any}} = {...}
+local input: {string, Addon} = {...}
 local ns = input[1]
 local addon = input[2]
 
@@ -25,17 +25,13 @@ function command_handler:display_help()
 end
 
 function command_handler:on_chat_command(message: string, edit_box: any)
-    -- if self.commands[name] then
-    --     self.commands[name](name, args)
-    -- else
-    --     print("Command not found: " .. name)
-    -- end
-
     local command, params = string.match(message, "^(%S*)%s*(.-)$")
     if not command or command == "" or not self.commands[command] then
         self:display_help()
         return
     end
+
+    self.commands[command].handler(params)
 end
 
 global SLASH_Blade1, SLASH_Blade2, SLASH_Blade3 = "/blade", "/bla", "/bl"
