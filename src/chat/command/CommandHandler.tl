@@ -25,8 +25,19 @@ function command_handler:display_help()
 end
 
 function command_handler:on_chat_command(message: string, edit_box: any)
+    if not message or message == "" then
+        self:display_help()
+        return
+    end
+
     local command, params = string.match(message, "^(%S*)%s*(.-)$")
-    if not command or command == "" or not self.commands[command] then
+    if not command or command == "" then
+        self:display_help()
+        return
+    end
+
+    if not self.commands[command] then
+        print("Unknown command: " .. command)
         self:display_help()
         return
     end
