@@ -22,12 +22,56 @@
         "CanGuildBankRepair",
         "GetGuildBankWithdrawMoney",
         "InterfaceOptions_AddCategory",
-        "strsplit"
+        "strsplit",
+        "SELECTED_CHAT_FRAME",
+        "DEFAULT_CHAT_FRAME",
+        "UIParent",
+        "NORMAL_FONT_COLOR",
+        "GameFontNormal",
+        "GameFontHighlight",
+        "ACCEPT",
+        "CANCEL",
+        "Settings",
+        "GameFontHighlightLarge",
+        "GameFontHighlightSmall",
+        "NORMAL_FONT_COLOR_CODE",
+        "FONT_COLOR_CODE_CLOSE",
+        "CLOSE",
+        "GameFontDisableSmall",
+        "GameTooltip",
+        "GameFontNormalSmall",
+        "SetDesaturation",
+        "ColorPickerFrame",
+        "ChatFontNormal",
+        "OKAY",
+        "NOT_BOUND",
+        "WOW_PROJECT_ID",
+        "WOW_PROJECT_MAINLINE",
+        "hash_SlashCmdList",
+        "IsSecureCmd",
+        "NUM_CHAT_WINDOWS",
+        "ChatEdit_GetActiveWindow"
     ],
     "cSpell.words": [
         "BOOKTYPE",
         "equipmentset",
+        "ipairs",
         "offspec",
         "tstl"
+    ],
+    "Lua.runtime.version": "Lua 5.1",
+    "Lua.runtime.builtin": {
+        "basic": "disable",
+        "debug": "disable",
+        "io": "disable",
+        "math": "disable",
+        "os": "disable",
+        "package": "disable",
+        "string": "disable",
+        "table": "disable",
+        "utf8": "disable"
+    },
+    "Lua.workspace.library": [
+        "~\\.vscode\\extensions\\ketho.wow-api-0.20.8\\Annotations\\Core"
     ]
 }

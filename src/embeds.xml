@@ -3,8 +3,8 @@
     <Script file="lib/LibStub/LibStub.lua" />
     <Script file="lib/CallbackHandler-1.0/CallbackHandler-1.0.lua" />
     <Script file="lib/LibSharedMedia-3.0/LibSharedMedia-3.0.lua" />
-    <Include file="Libs\AceAddon-3.0\AceAddon-3.0.xml"/>
-    <Include file="Libs\AceConsole-3.0\AceConsole-3.0.xml"/>
+    <Include file="lib/AceAddon-3.0/AceAddon-3.0.xml"/>
+    <Include file="lib/AceConsole-3.0/AceConsole-3.0.xml"/>
     <Include file="lib/AceDB-3.0/AceDB-3.0.xml"/>
     <Include file="lib/AceDBOptions-3.0/AceDBOptions-3.0.xml"/>
     <Include file="lib/AceLocale-3.0/AceLocale-3.0.xml"/>
@@ -14,4 +14,5 @@
     <Script file="locales/enUS.lua" />
 
     <Script file="Blade.lua" />
+    <Script file="chat/command/CommandHandler.lua" />
 </Ui>
