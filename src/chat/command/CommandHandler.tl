@@ -1,11 +1,22 @@
 local input: {string, {any:any}} = {...}
 local ns = input[1]
-print("CommandHandler: ",  ns)
 local addon = input[2]
 
 local command_handler: CommandHandler = {
     commands = {},
 }
+
+function command_handler:register_command(command: ChatCommand)
+    assert(command and command.command and command.description and command.handler, "Invalid command registration")
+    assert(not self.commands[command.command], "Command already exists: " .. command.command)
+
+    self.commands[command.command] = {
+        command = command.command,
+        description = command.description,
+        handler = command.handler,
+    }
+end
+
 function command_handler:display_help()
     print("Available commands:")
     for cmd, command in pairs(self.commands) do
