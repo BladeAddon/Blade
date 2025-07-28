@@ -61,7 +61,7 @@ export class AutoVendor extends Module {
     }
 
     private SellTrashItems(): void {
-        if (!C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant)) {
+        if (!C_PlayerInteractionManager.IsInteractingWithNpcOfType(Enum.PlayerInteractionType.Merchant) || !C_MerchantFrame.IsSellAllJunkEnabled()) {
             return
         }
 
