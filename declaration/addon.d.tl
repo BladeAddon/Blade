@@ -1,4 +1,5 @@
 require("chat")
+require("options")
 
 global BLADEDATA: {string:any}
 global SLASH_Blade1: string

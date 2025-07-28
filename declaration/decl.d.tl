@@ -10,4 +10,6 @@ global SlashCmdList: {string:function (message: string, edit_box: any)}
 global GetTime: function(): number
 global date: function(): string
 
+require("ace_config")
+
 require("addon")
